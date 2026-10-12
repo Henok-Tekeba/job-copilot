@@ -3,17 +3,14 @@
 import * as React from "react";
 import {
   createColumnHelper,
-  createCoreRowModel,
-  createPaginatedRowModel,
-  createSortedRowModel,
   flexRender,
-  tableFeatures,
-  useTable,
+  getCoreRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
   type ColumnDef,
-  type RowSelectionState,
   type SortingState,
 } from "@tanstack/react-table";
-import { rowPaginationFeature, rowSelectionFeature, rowSortingFeature } from "@tanstack/react-table";
 import { ArrowDown, ArrowUp, ArrowUpDown, MoreHorizontal } from "lucide-react";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -64,30 +61,31 @@ export function JobsTable({
   onResetFilters,
 }: JobsTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
+  const [rowSelection, setRowSelection] = React.useState({});
   const [pagination, setPagination] = React.useState({
     pageIndex: 0,
     pageSize: 8,
   });
+  const [now, setNow] = React.useState(0);
 
   React.useEffect(() => {
-    setPagination((prev) => ({ ...prev, pageIndex: 0 }));
-  }, [jobs]);
+    setNow(Date.now());
+  }, []);
 
-  const columns = React.useMemo<ColumnDef<Job>[]>(
+  const columns = React.useMemo(
     () => [
       {
         id: "select",
-        header: ({ table }) => (
+        header: ({ table }: { table: ReturnType<typeof useReactTable<Job>> }) => (
           <Checkbox
             checked={
               table.getIsAllPageRowsSelected() ||
-              (table.getIsSomePageRowsSelected() && "indeterminate")
+              (table.getIsSomePageRowsSelected() as boolean)
             }
             onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           />
         ),
-        cell: ({ row }) => (
+        cell: ({ row }: { row: import("@tanstack/table-core").Row<Job> }) => (
           <div onClick={(e) => e.stopPropagation()}>
             <Checkbox
               checked={row.getIsSelected()}
@@ -101,7 +99,7 @@ export function JobsTable({
       columnHelper.accessor((row) => row.evaluation.fitScore, {
         id: "fit",
         header: "Fit",
-        cell: ({ row }) => {
+        cell: ({ row }: { row: import("@tanstack/table-core").Row<Job> }) => {
           const score = row.original.evaluation.fitScore;
           if (score === null) {
             return <span className="text-sm text-muted-foreground">-</span>;
@@ -117,7 +115,7 @@ export function JobsTable({
       columnHelper.accessor("title", {
         id: "role",
         header: "Role",
-        cell: ({ row }) => (
+        cell: ({ row }: { row: import("@tanstack/table-core").Row<Job> }) => (
           <div className="flex items-center gap-2.5">
             <Avatar size="sm">
               <AvatarFallback>
@@ -138,7 +136,7 @@ export function JobsTable({
       columnHelper.accessor((row) => row.evaluation.level, {
         id: "level",
         header: "Level",
-        cell: ({ row }) => (
+        cell: ({ row }: { row: import("@tanstack/table-core").Row<Job> }) => (
           <Badge variant="outline" className="capitalize">
             {row.original.evaluation.level}
           </Badge>
@@ -148,7 +146,7 @@ export function JobsTable({
         id: "remote",
         header: "Remote",
         enableSorting: false,
-        cell: ({ row }) => {
+        cell: ({ row }: { row: import("@tanstack/table-core").Row<Job> }) => {
           const eligible = row.original.evaluation.eligible;
           return (
             <Tooltip>
@@ -173,7 +171,7 @@ export function JobsTable({
       columnHelper.accessor("source", {
         id: "source",
         header: "Source",
-        cell: ({ row }) => (
+        cell: ({ row }: { row: import("@tanstack/table-core").Row<Job> }) => (
           <Badge variant="secondary">
             {row.original.source === "remoteok" ? "RemoteOK" : "Remotive"}
           </Badge>
@@ -182,9 +180,9 @@ export function JobsTable({
       columnHelper.accessor("postedAt", {
         id: "posted",
         header: "Posted",
-        cell: ({ row }) => (
+        cell: ({ row }: { row: import("@tanstack/table-core").Row<Job> }) => (
           <span className="font-mono text-xs text-muted-foreground tabular-nums">
-            {relativeTime(row.original.postedAt)}
+            {relativeTime(row.original.postedAt, now)}
           </span>
         ),
       }),
@@ -192,14 +190,14 @@ export function JobsTable({
         id: "missing",
         header: "Missing",
         enableSorting: false,
-        cell: ({ row }) => {
+        cell: ({ row }: { row: import("@tanstack/table-core").Row<Job> }) => {
           const missing = row.original.evaluation.missing;
           if (missing.length === 0) {
             return <span className="text-xs text-muted-foreground">—</span>;
           }
           return (
             <div className="flex items-center gap-1">
-              {missing.slice(0, 2).map((skill) => (
+              {missing.slice(0, 2).map((skill: string) => (
                 <Badge key={skill} variant="secondary">
                   {skill}
                 </Badge>
@@ -211,7 +209,7 @@ export function JobsTable({
                   </HoverCardTrigger>
                   <HoverCardContent>
                     <div className="flex flex-wrap gap-1">
-                      {missing.map((skill) => (
+                      {missing.map((skill: string) => (
                         <Badge key={skill} variant="secondary">
                           {skill}
                         </Badge>
@@ -228,7 +226,7 @@ export function JobsTable({
         id: "actions",
         header: "",
         enableSorting: false,
-        cell: ({ row }) => {
+        cell: ({ row }: { row: import("@tanstack/table-core").Row<Job> }) => {
           const job = row.original;
           const applied = appliedIds.has(job.id);
           return (
@@ -269,19 +267,9 @@ export function JobsTable({
     [appliedIds, onDismiss, onMarkApplied],
   );
 
-  const features = tableFeatures({
-    rowSelectionFeature,
-    rowSortingFeature,
-    rowPaginationFeature,
-    coreRowModel: createCoreRowModel(),
-    sortedRowModel: createSortedRowModel(),
-    paginatedRowModel: createPaginatedRowModel(),
-  });
-
-  const table = useTable({
+  const table = useReactTable({
     data: jobs,
     columns,
-    features,
     state: {
       sorting,
       rowSelection,
@@ -290,6 +278,9 @@ export function JobsTable({
     onSortingChange: setSorting,
     onRowSelectionChange: setRowSelection,
     onPaginationChange: setPagination,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
   });
 
   if (loading) {
@@ -381,7 +372,7 @@ export function JobsTable({
 
       <div className="flex items-center justify-between px-1">
         <span className="text-xs text-muted-foreground tabular-nums">
-          Page {table.state.pagination.pageIndex + 1} of {table.getPageCount()}
+          Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
         </span>
         <div className="flex items-center gap-1">
           <Button
@@ -396,7 +387,7 @@ export function JobsTable({
           {Array.from({ length: table.getPageCount() }, (_, i) => (
             <Button
               key={i}
-              variant={table.state.pagination.pageIndex === i ? "outline" : "ghost"}
+              variant={table.getState().pagination.pageIndex === i ? "outline" : "ghost"}
               size="icon-sm"
               className="h-7 w-7 font-mono text-xs tabular-nums"
               onClick={() => table.setPageIndex(i)}

@@ -1,5 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
+import { execSync } from "child_process";
 import { fetchRemoteOK } from "./adapters/remoteok";
 import { fetchRemotive } from "./adapters/remotive";
 import type { NormalizedJob } from "./types";
@@ -134,8 +135,6 @@ async function collect() {
   console.log(`\nJobs with empty location: ${emptyLocation}`);
 }
 
-async function main() {
-  await collect();
-  const { execSync } = await import("child_process");
+collect().then(() => {
   execSync("npx tsx scripts/evaluate.ts", { stdio: "inherit" });
-}
+});

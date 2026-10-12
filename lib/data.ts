@@ -25,7 +25,7 @@ export function loadJobs(): Job[] {
   const seedData: SeedData = parsed.data;
   return seedData.jobs.map((j) => ({
     id: j.id,
-    source: "telegram" as const,
+    source: "remoteok" as const,
     sourceUrl: j.applyUrl,
     applyUrl: j.applyUrl,
     attribution: "via Telegram",

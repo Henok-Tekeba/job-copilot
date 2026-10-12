@@ -8,8 +8,7 @@ export function initials(name: string): string {
     .toUpperCase();
 }
 
-export function relativeTime(isoDate: string): string {
-  const now = Date.now();
+export function relativeTime(isoDate: string, now: number = 0): string {
   const then = new Date(isoDate).getTime();
   const diffMs = now - then;
   const diffSec = Math.floor(diffMs / 1000);

@@ -30,7 +30,7 @@ type SourceFilter = "all" | "remoteok" | "remotive";
 
 export default function JobsPage({ initialJobs }: { initialJobs: Job[] }) {
   const [jobs, setJobs] = React.useState<Job[]>(initialJobs);
-  const [loading, setLoading] = React.useState(true);
+  const [loading] = React.useState(false);
 
   const [search, setSearch] = React.useState("");
   const [levelFilter, setLevelFilter] = React.useState<LevelFilter>("all");
@@ -43,11 +43,6 @@ export default function JobsPage({ initialJobs }: { initialJobs: Job[] }) {
   const [appliedIds, setAppliedIds] = React.useState<Set<string>>(new Set());
   const [notes, setNotes] = React.useState<Record<string, string>>({});
   const [paletteOpen, setPaletteOpen] = React.useState(false);
-
-  React.useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 600);
-    return () => clearTimeout(timer);
-  }, []);
 
   React.useEffect(() => {
     const handler = (event: KeyboardEvent) => {
