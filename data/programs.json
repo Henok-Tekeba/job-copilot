@@ -1,0 +1,32 @@
+[
+  {
+    "id": "program:gsoc",
+    "name": "Google Summer of Code",
+    "url": "https://summerofcode.withgoogle.com/",
+    "description": "A global program where contributors work with open source organizations on mentored software projects.",
+    "opportunity": "program",
+    "eligible": "unclear",
+    "deadline": null,
+    "notes": "Check the official site for current dates and eligibility"
+  },
+  {
+    "id": "program:outreachy",
+    "name": "Outreachy",
+    "url": "https://www.outreachy.org/",
+    "description": "Paid internships in open source and open science for people underrepresented in tech.",
+    "opportunity": "program",
+    "eligible": "unclear",
+    "deadline": null,
+    "notes": "Check the official site for current dates and eligibility"
+  },
+  {
+    "id": "program:mlh-fellowship",
+    "name": "MLH Fellowship",
+    "url": "https://fellowship.mlh.io/",
+    "description": "A remote internship alternative where fellows contribute to real software projects with mentorship.",
+    "opportunity": "program",
+    "eligible": "unclear",
+    "deadline": null,
+    "notes": "Check the official site for current dates and eligibility"
+  }
+]

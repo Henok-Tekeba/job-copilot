@@ -11,15 +11,21 @@ import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
-type LevelFilter = "all" | "intern" | "junior" | "mid" | "senior";
+export type OpportunityFilter =
+  | "focus"
+  | "all"
+  | "internship"
+  | "contract"
+  | "junior"
+  | "program";
 type EligibilityFilter = "open" | "all" | "no";
-type SourceFilter = "all" | "remoteok" | "remotive";
+type SourceFilter = "all" | "remoteok" | "remotive" | "hackernews" | "manual";
 
 type JobsToolbarProps = {
   search: string;
   onSearchChange: (value: string) => void;
-  levelFilter: LevelFilter;
-  onLevelFilterChange: (value: LevelFilter) => void;
+  opportunityFilter: OpportunityFilter;
+  onOpportunityFilterChange: (value: OpportunityFilter) => void;
   sourceFilter: SourceFilter;
   onSourceFilterChange: (value: SourceFilter) => void;
   eligibilityFilter: EligibilityFilter;
@@ -33,8 +39,8 @@ type JobsToolbarProps = {
 export function JobsToolbar({
   search,
   onSearchChange,
-  levelFilter,
-  onLevelFilterChange,
+  opportunityFilter,
+  onOpportunityFilterChange,
   sourceFilter,
   onSourceFilterChange,
   eligibilityFilter,
@@ -61,16 +67,18 @@ export function JobsToolbar({
       </InputGroup>
 
       <ToggleGroup
-        value={levelFilter === "all" ? [] : [levelFilter]}
+        value={opportunityFilter === "focus" ? [] : [opportunityFilter]}
         onValueChange={(values) =>
-          onLevelFilterChange((values[0] as LevelFilter | undefined) ?? "all")
+          onOpportunityFilterChange(
+            (values[0] as OpportunityFilter | undefined) ?? "focus"
+          )
         }
       >
         <ToggleGroupItem value="all">All</ToggleGroupItem>
-        <ToggleGroupItem value="intern">Intern</ToggleGroupItem>
+        <ToggleGroupItem value="internship">Internship</ToggleGroupItem>
+        <ToggleGroupItem value="contract">Contract</ToggleGroupItem>
         <ToggleGroupItem value="junior">Junior</ToggleGroupItem>
-        <ToggleGroupItem value="mid">Mid</ToggleGroupItem>
-        <ToggleGroupItem value="senior">Senior</ToggleGroupItem>
+        <ToggleGroupItem value="program">Program</ToggleGroupItem>
       </ToggleGroup>
 
       <Popover>
@@ -121,6 +129,8 @@ export function JobsToolbar({
                   <SelectItem value="all">All sources</SelectItem>
                   <SelectItem value="remoteok">RemoteOK</SelectItem>
                   <SelectItem value="remotive">Remotive</SelectItem>
+                  <SelectItem value="hackernews">Hacker News</SelectItem>
+                  <SelectItem value="manual">Manual</SelectItem>
                 </SelectContent>
               </Select>
             </div>

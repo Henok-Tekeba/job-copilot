@@ -43,6 +43,7 @@ export async function fetchRemotive(): Promise<NormalizedJob[]> {
     sourceUrl: job.url,
     applyUrl: undefined,
     attribution: ATTRIBUTION,
+    website: undefined,
     title: job.title,
     company: job.company_name,
     location: job.candidate_required_location ?? "",

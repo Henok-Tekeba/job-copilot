@@ -133,12 +133,12 @@ export function JobsTable({
           </div>
         ),
       }),
-      columnHelper.accessor((row) => row.evaluation.level, {
-        id: "level",
-        header: "Level",
+      columnHelper.accessor((row) => row.evaluation.opportunity, {
+        id: "opportunity",
+        header: "Opportunity",
         cell: ({ row }: { row: import("@tanstack/table-core").Row<Job> }) => (
           <Badge variant="outline" className="capitalize">
-            {row.original.evaluation.level}
+            {row.original.evaluation.opportunity}
           </Badge>
         ),
       }),
@@ -173,7 +173,13 @@ export function JobsTable({
         header: "Source",
         cell: ({ row }: { row: import("@tanstack/table-core").Row<Job> }) => (
           <Badge variant="secondary">
-            {row.original.source === "remoteok" ? "RemoteOK" : "Remotive"}
+            {row.original.source === "remoteok"
+              ? "RemoteOK"
+              : row.original.source === "hackernews"
+                ? "Hacker News"
+                : row.original.source === "manual"
+                  ? "Manual"
+                  : "Remotive"}
           </Badge>
         ),
       }),
@@ -182,7 +188,9 @@ export function JobsTable({
         header: "Posted",
         cell: ({ row }: { row: import("@tanstack/table-core").Row<Job> }) => (
           <span className="font-mono text-xs text-muted-foreground tabular-nums">
-            {relativeTime(row.original.postedAt, now)}
+            {row.original.postedAt
+              ? relativeTime(row.original.postedAt, now)
+              : "—"}
           </span>
         ),
       }),

@@ -21,19 +21,19 @@ import type { Job } from "@/lib/types";
 import { CommandPalette } from "@/components/jobs/command-palette";
 import { JobDetailSheet } from "@/components/jobs/job-detail-sheet";
 import { JobsTable } from "@/components/jobs/jobs-table";
-import { JobsToolbar } from "@/components/jobs/jobs-toolbar";
+import { JobsToolbar, type OpportunityFilter } from "@/components/jobs/jobs-toolbar";
 import { StatCards } from "@/components/jobs/stat-cards";
 
-type LevelFilter = "all" | "intern" | "junior" | "mid" | "senior";
 type EligibilityFilter = "open" | "all" | "no";
-type SourceFilter = "all" | "remoteok" | "remotive";
+type SourceFilter = "all" | "remoteok" | "remotive" | "hackernews" | "manual";
 
 export default function JobsPage({ initialJobs }: { initialJobs: Job[] }) {
   const [jobs, setJobs] = React.useState<Job[]>(initialJobs);
   const [loading] = React.useState(false);
 
   const [search, setSearch] = React.useState("");
-  const [levelFilter, setLevelFilter] = React.useState<LevelFilter>("all");
+  const [opportunityFilter, setOpportunityFilter] =
+    React.useState<OpportunityFilter>("focus");
   const [sourceFilter, setSourceFilter] = React.useState<SourceFilter>("all");
   const [eligibilityFilter, setEligibilityFilter] = React.useState<EligibilityFilter>("open");
   const [showNonSoftware, setShowNonSoftware] = React.useState(false);
@@ -63,7 +63,16 @@ export default function JobsPage({ initialJobs }: { initialJobs: Job[] }) {
         if (query && !job.title.toLowerCase().includes(query) && !job.company.toLowerCase().includes(query)) {
           return false;
         }
-        if (levelFilter !== "all" && job.evaluation.level !== levelFilter) return false;
+        if (opportunityFilter === "focus" && job.evaluation.opportunity === "fulltime") {
+          return false;
+        }
+        if (
+          opportunityFilter !== "focus" &&
+          opportunityFilter !== "all" &&
+          job.evaluation.opportunity !== opportunityFilter
+        ) {
+          return false;
+        }
         if (sourceFilter !== "all" && job.source !== sourceFilter) return false;
         if (eligibilityFilter === "open" && job.evaluation.eligible === "no") return false;
         if (eligibilityFilter === "no" && job.evaluation.eligible !== "no") return false;
@@ -78,7 +87,7 @@ export default function JobsPage({ initialJobs }: { initialJobs: Job[] }) {
         const bFit = b.evaluation.fitScore ?? -1;
         return bFit - aFit;
       });
-  }, [jobs, search, levelFilter, sourceFilter, eligibilityFilter, showNonSoftware, minFit]);
+  }, [jobs, search, opportunityFilter, sourceFilter, eligibilityFilter, showNonSoftware, minFit]);
 
   const softwareCount = jobs.filter((j) => j.relevance === "software").length;
   const openCount = jobs.filter((j) => j.evaluation.eligible === "yes").length;
@@ -94,7 +103,7 @@ export default function JobsPage({ initialJobs }: { initialJobs: Job[] }) {
 
   const handleResetFilters = () => {
     setSearch("");
-    setLevelFilter("all");
+    setOpportunityFilter("focus");
     setSourceFilter("all");
     setEligibilityFilter("open");
     setShowNonSoftware(false);
@@ -153,8 +162,8 @@ export default function JobsPage({ initialJobs }: { initialJobs: Job[] }) {
           <JobsToolbar
             search={search}
             onSearchChange={setSearch}
-            levelFilter={levelFilter}
-            onLevelFilterChange={setLevelFilter}
+            opportunityFilter={opportunityFilter}
+            onOpportunityFilterChange={setOpportunityFilter}
             sourceFilter={sourceFilter}
             onSourceFilterChange={setSourceFilter}
             eligibilityFilter={eligibilityFilter}

@@ -1,6 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
 import { SKILLS } from "../lib/skills";
+import { detectOpportunity, type Opportunity } from "../lib/opportunity";
 
 const JOBS_FILE = path.join(process.cwd(), "data", "jobs.json");
 const FACTS_FILE = path.join(process.cwd(), "data", "facts.json");
@@ -14,6 +15,7 @@ type Job = {
   title: string;
   company: string;
   location: string;
+  website?: string;
   tags: string[];
   jobType?: string;
   description: string;
@@ -31,6 +33,11 @@ type Evaluation = {
   missing: string[];
   fitScore: number | null;
   level: string;
+  opportunity: Opportunity;
+  signals: {
+    intern: boolean;
+    junior: boolean;
+  };
 };
 
 type Facts = {
@@ -122,9 +129,70 @@ const US_LOCATIONS = [
   "singapore",
 ];
 
+const HN_NO_LOCATIONS = [
+  "in-person",
+  "in person",
+  "onsite",
+  "on-site",
+  "on site",
+  "hybrid",
+];
+
+const HN_REGION_REMOTE = [
+  "remote (us)",
+  "remote (usa)",
+  "remote (uk)",
+  "remote (eu)",
+  "remote (europe)",
+  "remote (canada)",
+  "remote (australia)",
+  "remote (germany)",
+  "remote (france)",
+  "remote (netherlands)",
+  "remote (india)",
+  "remote (japan)",
+  "remote (brazil)",
+  "remote (mexico)",
+  "remote (singapore)",
+  "remote (israel)",
+  "remote (poland)",
+  "remote (sweden)",
+  "remote (norway)",
+  "remote (denmark)",
+  "remote (finland)",
+  "remote (portugal)",
+  "remote (spain)",
+  "remote (italy)",
+  "remote (austria)",
+  "remote (switzerland)",
+  "remote (belgium)",
+  "remote (romania)",
+  "remote (czech)",
+  "remote (hungary)",
+  "remote (ukraine)",
+  "remote (lithuania)",
+  "remote (latvia)",
+  "remote (estonia)",
+  "remote (kenya)",
+  "remote (ghana)",
+  "remote (nigeria)",
+  "remote (south africa)",
+  "remote (uae)",
+  "remote (dubai)",
+  "remote (turkey)",
+  "remote (croatia)",
+  "remote (serbia)",
+  "remote (new zealand)",
+  "remote (ireland)",
+  "remote (north america)",
+];
+
+const HN_GLOBAL_WITH_COUNTRIES = /^global\s*\(/i;
+
 function detectRemoteEligibility(
   location: string,
-  description: string
+  description: string,
+  source: string
 ): { eligible: "yes" | "no" | "unclear"; reason: string } {
   const lowerLoc = location.toLowerCase().trim();
   const lowerDesc = description.toLowerCase();
@@ -132,7 +200,12 @@ function detectRemoteEligibility(
   const worldwide =
     lowerLoc.includes("worldwide") ||
     lowerLoc.includes("anywhere") ||
-    lowerLoc.includes("global");
+    (source === "hackernews" && (
+      lowerLoc.includes("remote (global)") ||
+      lowerLoc.includes("remote, global") ||
+      lowerLoc.includes("remote (any timezone)") ||
+      lowerLoc.includes("any timezone")
+    ));
 
   for (const signal of US_ONLY_SIGNALS) {
     if (lowerDesc.includes(signal)) {
@@ -140,6 +213,25 @@ function detectRemoteEligibility(
       if (hasUSLocation || lowerLoc === "") {
         return { eligible: "no", reason: signal };
       }
+    }
+  }
+
+  if (source === "hackernews") {
+    if (HN_NO_LOCATIONS.some((l) => lowerLoc.includes(l)) && !worldwide) {
+      return { eligible: "no", reason: `Location: ${location}` };
+    }
+
+    const regionOnly = HN_REGION_REMOTE.find((r) => lowerLoc.includes(r));
+    if (regionOnly) {
+      return { eligible: "no", reason: regionOnly };
+    }
+
+    if (HN_GLOBAL_WITH_COUNTRIES.test(lowerLoc)) {
+      return { eligible: "unclear", reason: location };
+    }
+
+    if (lowerLoc === "remote" || lowerLoc === "remote only") {
+      return { eligible: "unclear", reason: "Remote with no region specified" };
     }
   }
 
@@ -211,11 +303,47 @@ function evaluateJob(job: Job, knownSkills: Set<string>): Evaluation {
   }
 
   const level = detectLevel(job.title);
+  const header = job.description.split("\n")[0] ?? "";
+  const opportunity =
+    job.source === "manual"
+      ? "program"
+      : detectOpportunity(job.title, header, job.tags, job.jobType);
 
   const { eligible, reason } = detectRemoteEligibility(
     job.location,
-    job.description
+    job.description,
+    job.source
   );
+
+  const headerText = job.title.toLowerCase();
+  const fullText = `${job.title} ${job.description}`.toLowerCase();
+  const negationWords = ["no", "not", "never", "without", "don't", "isn't"];
+  const sentences = job.description.split(/[.!?]+/).map((s) => s.trim().toLowerCase());
+  const internSentence = sentences.some(
+    (s) =>
+      (s.includes("intern") || s.includes("internship")) &&
+      !negationWords.some((n) => s.includes(n))
+  );
+  const juniorSentence = sentences.some(
+    (s) =>
+      (s.includes("junior") ||
+        s.includes("entry level") ||
+        s.includes("entry-level") ||
+        s.includes("new grad") ||
+        s.includes("graduate")) &&
+      !negationWords.some((n) => s.includes(n))
+  );
+  const signals = {
+    intern:
+      headerText.includes("intern") || headerText.includes("internship") || internSentence,
+    junior:
+      headerText.includes("junior") ||
+      headerText.includes("entry level") ||
+      headerText.includes("entry-level") ||
+      headerText.includes("new grad") ||
+      headerText.includes("graduate") ||
+      juniorSentence,
+  };
 
   return {
     eligible,
@@ -225,6 +353,8 @@ function evaluateJob(job: Job, knownSkills: Set<string>): Evaluation {
     missing,
     fitScore,
     level,
+    opportunity,
+    signals,
   };
 }
 
@@ -234,6 +364,7 @@ function main() {
   const knownSkills = getKnownSkillNames(facts);
 
   for (const job of jobs) {
+    if (job.source === "manual") continue;
     const plainDesc = stripHtml(job.description);
     const evaluation = evaluateJob(
       { ...job, description: plainDesc },
@@ -246,6 +377,7 @@ function main() {
   fs.writeFileSync(JOBS_FILE, JSON.stringify(jobs, null, 2));
 
   const softwareJobs = jobs.filter((j) => j.relevance === "software");
+  const hnSoftwareJobs = softwareJobs.filter((j) => j.source === "hackernews");
 
   const byEligible = { yes: 0, unclear: 0, no: 0 };
   for (const job of softwareJobs) {
@@ -267,6 +399,33 @@ function main() {
   console.log(`   junior: ${byLevel.junior}`);
   console.log(`   mid: ${byLevel.mid}`);
   console.log(`   senior: ${byLevel.senior}`);
+
+  const byOpportunity: Record<Opportunity, number> = {
+    internship: 0,
+    contract: 0,
+    junior: 0,
+    program: 0,
+    fulltime: 0,
+  };
+  const openByOpportunity: Record<Opportunity, number> = {
+    internship: 0,
+    contract: 0,
+    junior: 0,
+    program: 0,
+    fulltime: 0,
+  };
+  for (const job of jobs) {
+    const opp = job.evaluation?.opportunity;
+    if (!opp) continue;
+    byOpportunity[opp]++;
+    if (job.evaluation!.eligible === "yes" || job.evaluation!.eligible === "unclear") {
+      openByOpportunity[opp]++;
+    }
+  }
+  console.log("\n2b. Counts by opportunity (all jobs):");
+  for (const key of Object.keys(byOpportunity) as Opportunity[]) {
+    console.log(`   ${key}: ${byOpportunity[key]} (open yes/unclear: ${openByOpportunity[key]})`);
+  }
 
   const missingCounts = new Map<string, number>();
   for (const job of softwareJobs) {

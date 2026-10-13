@@ -3,6 +3,7 @@ import * as path from "path";
 import { execSync } from "child_process";
 import { fetchRemoteOK } from "./adapters/remoteok";
 import { fetchRemotive } from "./adapters/remotive";
+import { fetchHackerNews } from "./adapters/hackernews";
 import type { NormalizedJob } from "./types";
 
 const DATA_DIR = path.join(process.cwd(), "data");
@@ -15,6 +16,7 @@ type State = {
   lastFetched?: {
     remoteok?: string;
     remotive?: string;
+    hackernews?: string;
   };
 };
 
@@ -33,7 +35,7 @@ function saveState(state: State) {
   fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
 }
 
-function isRateLimited(state: State, source: "remoteok" | "remotive"): boolean {
+function isRateLimited(state: State, source: "remoteok" | "remotive" | "hackernews"): boolean {
   const last = state.lastFetched?.[source];
   if (!last) return false;
   const elapsed = Date.now() - new Date(last).getTime();
@@ -84,11 +86,12 @@ async function collect() {
   let allJobs = [...existingJobs];
 
   const sources: Array<{
-    name: "remoteok" | "remotive";
+    name: "remoteok" | "remotive" | "hackernews";
     fetcher: () => Promise<NormalizedJob[]>;
   }> = [
     { name: "remoteok", fetcher: fetchRemoteOK },
     { name: "remotive", fetcher: fetchRemotive },
+    { name: "hackernews", fetcher: fetchHackerNews },
   ];
 
   for (const source of sources) {
@@ -106,6 +109,9 @@ async function collect() {
         state.lastFetched[source.name] = new Date().toISOString();
       }
 
+      if (source.name === "hackernews") {
+        allJobs = allJobs.filter((j) => j.source !== "hackernews");
+      }
       allJobs = dedupeAndMerge(allJobs, raw);
       console.log(`Fetched ${raw.length} jobs from ${source.name}`);
     } catch (err) {

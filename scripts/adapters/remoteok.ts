@@ -40,6 +40,7 @@ export async function fetchRemoteOK(): Promise<NormalizedJob[]> {
     sourceUrl: job.url,
     applyUrl: job.apply_url,
     attribution: ATTRIBUTION,
+    website: undefined,
     title: job.position,
     company: job.company,
     location: job.location ?? "",

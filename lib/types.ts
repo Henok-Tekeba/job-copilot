@@ -1,9 +1,16 @@
 import { z } from "zod";
 
-export const sourceSchema = z.enum(["remoteok", "remotive"]);
+export const sourceSchema = z.enum(["remoteok", "remotive", "hackernews", "manual"]);
 export const relevanceSchema = z.enum(["software", "other"]);
 export const eligibleSchema = z.enum(["yes", "no", "unclear"]);
 export const levelSchema = z.enum(["intern", "junior", "mid", "senior"]);
+export const opportunitySchema = z.enum([
+  "internship",
+  "contract",
+  "junior",
+  "program",
+  "fulltime",
+]);
 
 export const evaluationSchema = z.object({
   eligible: eligibleSchema,
@@ -13,6 +20,18 @@ export const evaluationSchema = z.object({
   missing: z.array(z.string()),
   fitScore: z.number().min(0).max(100).nullable(),
   level: levelSchema,
+  opportunity: opportunitySchema,
+});
+
+export const programSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  url: z.string(),
+  description: z.string(),
+  opportunity: z.literal("program"),
+  eligible: eligibleSchema,
+  deadline: z.string().nullable(),
+  notes: z.string(),
 });
 
 export const jobSchema = z.object({
@@ -21,6 +40,7 @@ export const jobSchema = z.object({
   sourceUrl: z.string(),
   applyUrl: z.string().optional(),
   attribution: z.string(),
+  website: z.string().optional(),
   title: z.string(),
   company: z.string(),
   location: z.string(),
@@ -69,7 +89,9 @@ export type Source = z.infer<typeof sourceSchema>;
 export type Relevance = z.infer<typeof relevanceSchema>;
 export type Eligible = z.infer<typeof eligibleSchema>;
 export type Level = z.infer<typeof levelSchema>;
+export type Opportunity = z.infer<typeof opportunitySchema>;
 export type Evaluation = z.infer<typeof evaluationSchema>;
 export type Job = z.infer<typeof jobSchema>;
 export type SeedJob = z.infer<typeof seedJobSchema>;
 export type SeedData = z.infer<typeof seedSchema>;
+export type Program = z.infer<typeof programSchema>;

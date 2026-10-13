@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const SourceSchema = z.enum(["remoteok", "remotive"]);
+export const SourceSchema = z.enum(["remoteok", "remotive", "hackernews"]);
 
 export const NormalizedJobSchema = z.object({
   id: z.string(),
@@ -8,6 +8,7 @@ export const NormalizedJobSchema = z.object({
   sourceUrl: z.string(),
   applyUrl: z.string().optional(),
   attribution: z.string(),
+  website: z.string().optional(),
   title: z.string(),
   company: z.string(),
   location: z.string(),
