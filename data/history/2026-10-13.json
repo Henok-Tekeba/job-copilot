@@ -1,0 +1,106 @@
+{
+  "date": "2026-10-13",
+  "totals": {
+    "jobs": 357,
+    "software": 218
+  },
+  "byOpportunity": {
+    "internship": {
+      "total": 3,
+      "open": 1
+    },
+    "contract": {
+      "total": 52,
+      "open": 33
+    },
+    "junior": {
+      "total": 13,
+      "open": 8
+    },
+    "program": {
+      "total": 0,
+      "open": 0
+    },
+    "fulltime": {
+      "total": 289,
+      "open": 123
+    }
+  },
+  "bySource": {
+    "remoteok": {
+      "total": 99,
+      "open": 83
+    },
+    "remotive": {
+      "total": 15,
+      "open": 5
+    },
+    "hackernews": {
+      "total": 243,
+      "open": 77
+    }
+  },
+  "topMissingSkills": [
+    {
+      "skill": "Golang",
+      "count": 6
+    },
+    {
+      "skill": "REST API",
+      "count": 2
+    },
+    {
+      "skill": "Excel",
+      "count": 2
+    },
+    {
+      "skill": "PostgreSQL",
+      "count": 2
+    },
+    {
+      "skill": "System Design",
+      "count": 1
+    },
+    {
+      "skill": "Angular",
+      "count": 1
+    },
+    {
+      "skill": "GCP",
+      "count": 1
+    },
+    {
+      "skill": "Git",
+      "count": 1
+    },
+    {
+      "skill": "Ruby",
+      "count": 1
+    },
+    {
+      "skill": "Tableau",
+      "count": 1
+    },
+    {
+      "skill": "Power BI",
+      "count": 1
+    },
+    {
+      "skill": "Kubernetes",
+      "count": 1
+    },
+    {
+      "skill": "Linux",
+      "count": 1
+    },
+    {
+      "skill": "Kafka",
+      "count": 1
+    },
+    {
+      "skill": "Django",
+      "count": 1
+    }
+  ],
+  "newJobsToday": 357
+}

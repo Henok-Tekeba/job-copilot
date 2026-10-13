@@ -143,4 +143,5 @@ async function collect() {
 
 collect().then(() => {
   execSync("npx tsx scripts/evaluate.ts", { stdio: "inherit" });
+  execSync("npx tsx scripts/history.ts", { stdio: "inherit" });
 });
