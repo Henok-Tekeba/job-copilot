@@ -1,8 +1,8 @@
 {
   "date": "2026-10-13",
   "totals": {
-    "jobs": 357,
-    "software": 218
+    "jobs": 362,
+    "software": 221
   },
   "byOpportunity": {
     "internship": {
@@ -10,34 +10,34 @@
       "open": 1
     },
     "contract": {
-      "total": 52,
-      "open": 33
+      "total": 54,
+      "open": 34
     },
     "junior": {
-      "total": 13,
-      "open": 8
+      "total": 14,
+      "open": 9
     },
     "program": {
       "total": 0,
       "open": 0
     },
     "fulltime": {
-      "total": 289,
-      "open": 123
+      "total": 291,
+      "open": 124
     }
   },
   "bySource": {
     "remoteok": {
-      "total": 99,
-      "open": 83
+      "total": 101,
+      "open": 84
     },
     "remotive": {
-      "total": 15,
-      "open": 5
+      "total": 16,
+      "open": 6
     },
     "hackernews": {
-      "total": 243,
-      "open": 77
+      "total": 245,
+      "open": 78
     }
   },
   "topMissingSkills": [
@@ -46,11 +46,15 @@
       "count": 6
     },
     {
+      "skill": "Excel",
+      "count": 3
+    },
+    {
       "skill": "REST API",
       "count": 2
     },
     {
-      "skill": "Excel",
+      "skill": "Git",
       "count": 2
     },
     {
@@ -70,10 +74,6 @@
       "count": 1
     },
     {
-      "skill": "Git",
-      "count": 1
-    },
-    {
       "skill": "Ruby",
       "count": 1
     },
@@ -83,6 +83,22 @@
     },
     {
       "skill": "Power BI",
+      "count": 1
+    },
+    {
+      "skill": "PHP",
+      "count": 1
+    },
+    {
+      "skill": "HTML",
+      "count": 1
+    },
+    {
+      "skill": "CSS",
+      "count": 1
+    },
+    {
+      "skill": "MySQL",
       "count": 1
     },
     {
@@ -102,5 +118,5 @@
       "count": 1
     }
   ],
-  "newJobsToday": 357
+  "newJobsToday": 362
 }
