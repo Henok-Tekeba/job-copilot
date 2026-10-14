@@ -1,8 +1,8 @@
 {
   "date": "2026-10-14",
   "totals": {
-    "jobs": 367,
-    "software": 223
+    "jobs": 368,
+    "software": 224
   },
   "byOpportunity": {
     "internship": {
@@ -22,8 +22,8 @@
       "open": 0
     },
     "fulltime": {
-      "total": 293,
-      "open": 126
+      "total": 294,
+      "open": 128
     }
   },
   "bySource": {
@@ -36,8 +36,8 @@
       "open": 6
     },
     "hackernews": {
-      "total": 245,
-      "open": 78
+      "total": 246,
+      "open": 80
     }
   },
   "topMissingSkills": [
@@ -142,5 +142,5 @@
       "count": 1
     }
   ],
-  "newJobsToday": 250
+  "newJobsToday": 251
 }
