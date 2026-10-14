@@ -1,7 +1,7 @@
 {
   "date": "2026-10-14",
   "totals": {
-    "jobs": 365,
+    "jobs": 367,
     "software": 223
   },
   "byOpportunity": {
@@ -22,14 +22,14 @@
       "open": 0
     },
     "fulltime": {
-      "total": 291,
-      "open": 124
+      "total": 293,
+      "open": 126
     }
   },
   "bySource": {
     "remoteok": {
-      "total": 104,
-      "open": 87
+      "total": 106,
+      "open": 89
     },
     "remotive": {
       "total": 16,
@@ -142,5 +142,5 @@
       "count": 1
     }
   ],
-  "newJobsToday": 248
+  "newJobsToday": 250
 }
