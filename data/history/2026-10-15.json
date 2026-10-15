@@ -1,0 +1,146 @@
+{
+  "date": "2026-10-15",
+  "totals": {
+    "jobs": 371,
+    "software": 226
+  },
+  "byOpportunity": {
+    "internship": {
+      "total": 3,
+      "open": 1
+    },
+    "contract": {
+      "total": 58,
+      "open": 38
+    },
+    "junior": {
+      "total": 14,
+      "open": 9
+    },
+    "program": {
+      "total": 0,
+      "open": 0
+    },
+    "fulltime": {
+      "total": 296,
+      "open": 128
+    }
+  },
+  "bySource": {
+    "remoteok": {
+      "total": 107,
+      "open": 90
+    },
+    "remotive": {
+      "total": 16,
+      "open": 6
+    },
+    "hackernews": {
+      "total": 248,
+      "open": 80
+    }
+  },
+  "topMissingSkills": [
+    {
+      "skill": "Golang",
+      "count": 7
+    },
+    {
+      "skill": "REST API",
+      "count": 3
+    },
+    {
+      "skill": "Excel",
+      "count": 3
+    },
+    {
+      "skill": "System Design",
+      "count": 2
+    },
+    {
+      "skill": "GCP",
+      "count": 2
+    },
+    {
+      "skill": "Git",
+      "count": 2
+    },
+    {
+      "skill": "PostgreSQL",
+      "count": 2
+    },
+    {
+      "skill": "Kubernetes",
+      "count": 2
+    },
+    {
+      "skill": "Angular",
+      "count": 1
+    },
+    {
+      "skill": "Ruby",
+      "count": 1
+    },
+    {
+      "skill": "Tableau",
+      "count": 1
+    },
+    {
+      "skill": "Power BI",
+      "count": 1
+    },
+    {
+      "skill": "PHP",
+      "count": 1
+    },
+    {
+      "skill": "HTML",
+      "count": 1
+    },
+    {
+      "skill": "CSS",
+      "count": 1
+    },
+    {
+      "skill": "MySQL",
+      "count": 1
+    },
+    {
+      "skill": "Java",
+      "count": 1
+    },
+    {
+      "skill": "Docker",
+      "count": 1
+    },
+    {
+      "skill": "AWS",
+      "count": 1
+    },
+    {
+      "skill": "CI/CD",
+      "count": 1
+    },
+    {
+      "skill": "GraphQL",
+      "count": 1
+    },
+    {
+      "skill": "Slack",
+      "count": 1
+    },
+    {
+      "skill": "Linux",
+      "count": 1
+    },
+    {
+      "skill": "Kafka",
+      "count": 1
+    },
+    {
+      "skill": "Django",
+      "count": 1
+    }
+  ],
+  "newJobsToday": 249
+}
