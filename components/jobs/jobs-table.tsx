@@ -46,7 +46,7 @@ type JobsTableProps = {
   loading: boolean;
   appliedIds: Set<string>;
   onRowClick: (job: Job) => void;
-  onMarkApplied: (id: string) => void;
+  onMarkApplied: (job: Job) => void;
   onDismiss: (id: string) => void;
   onResetFilters: () => void;
 };
@@ -115,23 +115,33 @@ export function JobsTable({
       columnHelper.accessor("title", {
         id: "role",
         header: "Role",
-        cell: ({ row }: { row: import("@tanstack/table-core").Row<Job> }) => (
-          <div className="flex items-center gap-2.5">
-            <Avatar size="sm">
-              <AvatarFallback>
-                {initials(row.original.company || "?")}
-              </AvatarFallback>
-            </Avatar>
-            <div className="flex min-w-0 flex-col">
-              <span className="truncate text-sm font-medium text-foreground">
-                {row.original.title}
-              </span>
-              <span className="truncate text-xs text-muted-foreground">
-                {row.original.company || "Unknown company"}
-              </span>
+        cell: ({ row }: { row: import("@tanstack/table-core").Row<Job> }) => {
+          const applied = appliedIds.has(row.original.id);
+          return (
+            <div className="flex items-center gap-2.5">
+              <Avatar size="sm">
+                <AvatarFallback>
+                  {initials(row.original.company || "?")}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex min-w-0 flex-col">
+                <div className="flex items-center gap-2">
+                  <span className="truncate text-sm font-medium text-foreground">
+                    {row.original.title}
+                  </span>
+                  {applied && (
+                    <Badge variant="secondary" className="text-xs">
+                      Applied
+                    </Badge>
+                  )}
+                </div>
+                <span className="truncate text-xs text-muted-foreground">
+                  {row.original.company || "Unknown company"}
+                </span>
+              </div>
             </div>
-          </div>
-        ),
+          );
+        },
       }),
       columnHelper.accessor((row) => row.evaluation.opportunity, {
         id: "opportunity",
@@ -253,12 +263,14 @@ export function JobsTable({
                   >
                     Open posting
                   </DropdownMenuItem>
-                  <DropdownMenuItem
-                    disabled={applied}
-                    onSelect={() => onMarkApplied(job.id)}
-                  >
-                    {applied ? "Applied" : "Mark applied"}
-                  </DropdownMenuItem>
+                  {process.env.NEXT_PUBLIC_STATIC !== "1" && (
+                    <DropdownMenuItem
+                      disabled={applied}
+                      onSelect={() => onMarkApplied(job)}
+                    >
+                      {applied ? "Applied" : "Mark applied"}
+                    </DropdownMenuItem>
+                  )}
                   <DropdownMenuItem
                     variant="destructive"
                     onSelect={() => onDismiss(job.id)}
@@ -330,55 +342,57 @@ export function JobsTable({
 
   return (
     <div className="flex flex-col gap-3">
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <TableHead key={header.id}>
-                  {header.isPlaceholder ? null : header.column.getCanSort() ? (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-7 gap-1 px-2 text-xs"
-                      onClick={header.column.getToggleSortingHandler()}
-                    >
-                      {flexRender(header.column.columnDef.header, header.getContext())}
-                      {header.column.getIsSorted() === "asc" ? (
-                        <ArrowUp />
-                      ) : header.column.getIsSorted() === "desc" ? (
-                        <ArrowDown />
-                      ) : (
-                        <ArrowUpDown />
-                      )}
-                    </Button>
-                  ) : (
-                    flexRender(header.column.columnDef.header, header.getContext())
-                  )}
-                </TableHead>
-              ))}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows.map((row) => (
-            <TableRow
-              key={row.id}
-              data-state={row.getIsSelected() && "selected"}
-              className="cursor-pointer"
-              onClick={() => onRowClick(row.original)}
-            >
-              {row.getAllCells().map((cell) => (
-                <TableCell key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <div className="overflow-x-auto">
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id} className="whitespace-nowrap">
+                    {header.isPlaceholder ? null : header.column.getCanSort() ? (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-7 gap-1 px-2 text-xs"
+                        onClick={header.column.getToggleSortingHandler()}
+                      >
+                        {flexRender(header.column.columnDef.header, header.getContext())}
+                        {header.column.getIsSorted() === "asc" ? (
+                          <ArrowUp />
+                        ) : header.column.getIsSorted() === "desc" ? (
+                          <ArrowDown />
+                        ) : (
+                          <ArrowUpDown />
+                        )}
+                      </Button>
+                    ) : (
+                      flexRender(header.column.columnDef.header, header.getContext())
+                    )}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows.map((row) => (
+              <TableRow
+                key={row.id}
+                data-state={row.getIsSelected() && "selected"}
+                className="cursor-pointer"
+                onClick={() => onRowClick(row.original)}
+              >
+                {row.getAllCells().map((cell) => (
+                  <TableCell key={cell.id} className="whitespace-nowrap">
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
 
-      <div className="flex items-center justify-between px-1">
+      <div className="flex items-center justify-between gap-2 px-1">
         <span className="text-xs text-muted-foreground tabular-nums">
           Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
         </span>
@@ -392,17 +406,19 @@ export function JobsTable({
           >
             Previous
           </Button>
-          {Array.from({ length: table.getPageCount() }, (_, i) => (
-            <Button
-              key={i}
-              variant={table.getState().pagination.pageIndex === i ? "outline" : "ghost"}
-              size="icon-sm"
-              className="h-7 w-7 font-mono text-xs tabular-nums"
-              onClick={() => table.setPageIndex(i)}
-            >
-              {i + 1}
-            </Button>
-          ))}
+          <div className="hidden sm:flex sm:items-center sm:gap-1">
+            {Array.from({ length: table.getPageCount() }, (_, i) => (
+              <Button
+                key={i}
+                variant={table.getState().pagination.pageIndex === i ? "outline" : "ghost"}
+                size="icon-sm"
+                className="h-7 w-7 font-mono text-xs tabular-nums"
+                onClick={() => table.setPageIndex(i)}
+              >
+                {i + 1}
+              </Button>
+            ))}
+          </div>
           <Button
             variant="ghost"
             size="sm"

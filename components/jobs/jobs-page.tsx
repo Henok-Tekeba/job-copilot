@@ -20,6 +20,7 @@ import type { Job } from "@/lib/types";
 
 import { CommandPalette } from "@/components/jobs/command-palette";
 import { JobDetailSheet } from "@/components/jobs/job-detail-sheet";
+import { JobsCardList } from "@/components/jobs/jobs-card-list";
 import { JobsTable } from "@/components/jobs/jobs-table";
 import { JobsToolbar, type OpportunityFilter } from "@/components/jobs/jobs-toolbar";
 import { StatCards } from "@/components/jobs/stat-cards";
@@ -43,6 +44,19 @@ export default function JobsPage({ initialJobs }: { initialJobs: Job[] }) {
   const [appliedIds, setAppliedIds] = React.useState<Set<string>>(new Set());
   const [notes, setNotes] = React.useState<Record<string, string>>({});
   const [paletteOpen, setPaletteOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    if (process.env.NEXT_PUBLIC_STATIC === "1") return;
+    async function loadApplied() {
+      const res = await fetch("/api/applications");
+      if (res.ok) {
+        const apps: Array<{ jobId: string | null }> = await res.json();
+        const ids = new Set(apps.filter((a) => a.jobId).map((a) => a.jobId!));
+        setAppliedIds(ids);
+      }
+    }
+    loadApplied();
+  }, []);
 
   React.useEffect(() => {
     const handler = (event: KeyboardEvent) => {
@@ -92,8 +106,22 @@ export default function JobsPage({ initialJobs }: { initialJobs: Job[] }) {
   const softwareCount = jobs.filter((j) => j.relevance === "software").length;
   const openCount = jobs.filter((j) => j.evaluation.eligible === "yes").length;
 
-  const handleMarkApplied = (id: string) => {
-    setAppliedIds((prev) => new Set(prev).add(id));
+  const handleMarkApplied = async (job: Job) => {
+    const res = await fetch("/api/applications", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title: job.title,
+        company: job.company,
+        url: job.applyUrl || job.sourceUrl,
+        appliedAt: new Date().toISOString().slice(0, 10),
+        notes: "",
+      }),
+    });
+      if (res.ok) {
+      await res.json();
+      setAppliedIds((prev) => new Set(prev).add(job.id));
+    }
   };
 
   const handleDismiss = (id: string) => {
@@ -117,10 +145,10 @@ export default function JobsPage({ initialJobs }: { initialJobs: Job[] }) {
 
   return (
     <>
-      <header className="flex h-14 items-center gap-3 border-b border-white/10 px-6">
+      <header className="flex h-14 items-center gap-3 border-b border-white/10 px-4 sm:px-6">
         <SidebarTrigger />
-        <Separator orientation="vertical" className="h-6" />
-        <Breadcrumb>
+        <Separator orientation="vertical" className="hidden h-6 md:block" />
+        <Breadcrumb className="hidden md:flex">
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink href="/" render={<Link href="/" />}>
@@ -136,19 +164,19 @@ export default function JobsPage({ initialJobs }: { initialJobs: Job[] }) {
         <Button
           variant="secondary"
           size="sm"
-          className="ml-auto mr-6"
+          className="ml-auto sm:mr-0"
           onClick={() => setPaletteOpen(true)}
         >
           <SearchIcon />
-          <span className="hidden sm:inline">Search jobs</span>
-          <KbdGroup>
+          <span className="hidden md:inline">Search jobs</span>
+          <KbdGroup className="hidden md:flex">
             <Kbd>⌘</Kbd>
             <Kbd>K</Kbd>
           </KbdGroup>
         </Button>
       </header>
 
-      <main className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-6 py-8">
+      <main className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-8 sm:px-6">
         <div className="flex flex-col gap-1 pt-1">
           <h1 className="font-heading text-xl font-semibold tracking-tight">Jobs</h1>
           <p className="text-sm text-muted-foreground">
@@ -175,13 +203,22 @@ export default function JobsPage({ initialJobs }: { initialJobs: Job[] }) {
           />
 
           <div className="rounded-lg border border-white/10">
-            <JobsTable
+            <div className="hidden md:block">
+              <JobsTable
+                jobs={filteredJobs}
+                loading={loading}
+                appliedIds={appliedIds}
+                onRowClick={setSelectedJob}
+                onMarkApplied={handleMarkApplied}
+                onDismiss={handleDismiss}
+                onResetFilters={handleResetFilters}
+              />
+            </div>
+            <JobsCardList
               jobs={filteredJobs}
               loading={loading}
               appliedIds={appliedIds}
               onRowClick={setSelectedJob}
-              onMarkApplied={handleMarkApplied}
-              onDismiss={handleDismiss}
               onResetFilters={handleResetFilters}
             />
           </div>

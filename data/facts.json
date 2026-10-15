@@ -2,71 +2,106 @@
   "skills": [
     {
       "name": "Next.js",
-      "evidence": ["enoch-et", "goha-pink", "job-copilot"]
+      "evidence": [
+        "enoch-et",
+        "goha-pink",
+        "job-copilot"
+      ]
     },
     {
       "name": "JavaScript",
-      "evidence": ["enoch-et", "goha-pink", "job-copilot"]
+      "evidence": [
+        "enoch-et",
+        "goha-pink",
+        "job-copilot"
+      ]
     },
     {
       "name": "TypeScript",
-      "evidence": ["enoch-et", "goha-pink", "job-copilot"]
+      "evidence": [
+        "enoch-et",
+        "goha-pink",
+        "job-copilot"
+      ]
     },
     {
       "name": "React",
-      "evidence": ["job-copilot"]
+      "evidence": [
+        "job-copilot"
+      ]
     },
     {
       "name": "Express.js",
-      "evidence": ["waitlist"]
+      "evidence": [
+        "waitlist"
+      ]
     },
     {
       "name": "Python",
-      "evidence": ["addis-ai"]
+      "evidence": [
+        "addis-ai"
+      ]
     },
     {
       "name": "Node.js",
-      "evidence": ["goha-pink"]
+      "evidence": [
+        "goha-pink"
+      ]
     },
     {
       "name": "Tailwind CSS",
-      "evidence": ["enoch-et", "goha-pink", "job-copilot"]
+      "evidence": [
+        "enoch-et",
+        "goha-pink",
+        "job-copilot"
+      ]
     }
   ],
   "projects": [
     {
       "id": "enoch-et",
       "summary": "My personal portfolio website.",
-      "tech": ["Next.js", "Tailwind"],
-      "link": "enoch.et"
+      "tech": [
+        "Next.js",
+        "Tailwind"
+      ],
+      "link": "enoch.et",
+      "bullets": []
     },
     {
       "id": "goha-pink",
       "summary": "A live activity tracker for Ethiopian-language tech. A daily cron job scrapes Hugging Face, arXiv and GitHub for models, datasets and research, saves a JSON snapshot in the GitHub repo, and compares it with the previous day to update the site. No database. Contributions come in by pull request with a CI schema check, and there's a weekly email newsletter. Built solo, running about 3 months.",
-      "tech": ["Next.js", "Tailwind", "GitHub Actions cron"],
-      "link": "goha-pink.vercel.app"
+      "tech": [
+        "Next.js",
+        "Tailwind",
+        "GitHub Actions cron"
+      ],
+      "link": "goha-pink.vercel.app",
+      "bullets": []
     },
     {
       "id": "job-copilot",
       "summary": "In progress. A tool that collects remote job and internship postings from public APIs, checks whether I can take them from Ethiopia, and shows which skills I'm missing.",
-      "tech": ["Next.js", "React", "Tailwind", "shadcn/ui", "Node.js scripts"],
-      "link": ""
+      "tech": [
+        "Next.js",
+        "React",
+        "Tailwind",
+        "shadcn/ui",
+        "Node.js scripts"
+      ],
+      "link": "",
+      "bullets": []
     },
     {
       "id": "telegram-digest",
       "summary": "Automated Telegram opportunity digest that emails me twice a week.",
-      "tech": ["Telethon", "Groq (llama-3.3-70b-versatile)", "GitHub Actions cron"],
-      "link": ""
+      "tech": [
+        "Telethon",
+        "Groq (llama-3.3-70b-versatile)",
+        "GitHub Actions cron"
+      ],
+      "link": "",
+      "bullets": []
     }
-  ],
-  "education": {
-    "degree": "BSc in Electrical and Computer Engineering",
-    "university": "Addis Ababa University",
-    "expectedGraduation": "2028",
-    "currentYear": "3rd year"
-  },
-  "preferences": {
-    "remoteOnly": true,
-    "role": "internship"
-  }
+  ]
 }

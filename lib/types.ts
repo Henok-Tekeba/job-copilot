@@ -34,6 +34,31 @@ export const programSchema = z.object({
   notes: z.string(),
 });
 
+export const statusSchema = z.enum(["applied", "replied", "interview", "offer", "rejected", "ghosted"]);
+
+export const statusHistorySchema = z.object({
+  status: statusSchema,
+  at: z.string(),
+});
+
+export const applicationSnapshotSchema = z.object({
+  title: z.string(),
+  company: z.string(),
+  url: z.string(),
+  source: z.string(),
+});
+
+export const applicationSchema = z.object({
+  id: z.string(),
+  jobId: z.string().nullable(),
+  snapshot: applicationSnapshotSchema,
+  appliedAt: z.string(),
+  status: statusSchema,
+  followUpAt: z.string(),
+  notes: z.string(),
+  statusHistory: z.array(statusHistorySchema),
+});
+
 export const jobSchema = z.object({
   id: z.string(),
   source: sourceSchema,
@@ -95,3 +120,14 @@ export type Job = z.infer<typeof jobSchema>;
 export type SeedJob = z.infer<typeof seedJobSchema>;
 export type SeedData = z.infer<typeof seedSchema>;
 export type Program = z.infer<typeof programSchema>;
+export type Status = z.infer<typeof statusSchema>;
+export type StatusHistory = z.infer<typeof statusHistorySchema>;
+export type ApplicationSnapshot = z.infer<typeof applicationSnapshotSchema>;
+export type Application = z.infer<typeof applicationSchema>;
+export type Project = {
+  id: string;
+  summary: string;
+  tech: string[];
+  link: string;
+  bullets: string[];
+};

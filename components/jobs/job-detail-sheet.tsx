@@ -25,7 +25,7 @@ type JobDetailSheetProps = {
   applied: boolean;
   notes: string;
   onNotesChange: (value: string) => void;
-  onMarkApplied: (id: string) => void;
+  onMarkApplied: (job: Job) => void;
   onDismiss: (id: string) => void;
   onOpenChange: (open: boolean) => void;
 };
@@ -44,7 +44,10 @@ export function JobDetailSheet({
 
   return (
     <Sheet open={!!job} onOpenChange={onOpenChange}>
-      <SheetContent side="right" className="flex w-full flex-col sm:max-w-lg">
+      <SheetContent
+        side="right"
+        className="flex w-full flex-col [data-side=right]:w-full sm:max-w-lg"
+      >
         {job && (
           <>
             <SheetHeader className="items-start gap-2 pr-8 text-left">
@@ -62,14 +65,16 @@ export function JobDetailSheet({
                   <ExternalLink />
                   Open posting
                 </Button>
-                <Button
-                  size="sm"
-                  variant="secondary"
-                  disabled={applied}
-                  onClick={() => onMarkApplied(job.id)}
-                >
-                  {applied ? "Applied" : "Mark applied"}
-                </Button>
+                {process.env.NEXT_PUBLIC_STATIC !== "1" && (
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    disabled={applied}
+                    onClick={() => job && onMarkApplied(job)}
+                  >
+                    {applied ? "Applied" : "Mark applied"}
+                  </Button>
+                )}
                 <Button
                   size="sm"
                   variant="ghost"

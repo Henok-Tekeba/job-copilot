@@ -135,3 +135,15 @@
 .dark [data-slot="dialog-content"] {
   box-shadow: none;
 }
+
+@media (max-width: 767.98px) {
+  [data-slot="button"],
+  [data-slot="tabs-trigger"],
+  [data-slot="toggle-group-item"],
+  [data-slot="select-trigger"],
+  [data-slot="slider"],
+  [data-slot="checkbox"],
+  [data-slot="input-group-control"] {
+    min-height: 44px;
+  }
+}

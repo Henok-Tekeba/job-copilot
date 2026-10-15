@@ -41,6 +41,7 @@ import {
   EmptyTitle,
   EmptyDescription,
 } from "@/components/ui/empty";
+import { GapsCardList } from "@/components/gaps/gaps-card-list";
 import type { Job } from "@/lib/types";
 
 export function GapsClient({
@@ -95,10 +96,10 @@ export function GapsClient({
 
   return (
     <>
-      <header className="flex h-14 items-center gap-3 border-b border-border px-6">
+      <header className="flex h-14 items-center gap-3 border-b border-border px-4 sm:px-6">
         <SidebarTrigger />
-        <Separator orientation="vertical" className="h-6" />
-        <Breadcrumb>
+        <Separator orientation="vertical" className="hidden h-6 md:block" />
+        <Breadcrumb className="hidden md:flex">
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink href="/gaps" render={<Link href="/gaps" />}>
@@ -113,7 +114,7 @@ export function GapsClient({
         </Breadcrumb>
       </header>
 
-      <main className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-6 py-8">
+      <main className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-8 sm:px-6">
         <div className="flex flex-col gap-1 pt-1">
           <h1 className="font-heading text-xl font-semibold tracking-tight">
             Skill Gaps
@@ -147,62 +148,71 @@ export function GapsClient({
               </Label>
             </div>
 
-            <div className="rounded-lg border border-border">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Skill</TableHead>
-                    <TableHead>Jobs asking</TableHead>
-                    <TableHead>% of these jobs</TableHead>
-                    <TableHead>You have it</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredRows.length === 0 ? (
+            <div className="rounded-lg border border-border overflow-x-auto">
+              <div className="hidden md:block">
+                <Table>
+                  <TableHeader>
                     <TableRow>
-                      <TableCell
-                        colSpan={4}
-                        className="py-8 text-center text-muted-foreground"
-                      >
-                        {showOwned
-                          ? "No skills found"
-                          : "No missing skills — you have them all."}
-                      </TableCell>
+                      <TableHead>Skill</TableHead>
+                      <TableHead>Jobs asking</TableHead>
+                      <TableHead>% of these jobs</TableHead>
+                      <TableHead>You have it</TableHead>
                     </TableRow>
-                  ) : (
-                    filteredRows.map((row) => {
-                      const pct = Math.round(
-                        (row.count / initialJobs.length) * 100
-                      );
-                      return (
-                        <TableRow
-                          key={row.skill}
-                          className="cursor-pointer"
-                          onClick={() => setSelectedSkill(row.skill)}
+                  </TableHeader>
+                  <TableBody>
+                    {filteredRows.length === 0 ? (
+                      <TableRow>
+                        <TableCell
+                          colSpan={4}
+                          className="py-8 text-center text-muted-foreground"
                         >
-                          <TableCell className="font-medium">{row.skill}</TableCell>
-                          <TableCell className="font-mono text-sm tabular-nums">
-                            {row.count}
-                          </TableCell>
-                          <TableCell>
-                            <div className="flex items-center gap-2">
-                              <span className="w-10 font-mono text-xs tabular-nums text-muted-foreground">
-                                {pct}%
-                              </span>
-                              <Progress value={pct} className="w-24" />
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            {row.hasSkill ? (
-                              <Badge variant="secondary">You have it</Badge>
-                            ) : null}
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })
-                  )}
-                </TableBody>
-              </Table>
+                          {showOwned
+                            ? "No skills found"
+                            : "No missing skills — you have them all."}
+                        </TableCell>
+                      </TableRow>
+                    ) : (
+                      filteredRows.map((row) => {
+                        const pct = Math.round(
+                          (row.count / initialJobs.length) * 100
+                        );
+                        return (
+                          <TableRow
+                            key={row.skill}
+                            className="cursor-pointer"
+                            onClick={() => setSelectedSkill(row.skill)}
+                          >
+                            <TableCell className="font-medium">{row.skill}</TableCell>
+                            <TableCell className="font-mono text-sm tabular-nums">
+                              {row.count}
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex items-center gap-2">
+                                <span className="w-10 font-mono text-xs tabular-nums text-muted-foreground">
+                                  {pct}%
+                                </span>
+                                <Progress value={pct} className="w-24" />
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              {row.hasSkill ? (
+                                <Badge variant="secondary">You have it</Badge>
+                              ) : null}
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
+              <div className="md:hidden">
+                <GapsCardList
+                  rows={filteredRows}
+                  totalJobs={initialJobs.length}
+                  onSelect={setSelectedSkill}
+                />
+              </div>
             </div>
           </>
         )}

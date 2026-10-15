@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Briefcase, TrendingUp, Database, Rss } from "lucide-react";
+import { Briefcase, TrendingUp, Database, Rss, ClipboardList } from "lucide-react";
 
 import { TooltipProvider } from "@/components/ui/tooltip";
 import {
@@ -20,10 +20,18 @@ import {
 
 const NAV_ITEMS = [
   { label: "Jobs", href: "/", icon: Briefcase },
+  { label: "Applications", href: "/applications", icon: ClipboardList },
   { label: "Gaps", href: "/gaps", icon: TrendingUp },
   { label: "Facts", href: "/facts", icon: Database },
   { label: "Sources", href: "/sources", icon: Rss },
 ];
+
+const visibleNavItems =
+  process.env.NEXT_PUBLIC_STATIC === "1"
+    ? NAV_ITEMS.filter(
+        (item) => item.href !== "/applications" && item.href !== "/facts"
+      )
+    : NAV_ITEMS;
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -42,7 +50,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <SidebarContent className="px-2">
             <SidebarGroup>
               <SidebarMenu>
-              {NAV_ITEMS.map((item) => {
+              {visibleNavItems.map((item) => {
                 const isActive =
                   item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
                 const Icon = item.icon;

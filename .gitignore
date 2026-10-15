@@ -42,3 +42,5 @@ next-env.d.ts
 
 # data
 /data/raw/
+/data/applications.json
+/data/profile.json

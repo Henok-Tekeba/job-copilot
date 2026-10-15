@@ -27,7 +27,7 @@ export function StatCards({ jobs }: { jobs: Job[] }) {
   ];
 
   return (
-    <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+    <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
       {stats.map((stat) => (
         <Card key={stat.label} size="sm">
           <CardContent className="flex flex-col gap-1">

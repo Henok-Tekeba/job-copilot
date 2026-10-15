@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { AppShell } from "@/components/app-shell";
 import "./globals.css";
@@ -16,6 +16,10 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Job Copilot",
   description: "Track, score, and close the gap on job opportunities.",
+};
+
+export const viewport: Viewport = {
+  themeColor: "black",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
