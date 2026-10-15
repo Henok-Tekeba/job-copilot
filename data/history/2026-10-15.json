@@ -1,8 +1,8 @@
 {
   "date": "2026-10-15",
   "totals": {
-    "jobs": 371,
-    "software": 226
+    "jobs": 374,
+    "software": 228
   },
   "byOpportunity": {
     "internship": {
@@ -10,7 +10,7 @@
       "open": 1
     },
     "contract": {
-      "total": 58,
+      "total": 59,
       "open": 38
     },
     "junior": {
@@ -22,22 +22,22 @@
       "open": 0
     },
     "fulltime": {
-      "total": 296,
-      "open": 128
+      "total": 298,
+      "open": 130
     }
   },
   "bySource": {
     "remoteok": {
-      "total": 107,
-      "open": 90
+      "total": 109,
+      "open": 91
     },
     "remotive": {
       "total": 16,
       "open": 6
     },
     "hackernews": {
-      "total": 248,
-      "open": 80
+      "total": 249,
+      "open": 81
     }
   },
   "topMissingSkills": [
@@ -142,5 +142,5 @@
       "count": 1
     }
   ],
-  "newJobsToday": 249
+  "newJobsToday": 252
 }
