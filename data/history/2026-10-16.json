@@ -1,7 +1,7 @@
 {
   "date": "2026-10-16",
   "totals": {
-    "jobs": 377,
+    "jobs": 379,
     "software": 229
   },
   "byOpportunity": {
@@ -14,22 +14,22 @@
       "open": 39
     },
     "junior": {
-      "total": 14,
-      "open": 9
+      "total": 15,
+      "open": 10
     },
     "program": {
       "total": 0,
       "open": 0
     },
     "fulltime": {
-      "total": 300,
-      "open": 132
+      "total": 301,
+      "open": 133
     }
   },
   "bySource": {
     "remoteok": {
-      "total": 112,
-      "open": 94
+      "total": 114,
+      "open": 96
     },
     "remotive": {
       "total": 16,
@@ -142,5 +142,5 @@
       "count": 1
     }
   ],
-  "newJobsToday": 252
+  "newJobsToday": 254
 }
