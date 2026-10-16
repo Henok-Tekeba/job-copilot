@@ -1,7 +1,7 @@
 {
   "date": "2026-10-16",
   "totals": {
-    "jobs": 379,
+    "jobs": 380,
     "software": 229
   },
   "byOpportunity": {
@@ -22,21 +22,21 @@
       "open": 0
     },
     "fulltime": {
-      "total": 301,
-      "open": 133
+      "total": 302,
+      "open": 135
     }
   },
   "bySource": {
     "remoteok": {
-      "total": 114,
-      "open": 96
+      "total": 116,
+      "open": 98
     },
     "remotive": {
       "total": 16,
       "open": 6
     },
     "hackernews": {
-      "total": 249,
+      "total": 248,
       "open": 81
     }
   },
@@ -142,5 +142,5 @@
       "count": 1
     }
   ],
-  "newJobsToday": 254
+  "newJobsToday": 255
 }
