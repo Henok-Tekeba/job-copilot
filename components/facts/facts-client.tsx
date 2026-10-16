@@ -7,8 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { SidebarTrigger } from "@/components/ui/sidebar";
+import { PageHeader } from "@/components/page-header";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -389,9 +388,7 @@ export function FactsClient({ initialProfile, initialFacts }: {
 
   return (
     <>
-      <header className="flex h-14 items-center gap-3 border-b border-white/10 px-4 sm:px-6">
-        <SidebarTrigger />
-        <Separator orientation="vertical" className="hidden h-6 md:block" />
+      <PageHeader>
         <Breadcrumb className="hidden md:flex">
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -403,9 +400,9 @@ export function FactsClient({ initialProfile, initialFacts }: {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-      </header>
+      </PageHeader>
 
-      <main className="mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 py-8 sm:px-6">
+      <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 py-6 sm:px-6 sm:py-8">
         <p className="text-sm text-muted-foreground">Do not store ID numbers, passwords or bank details here.</p>
 
         <Tabs value={tab} onValueChange={setTab}>
@@ -428,7 +425,7 @@ export function FactsClient({ initialProfile, initialFacts }: {
             <AnswersTab profile={profile} setProfile={setProfile} />
           </TabsContent>
         </Tabs>
-      </main>
+      </div>
     </>
   );
 }

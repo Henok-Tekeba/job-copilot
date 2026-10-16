@@ -14,9 +14,8 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Separator } from "@/components/ui/separator";
-import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Progress } from "@/components/ui/progress";
+import { PageHeader } from "@/components/page-header";
 import {
   Sheet,
   SheetContent,
@@ -96,9 +95,7 @@ export function GapsClient({
 
   return (
     <>
-      <header className="flex h-14 items-center gap-3 border-b border-border px-4 sm:px-6">
-        <SidebarTrigger />
-        <Separator orientation="vertical" className="hidden h-6 md:block" />
+      <PageHeader>
         <Breadcrumb className="hidden md:flex">
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -112,9 +109,9 @@ export function GapsClient({
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-      </header>
+      </PageHeader>
 
-      <main className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-8 sm:px-6">
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-6 sm:px-6 sm:py-8">
         <div className="flex flex-col gap-1 pt-1">
           <h1 className="font-heading text-xl font-semibold tracking-tight">
             Skill Gaps
@@ -148,7 +145,7 @@ export function GapsClient({
               </Label>
             </div>
 
-            <div className="rounded-lg border border-border overflow-x-auto">
+            <div className="rounded-lg md:border md:border-border">
               <div className="hidden md:block">
                 <Table>
                   <TableHeader>
@@ -216,7 +213,7 @@ export function GapsClient({
             </div>
           </>
         )}
-      </main>
+      </div>
 
       <Sheet
         open={!!selectedSkill}

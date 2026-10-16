@@ -141,8 +141,19 @@
   [data-slot="tabs-trigger"],
   [data-slot="toggle-group-item"],
   [data-slot="select-trigger"],
-  [data-slot="slider"],
-  [data-slot="checkbox"],
+  [data-slot="slider"] {
+    min-height: 44px;
+  }
+
+  /*
+   * The input group is what draws the border. It is pinned to h-8, so a 44px
+   * control inside it would spill out of the border. Let the group grow too.
+   */
+  [data-slot="input-group"] {
+    height: auto;
+    min-height: 44px;
+  }
+
   [data-slot="input-group-control"] {
     min-height: 44px;
   }

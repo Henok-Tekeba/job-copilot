@@ -57,7 +57,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
-import { SidebarTrigger } from "@/components/ui/sidebar";
+import { PageHeader } from "@/components/page-header";
 import { format } from "date-fns";
 import type { Application, Status } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -191,17 +191,15 @@ export function ApplicationsClient({
 
   return (
     <>
-      <header className="flex h-14 items-center gap-3 border-b border-white/10 px-4 sm:px-6">
-        <SidebarTrigger />
-        <Separator orientation="vertical" className="hidden h-6 md:block" />
-        <div className="flex flex-1 items-center justify-between gap-2">
-          <div className="flex items-center gap-2 min-w-0">
-            <h1 className="font-heading text-xl font-semibold tracking-tight truncate">Applications</h1>
-            <span className="hidden sm:inline text-sm text-muted-foreground whitespace-nowrap">
+      <PageHeader>
+        <div className="flex min-w-0 flex-1 items-center justify-between gap-2">
+          <div className="flex min-w-0 items-center gap-2">
+            <h1 className="truncate font-heading text-base font-semibold tracking-tight sm:text-xl">Applications</h1>
+            <span className="hidden text-sm whitespace-nowrap text-muted-foreground sm:inline">
               {applications.length} total · {dueCount} follow-up{dueCount !== 1 ? "s" : ""} due
             </span>
           </div>
-          <div className="hidden md:flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+          <div className="hidden flex-wrap items-center gap-2 text-xs text-muted-foreground md:flex">
             {Object.entries(statusCounts).map(([status, count]) => (
               <span key={status} className="flex items-center gap-1 whitespace-nowrap">
                 <StatusText status={status as Status} />
@@ -210,9 +208,9 @@ export function ApplicationsClient({
             ))}
           </div>
         </div>
-      </header>
+      </PageHeader>
 
-      <main className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-8 sm:px-6">
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-6 sm:px-6 sm:py-8">
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger>
             <Button className="w-fit"><PlusIcon className="mr-2 h-4 w-4" />Add application</Button>
@@ -289,12 +287,12 @@ export function ApplicationsClient({
         </Dialog>
 
         {applications.length === 0 ? (
-          <div className="rounded-lg border border-white/10 p-12 text-center">
+          <div className="rounded-lg border border-border p-8 text-center sm:p-12">
             <p className="text-muted-foreground">No applications yet.</p>
-            <p className="text-sm text-muted-foreground mt-1">Click &ldquo;Add application&rdquo; or mark a job as applied from the Jobs board.</p>
+            <p className="mt-1 text-sm text-muted-foreground">Click &ldquo;Add application&rdquo; or mark a job as applied from the Jobs board.</p>
           </div>
         ) : (
-          <div className="rounded-lg border border-white/10 overflow-x-auto">
+          <div className="rounded-lg md:border md:border-border">
             <div className="hidden md:block">
             <Table>
               <TableHeader>
@@ -460,7 +458,7 @@ export function ApplicationsClient({
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
-      </main>
+      </div>
     </>
   );
 }

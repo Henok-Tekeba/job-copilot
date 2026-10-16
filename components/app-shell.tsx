@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { Briefcase, TrendingUp, Database, Rss, ClipboardList } from "lucide-react";
 
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { SidebarAutoClose } from "@/components/sidebar-auto-close";
 import {
   Sidebar,
   SidebarContent,
@@ -39,6 +40,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <TooltipProvider delay={200}>
       <SidebarProvider>
+        <SidebarAutoClose />
         <Sidebar variant="inset" collapsible="icon">
           <SidebarHeader className="px-4 py-4">
             <div className="flex h-8 items-center gap-2">

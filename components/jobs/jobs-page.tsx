@@ -5,8 +5,6 @@ import Link from "next/link";
 import { SearchIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { SidebarTrigger } from "@/components/ui/sidebar";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -16,6 +14,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Kbd, KbdGroup } from "@/components/ui/kbd";
+import { PageHeader } from "@/components/page-header";
 import type { Job } from "@/lib/types";
 
 import { CommandPalette } from "@/components/jobs/command-palette";
@@ -145,9 +144,7 @@ export default function JobsPage({ initialJobs }: { initialJobs: Job[] }) {
 
   return (
     <>
-      <header className="flex h-14 items-center gap-3 border-b border-white/10 px-4 sm:px-6">
-        <SidebarTrigger />
-        <Separator orientation="vertical" className="hidden h-6 md:block" />
+      <PageHeader>
         <Breadcrumb className="hidden md:flex">
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -164,7 +161,7 @@ export default function JobsPage({ initialJobs }: { initialJobs: Job[] }) {
         <Button
           variant="secondary"
           size="sm"
-          className="ml-auto sm:mr-0"
+          className="ml-auto"
           onClick={() => setPaletteOpen(true)}
         >
           <SearchIcon />
@@ -174,9 +171,9 @@ export default function JobsPage({ initialJobs }: { initialJobs: Job[] }) {
             <Kbd>K</Kbd>
           </KbdGroup>
         </Button>
-      </header>
+      </PageHeader>
 
-      <main className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-8 sm:px-6">
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-6 sm:px-6 sm:py-8">
         <div className="flex flex-col gap-1 pt-1">
           <h1 className="font-heading text-xl font-semibold tracking-tight">Jobs</h1>
           <p className="text-sm text-muted-foreground">
@@ -202,7 +199,7 @@ export default function JobsPage({ initialJobs }: { initialJobs: Job[] }) {
             onMinFitChange={setMinFit}
           />
 
-          <div className="rounded-lg border border-white/10">
+          <div className="rounded-lg md:border md:border-border">
             <div className="hidden md:block">
               <JobsTable
                 jobs={filteredJobs}
@@ -214,16 +211,18 @@ export default function JobsPage({ initialJobs }: { initialJobs: Job[] }) {
                 onResetFilters={handleResetFilters}
               />
             </div>
-            <JobsCardList
-              jobs={filteredJobs}
-              loading={loading}
-              appliedIds={appliedIds}
-              onRowClick={setSelectedJob}
-              onResetFilters={handleResetFilters}
-            />
+            <div className="md:hidden">
+              <JobsCardList
+                jobs={filteredJobs}
+                loading={loading}
+                appliedIds={appliedIds}
+                onRowClick={setSelectedJob}
+                onResetFilters={handleResetFilters}
+              />
+            </div>
           </div>
         </div>
-      </main>
+      </div>
 
       <JobDetailSheet
         job={selectedJob}
