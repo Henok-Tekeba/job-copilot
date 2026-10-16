@@ -44,3 +44,9 @@ next-env.d.ts
 /data/raw/
 /data/applications.json
 /data/profile.json
+
+# churning job data lives on the orphan `data` branch (see scripts/sync-data.sh)
+/data/jobs.json
+/data/jobs.previous.json
+/data/state.json
+/data/history/

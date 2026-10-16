@@ -14,8 +14,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -26,24 +24,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Bring down the previous snapshot first, so existing jobs merge with the
+      # fresh fetch instead of being lost, and the rate-limit state carries over.
+      - name: Sync latest job data
+        run: npm run sync-data
+
       - name: Collect jobs
         run: npm run collect
 
-      - name: Check for changes
-        id: changes
+      # The snapshot goes to the orphan `data` branch as a single force-pushed
+      # commit. Committing it to main added ~15 MB of history per day, because
+      # jobs.json is rewritten in full on every run.
+      - name: Publish data snapshot
         run: |
-          if git diff --quiet data/jobs.json data/state.json data/history/ 2>/dev/null; then
-            echo "changed=false" >> $GITHUB_OUTPUT
-          else
-            echo "changed=true" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Commit and push
-        if: steps.changes.outputs.changed == 'true'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/jobs.json data/state.json data/history/ 2>/dev/null || true
-          UTC_DATE=$(date -u +"%Y-%m-%d %H:%M:%S")
-          git commit -m "data: update $UTC_DATE"
-          git push
+          npm run publish-data -- "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"

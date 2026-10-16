@@ -33,6 +33,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Job data is not in this branch. It lives on the orphan `data` branch as
+      # a single force-pushed commit, so it never accumulates in the history.
+      - name: Sync job data
+        run: npm run sync-data
+
+      # Refuse to build on a missing or malformed snapshot: lib/data.ts falls
+      # back to seed.json silently, which would deploy a healthy-looking site
+      # full of the wrong data.
+      - name: Verify job data
+        run: npm run verify-data
+
       - name: Build static site
         run: npm run build
         env:

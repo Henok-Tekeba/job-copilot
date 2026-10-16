@@ -101,12 +101,54 @@ real deadlines found: 3
 npm run discover     # probe candidate companies for live ATS boards
 npm run collect      # fetch all sources, filter, merge, then evaluate
 npm run evaluate     # score every job and print a report
+npm run verify-data  # fail loudly if the snapshot is missing or malformed
+npm run sync-data    # pull the snapshot from the data branch
 npm run selfcheck    # 28 assertions over the engine
 npm run dev          # local app
 ```
 
 `npm run collect` is the canonical path: it fetches full posting bodies, scores
 them, then truncates to a stored excerpt.
+
+## Where the data lives
+
+Job data is **not** in this branch.
+
+`jobs.json` is ~5 MB and is rewritten in full on every collector run, so
+committing it to `main` added roughly 15 MB of repository history per day. It now
+lives on an orphan **`data` branch** that is force-pushed as a single commit, so
+its history stays at exactly one commit no matter how often it is written.
+
+```
+main                                  data (1 commit, force-pushed)
+├── lib/ scripts/ app/                ├── jobs.json           current snapshot
+└── data/                             ├── jobs.previous.json  rollback copy
+    ├── companies.json                ├── state.json          rate-limit state
+    ├── company-candidates.json       └── history/            daily counts
+    ├── programs.json
+    ├── facts.json
+    └── seed.json                     ← fallback for a fresh clone
+```
+
+Curated files stay on `main` because they are edited by hand and worth diffing.
+The churning files do not, because a diff of a 5 MB rewrite is noise.
+
+```bash
+npm run sync-data      # bring the snapshot down (CI does this before building)
+```
+
+**Rollback.** Force-pushing discards history, so the branch keeps the previous
+snapshot as `jobs.previous.json`:
+
+```bash
+cp data/jobs.previous.json data/jobs.json
+npm run publish-data -- <remote-url>
+```
+
+`npm run verify-data` runs before the build in CI. It exists because
+`lib/data.ts` falls back to `seed.json` when `jobs.json` fails validation —
+correct for a fresh clone, dangerous in CI, where it would deploy a
+healthy-looking site full of the wrong data.
 
 ## Layout
 
@@ -124,23 +166,22 @@ scripts/evaluate.ts  the pipeline
 
 ## Known gaps
 
-- **`data/jobs.json` is 4.9 MB and is committed on every collector run.** That
-  is roughly 15 MB of git history per day. Description text is truncated to a
-  1,200-character excerpt (it was 75% of the payload) and postings are capped at
-  4,000 with a 120-day retention window, but this is a ceiling, not a solution.
-  The next move is an orphan `data` branch or a Release asset, or a real
-  database.
+- **`data/companies.json` is only 98 companies** and skews heavily to US-based
+  remote-first employers, so `region-locked` still dominates. Widening the
+  candidate list is the highest-leverage next step.
 - **Deadline coverage is thin (3 postings).** The extractor is tested and works;
   the feeds rarely publish cutoffs. Programs with announced dates live in
   `data/programs.json`, which is hand-maintained and deliberately leaves
   unannounced dates null rather than guessing them.
-- **`data/companies.json` is only 98 companies** and skews heavily to US-based
-  remote-first employers, so `region-locked` still dominates. Widening the
-  candidate list is the highest-leverage next step.
 - Eligibility inference can be wrong. Evidence display is the mitigation.
+- Force-pushing the `data` branch leaves unreachable objects on GitHub until it
+  garbage-collects them, so the repository size will drift up between GC runs
+  rather than staying perfectly flat.
 
 ## Deployment
 
 Static export to GitHub Pages on push to `main`
-(`.github/workflows/pages.yml`), plus a scheduled collector that commits fresh
-data every 8 hours.
+(`.github/workflows/pages.yml`). The collector runs every 8 hours
+(`.github/workflows/collect.yml`), publishes a fresh snapshot to the `data`
+branch, and triggers a redeploy. Both workflows sync and verify the snapshot
+before building.

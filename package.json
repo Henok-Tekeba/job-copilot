@@ -10,8 +10,11 @@
     "collect": "tsx scripts/collect.ts",
     "discover": "tsx scripts/discover-boards.ts",
     "evaluate": "tsx scripts/evaluate.ts",
+    "verify-data": "tsx scripts/verify-data.ts",
     "history": "tsx scripts/history.ts",
-    "selfcheck": "tsx scripts/selfcheck.ts"
+    "selfcheck": "tsx scripts/selfcheck.ts",
+    "sync-data": "bash scripts/sync-data.sh",
+    "publish-data": "bash scripts/publish-data.sh"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
