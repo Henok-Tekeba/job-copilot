@@ -11,6 +11,7 @@ type RemotiveJob = {
   candidate_required_location: string;
   tags: string[];
   job_type: string;
+  salary: string;
   description: string;
   publication_date: string;
   url: string;
@@ -47,6 +48,9 @@ export async function fetchRemotive(): Promise<NormalizedJob[]> {
     title: job.title,
     company: job.company_name,
     location: job.candidate_required_location ?? "",
+    // Keep the structured region string; the free-text form loses the list.
+    requiredLocation: job.candidate_required_location ?? undefined,
+    salary: job.salary || undefined,
     tags: job.tags ?? [],
     jobType: job.job_type ?? undefined,
     description: job.description ?? "",

@@ -13,7 +13,18 @@ type RemoteOKJob = {
   date: string;
   url: string;
   apply_url: string;
+  salary_min: number;
+  salary_max: number;
 };
+
+function formatSalary(job: RemoteOKJob): string | undefined {
+  const min = job.salary_min ?? 0;
+  const max = job.salary_max ?? 0;
+  if (!min && !max) return undefined;
+  const usd = (n: number) => `$${Math.round(n / 1000)}k`;
+  if (min && max) return `${usd(min)} - ${usd(max)}`;
+  return usd(min || max);
+}
 
 export async function fetchRemoteOK(): Promise<NormalizedJob[]> {
   const res = await fetch(API_URL, {
@@ -44,6 +55,9 @@ export async function fetchRemoteOK(): Promise<NormalizedJob[]> {
     title: job.position,
     company: job.company,
     location: job.location ?? "",
+    // RemoteOK has no structured region field; the location string is all we get.
+    requiredLocation: undefined,
+    salary: formatSalary(job),
     tags: job.tags ?? [],
     jobType: undefined,
     description: job.description ?? "",

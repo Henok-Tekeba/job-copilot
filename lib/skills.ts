@@ -90,3 +90,29 @@ export const SKILLS: Record<string, string[]> = {
   "TDD": ["tdd", "test driven development", "test-driven development"],
   "Unit Testing": ["unit testing", "unit tests"],
 };
+
+/**
+ * Skills that indicate real engineering work. Everything outside this set is
+ * productivity/PM tooling that appears in almost any posting, so it should not
+ * on its own make a non-technical role count as a software job.
+ */
+const NON_ENGINEERING_SKILLS = new Set([
+  "Figma",
+  "Jira",
+  "Confluence",
+  "Slack",
+  "Notion",
+  "Tableau",
+  "Power BI",
+  "Excel",
+  "Agile",
+  "Scrum",
+]);
+
+export const CORE_ENGINEERING_SKILLS = Object.keys(SKILLS).filter(
+  (skill) => !NON_ENGINEERING_SKILLS.has(skill)
+);
+
+/** Titles that are clearly not software roles, whatever the description says. */
+export const NON_TECH_TITLE_PATTERN =
+  /\b(sales|marketing|business development|bd|recruit(er|ing)|account (manager|executive)|customer (support|success|service)|office assistant|virtual assistant|designer|design lead|copywriter|content (writer|marketer)|social media|community manager|student assistant|consultant|solutions consultant|finance|accountant|bookkeep|human resources|people ops|executive assistant|operations manager)\b/i;

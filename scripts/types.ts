@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const SourceSchema = z.enum(["remoteok", "remotive", "hackernews"]);
+export const SourceSchema = z.enum(["remoteok", "remotive", "hackernews", "jobicy"]);
 
 export const NormalizedJobSchema = z.object({
   id: z.string(),
@@ -17,6 +17,16 @@ export const NormalizedJobSchema = z.object({
   description: z.string(),
   postedAt: z.string(),
   firstSeen: z.string(),
+  /**
+   * Structured eligibility/region string exactly as the feed published it.
+   * Remotive calls this `candidate_required_location`, Jobicy calls it `jobGeo`.
+   * Preserved because it is the only reliable eligibility signal we get.
+   */
+  requiredLocation: z.string().optional(),
+  /** Pay text as published, when the feed provides it. */
+  salary: z.string().optional(),
+  /** Structured employment type, e.g. Ashby's "Intern" / "Contract". */
+  employmentType: z.string().optional(),
 });
 
 export type Source = z.infer<typeof SourceSchema>;

@@ -9,7 +9,8 @@
     "lint": "eslint",
     "collect": "tsx scripts/collect.ts",
     "evaluate": "tsx scripts/evaluate.ts",
-    "history": "tsx scripts/history.ts"
+    "history": "tsx scripts/history.ts",
+    "selfcheck": "tsx scripts/selfcheck.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",

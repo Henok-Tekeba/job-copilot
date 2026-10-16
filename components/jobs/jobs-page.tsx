@@ -15,17 +15,28 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Kbd, KbdGroup } from "@/components/ui/kbd";
 import { PageHeader } from "@/components/page-header";
+import { daysUntil } from "@/lib/jobs";
 import type { Job } from "@/lib/types";
 
 import { CommandPalette } from "@/components/jobs/command-palette";
 import { JobDetailSheet } from "@/components/jobs/job-detail-sheet";
 import { JobsCardList } from "@/components/jobs/jobs-card-list";
 import { JobsTable } from "@/components/jobs/jobs-table";
-import { JobsToolbar, type OpportunityFilter } from "@/components/jobs/jobs-toolbar";
+import {
+  JobsToolbar,
+  type OpportunityFilter,
+  type SortBy,
+} from "@/components/jobs/jobs-toolbar";
 import { StatCards } from "@/components/jobs/stat-cards";
 
 type EligibilityFilter = "open" | "all" | "no";
-type SourceFilter = "all" | "remoteok" | "remotive" | "hackernews" | "manual";
+type SourceFilter =
+  | "all"
+  | "remoteok"
+  | "remotive"
+  | "hackernews"
+  | "jobicy"
+  | "manual";
 
 export default function JobsPage({ initialJobs }: { initialJobs: Job[] }) {
   const [jobs, setJobs] = React.useState<Job[]>(initialJobs);
@@ -38,6 +49,8 @@ export default function JobsPage({ initialJobs }: { initialJobs: Job[] }) {
   const [eligibilityFilter, setEligibilityFilter] = React.useState<EligibilityFilter>("open");
   const [showNonSoftware, setShowNonSoftware] = React.useState(false);
   const [minFit, setMinFit] = React.useState(0);
+  // Defaults to priority so the prerendered order matches the hydrated order.
+  const [sortBy, setSortBy] = React.useState<SortBy>("priority");
 
   const [selectedJob, setSelectedJob] = React.useState<Job | null>(null);
   const [appliedIds, setAppliedIds] = React.useState<Set<string>>(new Set());
@@ -93,14 +106,38 @@ export default function JobsPage({ initialJobs }: { initialJobs: Job[] }) {
         return true;
       })
       .sort((a, b) => {
-        const aYes = a.evaluation.eligible === "yes" ? 0 : 1;
-        const bYes = b.evaluation.eligible === "yes" ? 0 : 1;
-        if (aYes !== bYes) return aYes - bYes;
-        const aFit = a.evaluation.fitScore ?? -1;
-        const bFit = b.evaluation.fitScore ?? -1;
-        return bFit - aFit;
+        if (sortBy === "closing") {
+          // Closed and undated postings sink below anything still open.
+          const rank = (job: Job) => {
+            if (!job.deadline) return Number.POSITIVE_INFINITY;
+            const days = daysUntil(job.deadline);
+            return Number.isNaN(days) || days < 0
+              ? Number.POSITIVE_INFINITY
+              : days;
+          };
+          const diff = rank(a) - rank(b);
+          if (diff !== 0) return diff;
+        } else if (sortBy === "newest") {
+          const at = a.postedAt ? Date.parse(a.postedAt) : 0;
+          const bt = b.postedAt ? Date.parse(b.postedAt) : 0;
+          if (at !== bt) return bt - at;
+        }
+
+        // `priority` already folds in seniority and eligibility.
+        const aPriority = a.evaluation.fit?.priority ?? a.evaluation.fitScore ?? 0;
+        const bPriority = b.evaluation.fit?.priority ?? b.evaluation.fitScore ?? 0;
+        return bPriority - aPriority;
       });
-  }, [jobs, search, opportunityFilter, sourceFilter, eligibilityFilter, showNonSoftware, minFit]);
+  }, [
+    jobs,
+    search,
+    opportunityFilter,
+    sourceFilter,
+    eligibilityFilter,
+    showNonSoftware,
+    minFit,
+    sortBy,
+  ]);
 
   const softwareCount = jobs.filter((j) => j.relevance === "software").length;
   const openCount = jobs.filter((j) => j.evaluation.eligible === "yes").length;
@@ -197,6 +234,8 @@ export default function JobsPage({ initialJobs }: { initialJobs: Job[] }) {
             onShowNonSoftwareChange={setShowNonSoftware}
             minFit={minFit}
             onMinFitChange={setMinFit}
+            sortBy={sortBy}
+            onSortByChange={setSortBy}
           />
 
           <div className="rounded-lg md:border md:border-border">

@@ -2,11 +2,12 @@
 
 import { ExternalLink, Trash } from "lucide-react";
 
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { DeadlineBadge, RedFlagBadge } from "@/components/jobs/deadline-badge";
+import { EligibilityPanel } from "@/components/jobs/eligibility-panel";
 import {
   Sheet,
   SheetContent,
@@ -39,7 +40,6 @@ export function JobDetailSheet({
   onDismiss,
   onOpenChange,
 }: JobDetailSheetProps) {
-  const showAlert = job?.evaluation.eligible === "unclear";
   const plainDescription = job ? stripHtml(job.description) : "";
 
   return (
@@ -55,6 +55,11 @@ export function JobDetailSheet({
               <SheetDescription>
                 {job.company || "Unknown company"} · {job.location || "No location"}
               </SheetDescription>
+              <div className="flex flex-wrap gap-2 pt-1">
+                <DeadlineBadge deadline={job.deadline} />
+                <RedFlagBadge flags={job.evaluation.redFlags} />
+                {job.salary && <Badge variant="secondary">{job.salary}</Badge>}
+              </div>
               <div className="flex flex-wrap gap-2 pt-1">
                 <Button
                   size="sm"
@@ -89,13 +94,15 @@ export function JobDetailSheet({
               </div>
             </SheetHeader>
 
-            {showAlert && (
-              <Alert className="mx-4 w-auto">
-                <AlertTitle>Remote situation unclear</AlertTitle>
-                <AlertDescription>
-                  {job.evaluation.remoteReason || "No additional info"}
-                </AlertDescription>
-              </Alert>
+            <EligibilityPanel eligibility={job.evaluation.eligibility} />
+
+            {job.evaluation.deadlineEvidence && (
+              <div className="mx-4 rounded-lg border border-border p-3">
+                <span className="text-xs font-medium text-muted-foreground">
+                  Deadline read from the posting
+                </span>
+                <p className="mt-1 text-xs">{job.evaluation.deadlineEvidence}</p>
+              </div>
             )}
 
             <Tabs defaultValue="match" className="flex min-h-0 flex-1 flex-col px-4">
@@ -112,18 +119,80 @@ export function JobDetailSheet({
               </TabsList>
 
               <TabsContent value="match" className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto pt-3">
-                {job.evaluation.fitScore !== null ? (
-                  <div className="flex items-center gap-3">
-                    <span className="font-mono text-3xl font-semibold tabular-nums">
-                      {job.evaluation.fitScore}
-                    </span>
-                    <Progress value={job.evaluation.fitScore} className="flex-1" />
+                {job.evaluation.fit && job.evaluation.fit.score !== null ? (
+                  <div className="flex flex-col gap-2">
+                    <div className="flex items-baseline gap-3">
+                      <span className="font-mono text-3xl font-semibold tabular-nums">
+                        {job.evaluation.fit.priority}
+                      </span>
+                      <span className="text-xs text-muted-foreground">
+                        priority · {job.evaluation.fit.score} skill fit
+                      </span>
+                    </div>
+                    <Progress value={job.evaluation.fit.priority} />
+                    <p className="text-xs text-muted-foreground">
+                      {job.evaluation.fit.reasons.join(" · ")}
+                    </p>
                   </div>
                 ) : (
                   <span className="text-sm text-muted-foreground">
                     Not enough skills detected
                   </span>
                 )}
+
+                {job.evaluation.requiredSkills &&
+                  job.evaluation.requiredSkills.length > 0 && (
+                    <>
+                      <Separator />
+                      <div className="flex flex-col gap-2">
+                        <span className="text-xs font-medium text-muted-foreground">
+                          Required — you lack
+                        </span>
+                        <div className="flex flex-wrap gap-1">
+                          {(job.evaluation.fit?.requiredMissing.length ?? 0) === 0 ? (
+                            <span className="text-sm text-muted-foreground">
+                              Nothing — you meet every requirement.
+                            </span>
+                          ) : (
+                            job.evaluation.fit?.requiredMissing.map((skill) => (
+                              <Badge
+                                key={skill}
+                                variant="outline"
+                                className="border-dashed"
+                              >
+                                {skill}
+                              </Badge>
+                            ))
+                          )}
+                        </div>
+                      </div>
+                    </>
+                  )}
+
+                {job.evaluation.niceToHaveSkills &&
+                  job.evaluation.niceToHaveSkills.length > 0 && (
+                    <>
+                      <Separator />
+                      <div className="flex flex-col gap-2">
+                        <span className="text-xs font-medium text-muted-foreground">
+                          Nice to have — you lack
+                        </span>
+                        <div className="flex flex-wrap gap-1">
+                          {(job.evaluation.fit?.niceMissing.length ?? 0) === 0 ? (
+                            <span className="text-sm text-muted-foreground">
+                              Nothing
+                            </span>
+                          ) : (
+                            job.evaluation.fit?.niceMissing.map((skill) => (
+                              <Badge key={skill} variant="secondary">
+                                {skill}
+                              </Badge>
+                            ))
+                          )}
+                        </div>
+                      </div>
+                    </>
+                  )}
 
                 <Separator />
 
@@ -142,31 +211,6 @@ export function JobDetailSheet({
                       ))
                     )}
                   </div>
-                </div>
-
-                <Separator />
-
-                <div className="flex flex-col gap-2">
-                  <span className="text-xs font-medium text-muted-foreground">
-                    You lack
-                  </span>
-                  {job.evaluation.missing.length === 0 ? (
-                    <span className="text-sm text-muted-foreground">
-                      Nothing — full match.
-                    </span>
-                  ) : (
-                    <div className="flex flex-wrap gap-1">
-                      {job.evaluation.missing.map((skill) => (
-                        <Badge
-                          key={skill}
-                          variant="outline"
-                          className="border-dashed"
-                        >
-                          {skill}
-                        </Badge>
-                      ))}
-                    </div>
-                  )}
                 </div>
               </TabsContent>
 

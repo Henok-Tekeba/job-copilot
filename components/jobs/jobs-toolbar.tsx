@@ -27,7 +27,15 @@ export type OpportunityFilter =
   | "junior"
   | "program";
 type EligibilityFilter = "open" | "all" | "no";
-type SourceFilter = "all" | "remoteok" | "remotive" | "hackernews" | "manual";
+type SourceFilter =
+  | "all"
+  | "remoteok"
+  | "remotive"
+  | "hackernews"
+  | "jobicy"
+  | "manual";
+
+export type SortBy = "priority" | "closing" | "newest";
 
 type FilterFieldProps = {
   opportunityFilter: OpportunityFilter;
@@ -103,6 +111,7 @@ function FiltersFields({
             <SelectItem value="remoteok">RemoteOK</SelectItem>
             <SelectItem value="remotive">Remotive</SelectItem>
             <SelectItem value="hackernews">Hacker News</SelectItem>
+            <SelectItem value="jobicy">Jobicy</SelectItem>
             <SelectItem value="manual">Manual</SelectItem>
           </SelectContent>
         </Select>
@@ -141,11 +150,15 @@ function FiltersFields({
 type JobsToolbarProps = FilterFieldProps & {
   search: string;
   onSearchChange: (value: string) => void;
+  sortBy: SortBy;
+  onSortByChange: (value: SortBy) => void;
 };
 
 export function JobsToolbar({
   search,
   onSearchChange,
+  sortBy,
+  onSortByChange,
   opportunityFilter,
   onOpportunityFilterChange,
   sourceFilter,
@@ -202,6 +215,17 @@ export function JobsToolbar({
             </PopoverContent>
           </Popover>
         </div>
+
+        <Select value={sortBy} onValueChange={(v) => onSortByChange(v as SortBy)}>
+          <SelectTrigger size="sm" className="w-[9.75rem]" aria-label="Sort jobs">
+            <SelectValue placeholder="Sort" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="priority">Best match</SelectItem>
+            <SelectItem value="closing">Closing soon</SelectItem>
+            <SelectItem value="newest">Newest</SelectItem>
+          </SelectContent>
+        </Select>
 
         <div className="md:hidden">
           <Sheet open={filtersOpen} onOpenChange={setFiltersOpen}>

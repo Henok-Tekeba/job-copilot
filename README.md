@@ -1,36 +1,106 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Job Copilot
 
-## Getting Started
+Reads the eligibility terms of every remote posting and tells an African
+developer the few they can actually be hired and paid for, the skills that
+unlock the most of the rest, and when to apply before the deadline closes.
 
-First, run the development server:
+## Why this exists
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+The global remote job market states "Africa not eligible" in a structured field
+that candidates never see, and almost never lists Africa at all. Measured from
+live feeds:
+
+```
+Remotive `candidate_required_location` (live sample):
+  'Worldwide'                                     6
+  'Northern America, LATAM, Europe, APAC'         3
+  'Americas, Europe, Israel'                      2
+  mentions of Africa / Ethiopia / Nigeria / Kenya: 0
+
+Jobicy `jobGeo` (100 live postings):
+  'USA'        51
+  'Europe'      8
+  'Anywhere'    2
+  'Africa':     0
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+So the default answer is "no", the reason is buried in prose, and no tool
+computes what it would take to change that answer. That is the whole product.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## What it does
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**Eligibility with evidence.** Structured feed fields are parsed into a region
+set rather than regex-matched against a location string. Every verdict carries
+the field it came from, so it can be inspected and argued with:
 
-## Learn More
+```
+North America, Europe, Asia-Pacific
+Restricted to Europe — Africa is not listed.
+candidate_required_location: Europe, USA, Canada, APAC
+```
 
-To learn more about Next.js, take a look at the following resources:
+**A fit score that means something.** Measured against *stated requirements*
+split from nice-to-haves, then adjusted for seniority and eligibility:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+priority = skill coverage x level weight x eligibility weight
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Deadlines.** Extracted only when a date sits beside an explicit deadline
+label, so "founded in 2015" is never mistaken for a cutoff.
 
-## Deploy on Vercel
+**Red flags.** Unpaid, commission-only, and fee-requesting postings are
+surfaced before someone spends an evening applying.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Sources
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Source | Endpoint | Notes |
+|---|---|---|
+| RemoteOK | `remoteok.com/api` | no structured region field |
+| Remotive | `remotive.com/api/remote-jobs` | `candidate_required_location` |
+| Jobicy | `jobicy.com/api/v2/remote-jobs` | `jobGeo`, `jobType` |
+| Hacker News | HN Algolia API | "Who is hiring" thread |
+
+Structured region fields are preserved through the pipeline
+(`requiredLocation`) because the free-text form loses the list.
+
+## Scripts
+
+```bash
+npm run collect      # fetch feeds, merge, dedupe, then evaluate
+npm run evaluate     # score every job and print a report
+npm run selfcheck    # 28 assertions over the engine
+npm run dev          # local app
+```
+
+`npm run selfcheck` is the safety net for the engine. Run it after touching
+anything in `lib/eligibility.ts`, `lib/deadline.ts` or `lib/fit.ts`.
+
+## Layout
+
+```
+lib/regions.ts       region vocabulary, parsing, timezone bands
+lib/eligibility.ts   verdict + evidence, structured fields first
+lib/deadline.ts      labelled-date extraction
+lib/requirements.ts  required vs nice-to-have, skill detection
+lib/fit.ts           coverage, weights, priority
+lib/legitimacy.ts    red-flag detection
+lib/skills.ts        skill dictionary + core-engineering filter
+scripts/adapters/    one file per source
+scripts/evaluate.ts  the pipeline
+```
+
+## Known gaps
+
+- **Deadline coverage is 0 across current sources.** The extractor is tested and
+  works; these feeds simply do not publish cutoffs. Needs deadline-bearing
+  sources (program pages, curation) to be useful.
+- **All current sources are Western-centric**, so only ~10 of 221 software roles
+  come out open. Africa-relevant sourcing is the next milestone.
+- Eligibility inference can be wrong. Evidence display is the mitigation.
+
+## Deployment
+
+Static export to GitHub Pages on push to `main`
+(`.github/workflows/pages.yml`), plus a scheduled collector that commits fresh
+data every 8 hours.

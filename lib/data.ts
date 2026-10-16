@@ -11,6 +11,13 @@ import { detectOpportunity } from "./opportunity";
 
 const DATA_DIR = path.join(process.cwd(), "data");
 
+/**
+ * Curated programs (GSoC, Outreachy, MLH...) have no skills to score against,
+ * but they are the highest-value entries for an early-career candidate, so they
+ * get an explicit priority instead of sinking to the bottom of the sort.
+ */
+const PROGRAM_PRIORITY = 70;
+
 function loadPrograms(): Job[] {
   const programsPath = path.join(DATA_DIR, "programs.json");
   if (!fs.existsSync(programsPath)) return [];
@@ -19,31 +26,68 @@ function loadPrograms(): Job[] {
   const parsed = programSchema.array().safeParse(raw);
   if (!parsed.success) return [];
 
-  return parsed.data.map((program) => ({
-    id: program.id,
-    source: "manual" as const,
-    sourceUrl: program.url,
-    applyUrl: program.url,
-    attribution: "added by me",
-    title: program.name,
-    company: program.name,
-    location: "",
-    tags: [],
-    description: program.description,
-    postedAt: "",
-    firstSeen: "",
-    relevance: "software" as const,
-    evaluation: {
-      eligible: program.eligible,
-      remoteReason: program.notes,
-      detectedSkills: [],
-      matched: [],
-      missing: [],
-      fitScore: null,
-      level: "intern" as const,
-      opportunity: "program" as const,
-    },
-  }));
+  return parsed.data.map((program) => {
+    const verdict =
+      program.eligible === "yes"
+        ? ("open" as const)
+        : program.eligible === "no"
+          ? ("region-locked" as const)
+          : ("unknown" as const);
+
+    return {
+      id: program.id,
+      source: "manual" as const,
+      sourceUrl: program.url,
+      applyUrl: program.url,
+      attribution: "added by me",
+      title: program.name,
+      company: program.name,
+      location: "",
+      tags: [],
+      description: program.description,
+      postedAt: "",
+      firstSeen: "",
+      relevance: "software" as const,
+      deadline: program.deadline,
+      evaluation: {
+        eligible: program.eligible,
+        remoteReason: program.notes,
+        detectedSkills: [],
+        matched: [],
+        missing: [],
+        fitScore: null,
+        level: "intern" as const,
+        opportunity: "program" as const,
+        requiredSkills: [],
+        niceToHaveSkills: [],
+        redFlags: [],
+        eligibility: {
+          verdict,
+          africaOpen: verdict === "open",
+          regions: [],
+          regionLabels: [],
+          evidence: [],
+          unknownSegments: [],
+          timezone: { band: null, required: null, overlapsAfrica: null },
+          blockedBy: null,
+          summary: program.notes,
+        },
+        fit: {
+          score: null,
+          priority: PROGRAM_PRIORITY,
+          coverage: 0,
+          requiredMatched: [],
+          requiredMissing: [],
+          niceMatched: [],
+          niceMissing: [],
+          levelWeight: 1,
+          eligibilityWeight: 1,
+          basis: "detected" as const,
+          reasons: ["curated program"],
+        },
+      },
+    };
+  });
 }
 
 export function loadLastUpdated(): string {

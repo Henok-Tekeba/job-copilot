@@ -34,3 +34,30 @@ export function stripHtml(html: string): string {
     .replace(/\s+/g, " ")
     .trim();
 }
+
+/**
+ * Days from `today` until an ISO date. Negative when already past.
+ * Computed in UTC so a deadline never shifts by a day based on where the
+ * browser happens to be.
+ */
+export function daysUntil(isoDate: string, today: Date = new Date()): number {
+  const target = Date.parse(`${isoDate}T00:00:00Z`);
+  if (Number.isNaN(target)) return Number.NaN;
+  const start = Date.UTC(
+    today.getUTCFullYear(),
+    today.getUTCMonth(),
+    today.getUTCDate()
+  );
+  return Math.round((target - start) / 86_400_000);
+}
+
+/** Short deadline label: "closes today", "closes in 3d", "closed". */
+export function deadlineLabel(isoDate: string, today: Date = new Date()): string {
+  const days = daysUntil(isoDate, today);
+  if (Number.isNaN(days)) return "";
+  if (days < 0) return "closed";
+  if (days === 0) return "closes today";
+  if (days === 1) return "closes tomorrow";
+  if (days <= 30) return `closes in ${days}d`;
+  return `closes ${isoDate}`;
+}

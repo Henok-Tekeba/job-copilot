@@ -12,6 +12,7 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import { Skeleton } from "@/components/ui/skeleton";
+import { DeadlineBadge, RedFlagBadge } from "@/components/jobs/deadline-badge";
 import type { Job } from "@/lib/types";
 
 type JobsCardListProps = {
@@ -28,6 +29,8 @@ function sourceLabel(source: Job["source"]): string {
       return "RemoteOK";
     case "hackernews":
       return "Hacker News";
+    case "jobicy":
+      return "Jobicy";
     case "manual":
       return "Manual";
     default:
@@ -36,18 +39,21 @@ function sourceLabel(source: Job["source"]): string {
 }
 
 function RemoteDot({ job }: { job: Job }) {
+  const verdict = job.evaluation.eligibility?.verdict;
   const eligible = job.evaluation.eligible;
-  const reason = job.evaluation.remoteReason || "No info";
+  const reason = job.evaluation.eligibility?.summary || job.evaluation.remoteReason || "No info";
+
+  const open = verdict ? verdict === "open" : eligible === "yes";
+  const locked = verdict ? verdict === "region-locked" : eligible === "no";
+
   return (
     <span className="flex size-4 items-center justify-center" title={reason}>
-      {eligible === "yes" && (
-        <span className="size-2 rounded-full bg-emerald-500" />
-      )}
-      {eligible === "unclear" && (
+      {open && <span className="size-2 rounded-full bg-emerald-500" />}
+      {!open && !locked && (
         <span className="size-2 rounded-full border border-amber-500" />
       )}
-      {eligible === "no" && <span className="size-2" />}
-      <span className="sr-only">Remote: {reason}</span>
+      {locked && <span className="size-2 rounded-full border border-red-500/70" />}
+      <span className="sr-only">Eligibility: {reason}</span>
     </span>
   );
 }
@@ -87,7 +93,7 @@ function JobCard({
             </span>
           </div>
           <span className="shrink-0 font-mono text-sm tabular-nums text-muted-foreground">
-            {job.evaluation.fitScore ?? "-"}
+            {job.evaluation.fit?.priority ?? job.evaluation.fitScore ?? "-"}
           </span>
         </div>
 
@@ -97,6 +103,8 @@ function JobCard({
           </Badge>
           <Badge variant="secondary">{sourceLabel(job.source)}</Badge>
           {applied && <Badge variant="secondary">Applied</Badge>}
+          <DeadlineBadge deadline={job.deadline} />
+          <RedFlagBadge flags={job.evaluation.redFlags} />
           <RemoteDot job={job} />
         </div>
 

@@ -36,6 +36,7 @@ import {
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
+import { DeadlineBadge } from "@/components/jobs/deadline-badge";
 import { initials, relativeTime } from "@/lib/jobs";
 import type { Job } from "@/lib/types";
 
@@ -96,22 +97,27 @@ export function JobsTable({
         enableSorting: false,
         enableHiding: false,
       },
-      columnHelper.accessor((row) => row.evaluation.fitScore, {
-        id: "fit",
-        header: "Fit",
-        cell: ({ row }: { row: import("@tanstack/table-core").Row<Job> }) => {
-          const score = row.original.evaluation.fitScore;
-          if (score === null) {
-            return <span className="text-sm text-muted-foreground">-</span>;
-          }
-          return (
-            <div className="flex items-center gap-2">
-              <span className="w-7 font-mono text-sm tabular-nums">{score}</span>
-              <Progress value={score} className="w-14" />
-            </div>
-          );
-        },
-      }),
+      columnHelper.accessor(
+        (row) => row.evaluation.fit?.priority ?? row.evaluation.fitScore,
+        {
+          id: "fit",
+          header: "Priority",
+          cell: ({ row }: { row: import("@tanstack/table-core").Row<Job> }) => {
+            const score =
+              row.original.evaluation.fit?.priority ??
+              row.original.evaluation.fitScore;
+            if (score === null || score === undefined) {
+              return <span className="text-sm text-muted-foreground">-</span>;
+            }
+            return (
+              <div className="flex items-center gap-2">
+                <span className="w-7 font-mono text-sm tabular-nums">{score}</span>
+                <Progress value={score} className="w-14" />
+              </div>
+            );
+          },
+        }
+      ),
       columnHelper.accessor("title", {
         id: "role",
         header: "Role",
@@ -187,9 +193,11 @@ export function JobsTable({
               ? "RemoteOK"
               : row.original.source === "hackernews"
                 ? "Hacker News"
-                : row.original.source === "manual"
-                  ? "Manual"
-                  : "Remotive"}
+                : row.original.source === "jobicy"
+                  ? "Jobicy"
+                  : row.original.source === "manual"
+                    ? "Manual"
+                    : "Remotive"}
           </Badge>
         ),
       }),
@@ -203,6 +211,24 @@ export function JobsTable({
               : "—"}
           </span>
         ),
+      }),
+      columnHelper.accessor("deadline", {
+        id: "deadline",
+        header: "Closes",
+        cell: ({ row }: { row: import("@tanstack/table-core").Row<Job> }) => {
+          const deadline = row.original.deadline;
+          if (!deadline) {
+            return <span className="text-xs text-muted-foreground">—</span>;
+          }
+          return (
+            <div className="flex items-center gap-1.5">
+              <span className="font-mono text-xs tabular-nums text-muted-foreground">
+                {deadline}
+              </span>
+              <DeadlineBadge deadline={deadline} />
+            </div>
+          );
+        },
       }),
       {
         id: "missing",

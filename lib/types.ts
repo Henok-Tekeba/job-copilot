@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const sourceSchema = z.enum(["remoteok", "remotive", "hackernews", "manual"]);
+export const sourceSchema = z.enum(["remoteok", "remotive", "hackernews", "jobicy", "manual"]);
 export const relevanceSchema = z.enum(["software", "other"]);
 export const eligibleSchema = z.enum(["yes", "no", "unclear"]);
 export const levelSchema = z.enum(["intern", "junior", "mid", "senior"]);
@@ -12,6 +12,54 @@ export const opportunitySchema = z.enum([
   "fulltime",
 ]);
 
+export const regionSchema = z.enum([
+  "worldwide",
+  "africa",
+  "europe",
+  "north-america",
+  "latam",
+  "apac",
+  "middle-east",
+  "cis",
+]);
+
+export const eligibilityVerdictSchema = z.enum([
+  "open",
+  "region-locked",
+  "conflict",
+  "unknown",
+]);
+
+export const eligibilitySchema = z.object({
+  verdict: eligibilityVerdictSchema,
+  africaOpen: z.boolean(),
+  regions: z.array(regionSchema),
+  regionLabels: z.array(z.string()),
+  evidence: z.array(z.object({ field: z.string(), value: z.string() })),
+  unknownSegments: z.array(z.string()),
+  timezone: z.object({
+    band: z.enum(["americas", "europe-africa", "apac"]).nullable(),
+    required: z.string().nullable(),
+    overlapsAfrica: z.boolean().nullable(),
+  }),
+  blockedBy: z.string().nullable(),
+  summary: z.string(),
+});
+
+export const fitSchema = z.object({
+  score: z.number().nullable(),
+  priority: z.number(),
+  coverage: z.number(),
+  requiredMatched: z.array(z.string()),
+  requiredMissing: z.array(z.string()),
+  niceMatched: z.array(z.string()),
+  niceMissing: z.array(z.string()),
+  levelWeight: z.number(),
+  eligibilityWeight: z.number(),
+  basis: z.enum(["required", "detected"]),
+  reasons: z.array(z.string()),
+});
+
 export const evaluationSchema = z.object({
   eligible: eligibleSchema,
   remoteReason: z.string(),
@@ -21,6 +69,15 @@ export const evaluationSchema = z.object({
   fitScore: z.number().min(0).max(100).nullable(),
   level: levelSchema,
   opportunity: opportunitySchema,
+  // Added when eligibility became evidence-based. Optional so data collected
+  // before the change still validates instead of silently falling back to seed.
+  eligibility: eligibilitySchema.optional(),
+  fit: fitSchema.optional(),
+  requiredSkills: z.array(z.string()).optional(),
+  niceToHaveSkills: z.array(z.string()).optional(),
+  deadlineEvidence: z.string().nullable().optional(),
+  /** Unpaid / commission-only / fee-requesting signals worth warning about. */
+  redFlags: z.array(z.string()).optional(),
 });
 
 export const programSchema = z.object({
@@ -75,6 +132,12 @@ export const jobSchema = z.object({
   firstSeen: z.string(),
   relevance: relevanceSchema,
   evaluation: evaluationSchema,
+  /** Structured region string straight from the feed, when it provides one. */
+  requiredLocation: z.string().optional(),
+  /** Application cutoff, ISO date. */
+  deadline: z.string().nullable().optional(),
+  /** Pay text as published, when the feed provides it. */
+  salary: z.string().optional(),
 });
 
 export const seedJobSchema = z.object({
@@ -113,6 +176,10 @@ export const seedSchema = z.object({
 export type Source = z.infer<typeof sourceSchema>;
 export type Relevance = z.infer<typeof relevanceSchema>;
 export type Eligible = z.infer<typeof eligibleSchema>;
+export type Region = z.infer<typeof regionSchema>;
+export type EligibilityVerdict = z.infer<typeof eligibilityVerdictSchema>;
+export type Eligibility = z.infer<typeof eligibilitySchema>;
+export type FitBreakdown = z.infer<typeof fitSchema>;
 export type Level = z.infer<typeof levelSchema>;
 export type Opportunity = z.infer<typeof opportunitySchema>;
 export type Evaluation = z.infer<typeof evaluationSchema>;

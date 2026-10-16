@@ -4,6 +4,7 @@ import { execSync } from "child_process";
 import { fetchRemoteOK } from "./adapters/remoteok";
 import { fetchRemotive } from "./adapters/remotive";
 import { fetchHackerNews } from "./adapters/hackernews";
+import { fetchJobicy } from "./adapters/jobicy";
 import type { NormalizedJob } from "./types";
 
 const DATA_DIR = path.join(process.cwd(), "data");
@@ -12,12 +13,10 @@ const JOBS_FILE = path.join(DATA_DIR, "jobs.json");
 const STATE_FILE = path.join(DATA_DIR, "state.json");
 const RATE_LIMIT_HOURS = 6;
 
+type SourceName = "remoteok" | "remotive" | "hackernews" | "jobicy";
+
 type State = {
-  lastFetched?: {
-    remoteok?: string;
-    remotive?: string;
-    hackernews?: string;
-  };
+  lastFetched?: Record<string, string>;
 };
 
 function ensureDirs() {
@@ -35,7 +34,7 @@ function saveState(state: State) {
   fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
 }
 
-function isRateLimited(state: State, source: "remoteok" | "remotive" | "hackernews"): boolean {
+function isRateLimited(state: State, source: SourceName): boolean {
   const last = state.lastFetched?.[source];
   if (!last) return false;
   const elapsed = Date.now() - new Date(last).getTime();
@@ -86,12 +85,13 @@ async function collect() {
   let allJobs = [...existingJobs];
 
   const sources: Array<{
-    name: "remoteok" | "remotive" | "hackernews";
+    name: SourceName;
     fetcher: () => Promise<NormalizedJob[]>;
   }> = [
     { name: "remoteok", fetcher: fetchRemoteOK },
     { name: "remotive", fetcher: fetchRemotive },
     { name: "hackernews", fetcher: fetchHackerNews },
+    { name: "jobicy", fetcher: fetchJobicy },
   ];
 
   for (const source of sources) {
