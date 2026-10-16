@@ -37,7 +37,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { Skeleton } from "@/components/ui/skeleton";
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
 import { DeadlineBadge } from "@/components/jobs/deadline-badge";
-import { initials, relativeTime } from "@/lib/jobs";
+import { initials, relativeTime, sourceLabel } from "@/lib/jobs";
 import type { Job } from "@/lib/types";
 
 const columnHelper = createColumnHelper<Job>();
@@ -188,17 +188,7 @@ export function JobsTable({
         id: "source",
         header: "Source",
         cell: ({ row }: { row: import("@tanstack/table-core").Row<Job> }) => (
-          <Badge variant="secondary">
-            {row.original.source === "remoteok"
-              ? "RemoteOK"
-              : row.original.source === "hackernews"
-                ? "Hacker News"
-                : row.original.source === "jobicy"
-                  ? "Jobicy"
-                  : row.original.source === "manual"
-                    ? "Manual"
-                    : "Remotive"}
-          </Badge>
+          <Badge variant="secondary">{sourceLabel(row.original.source)}</Badge>
         ),
       }),
       columnHelper.accessor("postedAt", {

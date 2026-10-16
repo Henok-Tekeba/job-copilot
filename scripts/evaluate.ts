@@ -17,6 +17,21 @@ const CORE_SKILL_SET = new Set(CORE_ENGINEERING_SKILLS);
 const JOBS_FILE = path.join(process.cwd(), "data", "jobs.json");
 const FACTS_FILE = path.join(process.cwd(), "data", "facts.json");
 
+/**
+ * How much of a posting body to persist.
+ *
+ * Descriptions were 75% of the stored payload (7.1 MB of a 9.4 MB file) and
+ * jobs.json is committed on every collector run, so the full text is read for
+ * evaluation and then dropped to an excerpt. The UI links out to the real
+ * posting, which is the authoritative copy anyway.
+ */
+const STORED_EXCERPT_LIMIT = 1_200;
+
+function toExcerpt(text: string): string {
+  if (text.length <= STORED_EXCERPT_LIMIT) return text;
+  return `${text.slice(0, STORED_EXCERPT_LIMIT).trimEnd()}…`;
+}
+
 /** A job as stored: collected fields, plus evaluation once it has been scored. */
 type StoredJob = Omit<Job, "evaluation" | "relevance"> & {
   jobType?: string;
@@ -193,6 +208,7 @@ function main() {
 
   for (const job of jobs) {
     if (job.source === "manual") continue;
+    // Evaluate against the full body, then keep only an excerpt on disk.
     const plainDesc = stripHtml(job.description ?? "");
     job.description = plainDesc;
     job.evaluation = evaluateJob(job, knownSkills);
@@ -201,6 +217,8 @@ function main() {
     const deadline = extractDeadline(plainDesc, today);
     job.deadline = deadline.deadline;
     if (deadline.deadline && !deadline.expired) deadlineCount++;
+
+    job.description = toExcerpt(plainDesc);
   }
 
   fs.writeFileSync(JOBS_FILE, JSON.stringify(jobs, null, 2));

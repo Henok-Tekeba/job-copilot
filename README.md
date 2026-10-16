@@ -54,27 +54,59 @@ surfaced before someone spends an evening applying.
 
 ## Sources
 
-| Source | Endpoint | Notes |
+| Source | How | Notes |
 |---|---|---|
-| RemoteOK | `remoteok.com/api` | no structured region field |
-| Remotive | `remotive.com/api/remote-jobs` | `candidate_required_location` |
+| **98 company ATS boards** | Greenhouse, Ashby, Lever public APIs | First-hand postings, verified by `npm run discover` |
 | Jobicy | `jobicy.com/api/v2/remote-jobs` | `jobGeo`, `jobType` |
+| Remotive | `remotive.com/api/remote-jobs` | `candidate_required_location` |
 | Hacker News | HN Algolia API | "Who is hiring" thread |
+| RemoteOK | `remoteok.com/api` | no structured region field |
 
 Structured region fields are preserved through the pipeline
 (`requiredLocation`) because the free-text form loses the list.
 
+### Board discovery
+
+We cannot guess which ATS a company uses or what token it sits behind, and a
+guessed list is worthless. `npm run discover` probes a candidate list against
+all three platforms and keeps only boards that return live jobs:
+
+```
+Probing 162 candidates against 3 ATS platforms...
+Found 98 boards with live jobs.
+  greenhouse: 44   ashby: 48   lever: 6
+```
+
+Re-run it when the candidate list changes or a company migrates. Every entry in
+`data/companies.json` has been checked against the live API.
+
+### Why this matters
+
+Before ATS sourcing, across 380 postings:
+
+```
+open to me: 10      open AND internship/contract/junior/program: 1
+```
+
+After, across 1,454:
+
+```
+open to me: 40      open AND internship/contract/junior/program: 5
+real deadlines found: 3
+```
+
 ## Scripts
 
 ```bash
-npm run collect      # fetch feeds, merge, dedupe, then evaluate
+npm run discover     # probe candidate companies for live ATS boards
+npm run collect      # fetch all sources, filter, merge, then evaluate
 npm run evaluate     # score every job and print a report
 npm run selfcheck    # 28 assertions over the engine
 npm run dev          # local app
 ```
 
-`npm run selfcheck` is the safety net for the engine. Run it after touching
-anything in `lib/eligibility.ts`, `lib/deadline.ts` or `lib/fit.ts`.
+`npm run collect` is the canonical path: it fetches full posting bodies, scores
+them, then truncates to a stored excerpt.
 
 ## Layout
 
@@ -92,11 +124,19 @@ scripts/evaluate.ts  the pipeline
 
 ## Known gaps
 
-- **Deadline coverage is 0 across current sources.** The extractor is tested and
-  works; these feeds simply do not publish cutoffs. Needs deadline-bearing
-  sources (program pages, curation) to be useful.
-- **All current sources are Western-centric**, so only ~10 of 221 software roles
-  come out open. Africa-relevant sourcing is the next milestone.
+- **`data/jobs.json` is 4.9 MB and is committed on every collector run.** That
+  is roughly 15 MB of git history per day. Description text is truncated to a
+  1,200-character excerpt (it was 75% of the payload) and postings are capped at
+  4,000 with a 120-day retention window, but this is a ceiling, not a solution.
+  The next move is an orphan `data` branch or a Release asset, or a real
+  database.
+- **Deadline coverage is thin (3 postings).** The extractor is tested and works;
+  the feeds rarely publish cutoffs. Programs with announced dates live in
+  `data/programs.json`, which is hand-maintained and deliberately leaves
+  unannounced dates null rather than guessing them.
+- **`data/companies.json` is only 98 companies** and skews heavily to US-based
+  remote-first employers, so `region-locked` still dominates. Widening the
+  candidate list is the highest-leverage next step.
 - Eligibility inference can be wrong. Evidence display is the mitigation.
 
 ## Deployment

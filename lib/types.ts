@@ -1,6 +1,15 @@
 import { z } from "zod";
 
-export const sourceSchema = z.enum(["remoteok", "remotive", "hackernews", "jobicy", "manual"]);
+export const sourceSchema = z.enum([
+  "remoteok",
+  "remotive",
+  "hackernews",
+  "jobicy",
+  "greenhouse",
+  "lever",
+  "ashby",
+  "manual",
+]);
 export const relevanceSchema = z.enum(["software", "other"]);
 export const eligibleSchema = z.enum(["yes", "no", "unclear"]);
 export const levelSchema = z.enum(["intern", "junior", "mid", "senior"]);

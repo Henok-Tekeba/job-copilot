@@ -3,30 +3,80 @@
     "id": "program:gsoc",
     "name": "Google Summer of Code",
     "url": "https://summerofcode.withgoogle.com/",
-    "description": "A global program where contributors work with open source organizations on mentored software projects.",
+    "description": "Paid open source contribution programme. Contributors work with a mentoring organisation on a project over the summer, with a stipend paid on completion.",
     "opportunity": "program",
-    "eligible": "unclear",
+    "eligible": "yes",
     "deadline": null,
-    "notes": "Check the official site for current dates and eligibility"
+    "notes": "Worldwide, no location restriction. Contributor applications open in March and close late March; the 2027 date has not been announced, so no deadline is stored. Start talking to mentoring organisations in February."
   },
   {
     "id": "program:outreachy",
     "name": "Outreachy",
     "url": "https://www.outreachy.org/",
-    "description": "Paid internships in open source and open science for people underrepresented in tech.",
+    "description": "Paid, fully remote internships in open source and open science for people who face underrepresentation or systemic bias in tech where they live. $7,000 USD stipend, three months.",
     "opportunity": "program",
-    "eligible": "unclear",
+    "eligible": "yes",
     "deadline": null,
-    "notes": "Check the official site for current dates and eligibility"
+    "notes": "Two cohorts a year. The December 2026 cohort closed on 31 August 2026. The next intake is the May 2027 cohort, with applications expected in early February 2027. Open to applicants from any country."
   },
   {
     "id": "program:mlh-fellowship",
     "name": "MLH Fellowship",
     "url": "https://fellowship.mlh.io/",
-    "description": "A remote internship alternative where fellows contribute to real software projects with mentorship.",
+    "description": "A remote internship alternative where fellows contribute to real open source projects in small pods with mentorship. Runs in batches through the year.",
     "opportunity": "program",
     "eligible": "unclear",
     "deadline": null,
-    "notes": "Check the official site for current dates and eligibility"
+    "notes": "Batch-based rather than a single annual deadline. Confirm country eligibility and stipend terms on the current programme page before applying."
+  },
+  {
+    "id": "program:alx-africa",
+    "name": "ALX Africa",
+    "url": "https://www.alxafrica.com/",
+    "description": "Pan-African tech training and career acceleration programmes, including software engineering, data and cloud tracks. Free to participants, remote-first, aimed at early-career Africans.",
+    "opportunity": "program",
+    "eligible": "yes",
+    "deadline": null,
+    "notes": "Africa-focused, rolling intakes rather than fixed deadlines. Also hires directly: their own board is on Greenhouse and is collected by the ATS adapter."
+  },
+  {
+    "id": "program:andela",
+    "name": "Andela",
+    "url": "https://www.andela.com/",
+    "description": "Global talent marketplace that began as an African developer training and placement company. Places engineers with international clients.",
+    "opportunity": "program",
+    "eligible": "unclear",
+    "deadline": null,
+    "notes": "No longer runs the original multi-year training fellowship; now a talent marketplace. Worth watching for placements that accept Ethiopia specifically."
+  },
+  {
+    "id": "program:mest-africa",
+    "name": "MEST Africa",
+    "url": "https://meltwater.org/",
+    "description": "Pan-African training programme and incubator for software entrepreneurs, with a year-long fellowship covering engineering, business and product.",
+    "opportunity": "program",
+    "eligible": "unclear",
+    "deadline": null,
+    "notes": "Annual intake, usually opening mid-year, with travel expected for parts of the programme. Verify whether Ethiopia is a covered country for the current cohort."
+  },
+  {
+    "id": "program:zindi",
+    "name": "Zindi",
+    "url": "https://zindi.africa/",
+    "description": "Competition platform for African data scientists and machine learning engineers. Prizes, hiring pipelines, and a portfolio you can show publicly.",
+    "opportunity": "program",
+    "eligible": "yes",
+    "deadline": null,
+    "notes": "Continuous competitions with per-competition deadlines rather than one programme date. Useful as a proof-of-skill route when you have no industry experience yet."
+  },
+  {
+    "id": "program:deep-learning-indaba",
+    "name": "Deep Learning Indaba",
+    "url": "https://deeplearningindaba.com/",
+    "description": "Annual African machine learning gathering with workshops, tutorials and travel bursaries for students across the continent.",
+    "opportunity": "program",
+    "eligible": "yes",
+    "deadline": null,
+    "notes": "Annual, usually around August/September, with a bursary application window several months earlier. Moving target: check the current year's page."
   }
 ]

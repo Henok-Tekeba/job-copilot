@@ -30,13 +30,7 @@ import {
 import { StatCards } from "@/components/jobs/stat-cards";
 
 type EligibilityFilter = "open" | "all" | "no";
-type SourceFilter =
-  | "all"
-  | "remoteok"
-  | "remotive"
-  | "hackernews"
-  | "jobicy"
-  | "manual";
+type SourceFilter = "all" | Job["source"];
 
 export default function JobsPage({ initialJobs }: { initialJobs: Job[] }) {
   const [jobs, setJobs] = React.useState<Job[]>(initialJobs);

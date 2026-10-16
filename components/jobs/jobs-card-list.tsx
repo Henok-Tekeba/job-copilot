@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/empty";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DeadlineBadge, RedFlagBadge } from "@/components/jobs/deadline-badge";
+import { sourceLabel } from "@/lib/jobs";
 import type { Job } from "@/lib/types";
 
 type JobsCardListProps = {
@@ -22,21 +23,6 @@ type JobsCardListProps = {
   onRowClick: (job: Job) => void;
   onResetFilters: () => void;
 };
-
-function sourceLabel(source: Job["source"]): string {
-  switch (source) {
-    case "remoteok":
-      return "RemoteOK";
-    case "hackernews":
-      return "Hacker News";
-    case "jobicy":
-      return "Jobicy";
-    case "manual":
-      return "Manual";
-    default:
-      return "Remotive";
-  }
-}
 
 function RemoteDot({ job }: { job: Job }) {
   const verdict = job.evaluation.eligibility?.verdict;

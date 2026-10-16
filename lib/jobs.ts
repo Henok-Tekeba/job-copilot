@@ -1,3 +1,5 @@
+import type { Source } from "./types";
+
 export function initials(name: string): string {
   const n = name || "?";
   return n
@@ -61,3 +63,31 @@ export function deadlineLabel(isoDate: string, today: Date = new Date()): string
   if (days <= 30) return `closes in ${days}d`;
   return `closes ${isoDate}`;
 }
+
+const SOURCE_LABELS: Record<Source, string> = {
+  remoteok: "RemoteOK",
+  remotive: "Remotive",
+  hackernews: "Hacker News",
+  jobicy: "Jobicy",
+  greenhouse: "Greenhouse",
+  lever: "Lever",
+  ashby: "Ashby",
+  manual: "Manual",
+};
+
+/** Display name for a feed source. One place, so the UI cannot drift. */
+export function sourceLabel(source: Source): string {
+  return SOURCE_LABELS[source] ?? source;
+}
+
+/** Sources offered in the source filter, in display order. */
+export const SOURCE_OPTIONS: Source[] = [
+  "greenhouse",
+  "ashby",
+  "lever",
+  "remoteok",
+  "remotive",
+  "jobicy",
+  "hackernews",
+  "manual",
+];

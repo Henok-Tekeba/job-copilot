@@ -11,6 +11,8 @@ import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { SOURCE_OPTIONS, sourceLabel } from "@/lib/jobs";
+import type { Source } from "@/lib/types";
 import {
   Sheet,
   SheetContent,
@@ -27,13 +29,7 @@ export type OpportunityFilter =
   | "junior"
   | "program";
 type EligibilityFilter = "open" | "all" | "no";
-type SourceFilter =
-  | "all"
-  | "remoteok"
-  | "remotive"
-  | "hackernews"
-  | "jobicy"
-  | "manual";
+type SourceFilter = "all" | Source;
 
 export type SortBy = "priority" | "closing" | "newest";
 
@@ -108,11 +104,11 @@ function FiltersFields({
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All sources</SelectItem>
-            <SelectItem value="remoteok">RemoteOK</SelectItem>
-            <SelectItem value="remotive">Remotive</SelectItem>
-            <SelectItem value="hackernews">Hacker News</SelectItem>
-            <SelectItem value="jobicy">Jobicy</SelectItem>
-            <SelectItem value="manual">Manual</SelectItem>
+            {SOURCE_OPTIONS.map((source) => (
+              <SelectItem key={source} value={source}>
+                {sourceLabel(source)}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>

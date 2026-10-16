@@ -1,6 +1,12 @@
 import { z } from "zod";
 
-export const SourceSchema = z.enum(["remoteok", "remotive", "hackernews", "jobicy"]);
+export const AtsSchema = z.enum(["greenhouse", "lever", "ashby"]);
+export type Ats = z.infer<typeof AtsSchema>;
+
+export const SourceSchema = z.union([
+  z.enum(["remoteok", "remotive", "hackernews", "jobicy"]),
+  AtsSchema,
+]);
 
 export const NormalizedJobSchema = z.object({
   id: z.string(),
@@ -31,3 +37,4 @@ export const NormalizedJobSchema = z.object({
 
 export type Source = z.infer<typeof SourceSchema>;
 export type NormalizedJob = z.infer<typeof NormalizedJobSchema>;
+

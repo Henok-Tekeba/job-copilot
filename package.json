@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "collect": "tsx scripts/collect.ts",
+    "discover": "tsx scripts/discover-boards.ts",
     "evaluate": "tsx scripts/evaluate.ts",
     "history": "tsx scripts/history.ts",
     "selfcheck": "tsx scripts/selfcheck.ts"
