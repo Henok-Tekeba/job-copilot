@@ -113,6 +113,14 @@ export const CORE_ENGINEERING_SKILLS = Object.keys(SKILLS).filter(
   (skill) => !NON_ENGINEERING_SKILLS.has(skill)
 );
 
-/** Titles that are clearly not software roles, whatever the description says. */
+/**
+ * Titles that are never software roles.
+ *
+ * Checked BEFORE the engineering-keyword search, because "Junior Business
+ * Developer" contains "developer" and would otherwise pass. Ambiguous words that
+ * appear in engineering titles as team names ("Marketing", "Design", "Finance")
+ * are deliberately absent — a "Marketing Manager" fails the keyword check
+ * anyway, while "Software Engineer, Marketing" must not be thrown away.
+ */
 export const NON_TECH_TITLE_PATTERN =
-  /\b(sales|marketing|business development|bd|recruit(er|ing)|account (manager|executive)|customer (support|success|service)|office assistant|virtual assistant|designer|design lead|copywriter|content (writer|marketer)|social media|community manager|student assistant|consultant|solutions consultant|finance|accountant|bookkeep|human resources|people ops|executive assistant|operations manager)\b/i;
+  /\b(sales|business develop(er|ment)?|bizdev|business dev|recruit(er|ing)|account (manager|executive)|customer (support|success|service)|office assistant|virtual assistant|copywriter|content (writer|marketer)|social media|community manager|student assistant|bookkeep|accountant|human resources|people ops|executive assistant|operations manager)\b/i;

@@ -146,6 +146,8 @@ async function collect() {
     },
   ];
 
+  const failures: string[] = [];
+
   for (const source of sources) {
     if (!force && isRateLimited(state, source.name)) {
       console.log(`Skipping ${source.name}: rate limit`);
@@ -179,6 +181,7 @@ async function collect() {
         console.log(`Fetched ${raw.length} jobs from ${source.name}`);
       }
     } catch (err) {
+      failures.push(source.name);
       console.error(`Failed to fetch ${source.name}:`, err);
     }
   }
@@ -209,6 +212,19 @@ async function collect() {
 
   const emptyLocation = allJobs.filter((j) => !j.location).length;
   console.log(`Jobs with empty location: ${emptyLocation}`);
+
+  // A source that fails quietly leaves stale data behind, which looks exactly
+  // like "no new jobs today". Say so explicitly, and fail the run outright if
+  // every source failed.
+  if (failures.length > 0) {
+    console.warn(
+      `\nWARNING: ${failures.length} source(s) failed and kept their previous data: ${failures.join(", ")}`
+    );
+    if (failures.length === sources.length) {
+      console.error("Every source failed; refusing to treat this as a successful run.");
+      process.exit(1);
+    }
+  }
 }
 
 collect().then(() => {

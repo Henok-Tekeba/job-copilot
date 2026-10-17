@@ -10,6 +10,7 @@ import { parseRegions } from "../lib/regions";
 import { extractDeadline } from "../lib/deadline";
 import { detectSkills, segmentText } from "../lib/requirements";
 import { computeFit } from "../lib/fit";
+import { NON_TECH_TITLE_PATTERN } from "../lib/skills";
 
 let passed = 0;
 const failures: string[] = [];
@@ -236,6 +237,82 @@ const partial = computeFit({
 
 check("partial coverage is measured against requirements", partial.score, 50);
 check("nice-to-have gaps are counted separately", partial.niceMissing, ["Rust"]);
+
+// --- country-level precision ----------------------------------------------
+
+check(
+  "a job open only to Kenya is NOT open from Ethiopia",
+  assessEligibility({ requiredLocation: "Kenya" }).verdict,
+  "region-locked"
+);
+
+check(
+  "a job open only to Kenya says so plainly",
+  assessEligibility({ requiredLocation: "Kenya" }).summary,
+  "Restricted to Kenya — not open from Ethiopia."
+);
+
+check(
+  "a multi-country African restriction is still closed",
+  assessEligibility({ requiredLocation: "Kenya, Nigeria, South Africa" }).verdict,
+  "region-locked"
+);
+
+check(
+  "a job open to Ethiopia is open",
+  assessEligibility({ requiredLocation: "Ethiopia" }).verdict,
+  "open"
+);
+
+check(
+  "a job open to Addis Ababa is open",
+  assessEligibility({ requiredLocation: "Addis Ababa" }).verdict,
+  "open"
+);
+
+check(
+  "the region 'Africa' is open, unlike a country inside it",
+  assessEligibility({ requiredLocation: "Africa" }).verdict,
+  "open"
+);
+
+check(
+  "a US-only restriction reads as a country, not a region",
+  assessEligibility({ requiredLocation: "United States" }).summary,
+  "Restricted to United States — not open from Ethiopia."
+);
+
+check(
+  "structured country arrays from Himalaya-style feeds collapse to a region",
+  parseRegions("United States").regions,
+  ["north-america"]
+);
+
+// --- title relevance ------------------------------------------------------
+
+check(
+  "a Business Developer is not a software role despite the word 'developer'",
+  NON_TECH_TITLE_PATTERN.test("Junior Business Developer - Belgian Market"),
+  true
+);
+
+check(
+  "'Business Development Manager' is excluded",
+  NON_TECH_TITLE_PATTERN.test("Business Development Manager"),
+  true
+);
+
+check(
+  "a Lead Developer is a software role",
+  NON_TECH_TITLE_PATTERN.test("Lead Developer / Architect Web3"),
+  false
+);
+
+check(
+  "a Backend Engineer is a software role",
+  NON_TECH_TITLE_PATTERN.test("Backend Engineer"),
+  false
+);
 
 // --- report ---------------------------------------------------------------
 

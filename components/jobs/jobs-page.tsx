@@ -37,8 +37,11 @@ export default function JobsPage({ initialJobs }: { initialJobs: Job[] }) {
   const [loading] = React.useState(false);
 
   const [search, setSearch] = React.useState("");
+  // Defaults to "all" rather than "focus": with 128 company boards connected,
+  // the open-and-worldwide roles are mostly full-time, and hiding them by
+  // default buried the single biggest source of reachable work.
   const [opportunityFilter, setOpportunityFilter] =
-    React.useState<OpportunityFilter>("focus");
+    React.useState<OpportunityFilter>("all");
   const [sourceFilter, setSourceFilter] = React.useState<SourceFilter>("all");
   const [eligibilityFilter, setEligibilityFilter] = React.useState<EligibilityFilter>("open");
   const [showNonSoftware, setShowNonSoftware] = React.useState(false);
@@ -161,7 +164,7 @@ export default function JobsPage({ initialJobs }: { initialJobs: Job[] }) {
 
   const handleResetFilters = () => {
     setSearch("");
-    setOpportunityFilter("focus");
+    setOpportunityFilter("all");
     setSourceFilter("all");
     setEligibilityFilter("open");
     setShowNonSoftware(false);

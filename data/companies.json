@@ -5,19 +5,9 @@
     "token": "openai"
   },
   {
-    "name": "Stripe",
-    "ats": "greenhouse",
-    "token": "stripe"
-  },
-  {
     "name": "Anthropic",
     "ats": "greenhouse",
     "token": "anthropic"
-  },
-  {
-    "name": "Airwallex",
-    "ats": "ashby",
-    "token": "airwallex"
   },
   {
     "name": "Cloudflare",
@@ -35,14 +25,9 @@
     "token": "elastic"
   },
   {
-    "name": "Canonical",
+    "name": "OKX",
     "ats": "greenhouse",
-    "token": "canonical"
-  },
-  {
-    "name": "Brex",
-    "ats": "greenhouse",
-    "token": "brex"
+    "token": "okx"
   },
   {
     "name": "GitLab",
@@ -50,29 +35,19 @@
     "token": "gitlab"
   },
   {
-    "name": "ClickHouse",
-    "ats": "ashby",
-    "token": "clickhouse"
-  },
-  {
-    "name": "Scale AI",
+    "name": "Coinbase",
     "ats": "greenhouse",
-    "token": "scaleai"
+    "token": "coinbase"
   },
   {
-    "name": "Fivetran",
+    "name": "Binance",
     "ats": "greenhouse",
-    "token": "fivetran"
+    "token": "binance"
   },
   {
-    "name": "Ramp",
-    "ats": "ashby",
-    "token": "ramp"
-  },
-  {
-    "name": "Moniepoint",
+    "name": "Bybit",
     "ats": "greenhouse",
-    "token": "moniepoint"
+    "token": "bybit"
   },
   {
     "name": "ElevenLabs",
@@ -80,24 +55,29 @@
     "token": "elevenlabs"
   },
   {
-    "name": "Figma",
+    "name": "Moniepoint",
     "ats": "greenhouse",
-    "token": "figma"
+    "token": "moniepoint"
   },
   {
-    "name": "Twilio",
+    "name": "Doctolib",
     "ats": "greenhouse",
-    "token": "twilio"
+    "token": "doctolib"
   },
   {
-    "name": "Notion",
-    "ats": "ashby",
-    "token": "notion"
+    "name": "N-iX",
+    "ats": "greenhouse",
+    "token": "nix"
   },
   {
-    "name": "Plaid",
+    "name": "Pigment",
+    "ats": "lever",
+    "token": "pigment"
+  },
+  {
+    "name": "Alan",
     "ats": "ashby",
-    "token": "plaid"
+    "token": "alan"
   },
   {
     "name": "Cerebras",
@@ -115,6 +95,11 @@
     "token": "sonarsource"
   },
   {
+    "name": "TRM Labs",
+    "ats": "ashby",
+    "token": "trm-labs"
+  },
+  {
     "name": "Grafana Labs",
     "ats": "greenhouse",
     "token": "grafanalabs"
@@ -130,19 +115,14 @@
     "token": "gusto"
   },
   {
-    "name": "LangChain",
-    "ats": "ashby",
-    "token": "langchain"
+    "name": "Ripple",
+    "ats": "greenhouse",
+    "token": "ripple"
   },
   {
     "name": "Justworks",
     "ats": "greenhouse",
     "token": "justworks"
-  },
-  {
-    "name": "Payoneer",
-    "ats": "greenhouse",
-    "token": "payoneer"
   },
   {
     "name": "Mozilla",
@@ -160,19 +140,14 @@
     "token": "deepgram"
   },
   {
-    "name": "Mercury",
+    "name": "Monzo",
     "ats": "greenhouse",
-    "token": "mercury"
+    "token": "monzo"
   },
   {
-    "name": "Together AI",
+    "name": "Cabify",
     "ats": "greenhouse",
-    "token": "togetherai"
-  },
-  {
-    "name": "Temporal",
-    "ats": "ashby",
-    "token": "temporal"
+    "token": "cabify"
   },
   {
     "name": "Docker",
@@ -183,11 +158,6 @@
     "name": "JFrog",
     "ats": "greenhouse",
     "token": "jfrog"
-  },
-  {
-    "name": "Workato",
-    "ats": "greenhouse",
-    "token": "workato"
   },
   {
     "name": "PagerDuty",
@@ -205,14 +175,44 @@
     "token": "newrelic"
   },
   {
+    "name": "BitGo",
+    "ats": "greenhouse",
+    "token": "bitgo"
+  },
+  {
+    "name": "One Acre Fund",
+    "ats": "greenhouse",
+    "token": "oneacrefund"
+  },
+  {
     "name": "Supabase",
     "ats": "ashby",
     "token": "supabase"
   },
   {
-    "name": "Mixpanel",
+    "name": "Globalization Partners",
     "ats": "greenhouse",
-    "token": "mixpanel"
+    "token": "globalizationpartners"
+  },
+  {
+    "name": "Qonto",
+    "ats": "ashby",
+    "token": "qonto"
+  },
+  {
+    "name": "ClickUp",
+    "ats": "ashby",
+    "token": "clickup"
+  },
+  {
+    "name": "Blockstream",
+    "ats": "ashby",
+    "token": "blockstream"
+  },
+  {
+    "name": "Sentry",
+    "ats": "ashby",
+    "token": "sentry"
   },
   {
     "name": "Modal",
@@ -220,24 +220,19 @@
     "token": "modal"
   },
   {
-    "name": "n8n",
+    "name": "Thoughtworks",
+    "ats": "greenhouse",
+    "token": "thoughtworks"
+  },
+  {
+    "name": "Zego",
     "ats": "ashby",
-    "token": "n8n"
+    "token": "zego"
   },
   {
     "name": "M-KOPA",
     "ats": "ashby",
     "token": "m-kopa"
-  },
-  {
-    "name": "Camunda",
-    "ats": "ashby",
-    "token": "camunda"
-  },
-  {
-    "name": "Amplitude",
-    "ats": "ashby",
-    "token": "amplitude"
   },
   {
     "name": "Render",
@@ -250,19 +245,24 @@
     "token": "algolia"
   },
   {
+    "name": "N26",
+    "ats": "greenhouse",
+    "token": "n26"
+  },
+  {
     "name": "Sanity",
     "ats": "ashby",
     "token": "sanity"
   },
   {
-    "name": "Sysdig",
-    "ats": "lever",
-    "token": "sysdig"
+    "name": "GiveDirectly",
+    "ats": "greenhouse",
+    "token": "givedirectly"
   },
   {
-    "name": "Linear",
-    "ats": "ashby",
-    "token": "linear"
+    "name": "GoCardless",
+    "ats": "greenhouse",
+    "token": "gocardless"
   },
   {
     "name": "Toptal",
@@ -270,14 +270,74 @@
     "token": "toptal"
   },
   {
+    "name": "Bitpanda",
+    "ats": "greenhouse",
+    "token": "bitpanda"
+  },
+  {
+    "name": "Gemini",
+    "ats": "greenhouse",
+    "token": "gemini"
+  },
+  {
+    "name": "Back Market",
+    "ats": "ashby",
+    "token": "backmarket"
+  },
+  {
+    "name": "Mirakl",
+    "ats": "greenhouse",
+    "token": "mirakl"
+  },
+  {
+    "name": "Swile",
+    "ats": "lever",
+    "token": "swile"
+  },
+  {
+    "name": "Turing",
+    "ats": "greenhouse",
+    "token": "turing"
+  },
+  {
+    "name": "Jobandtalent",
+    "ats": "lever",
+    "token": "jobandtalent"
+  },
+  {
     "name": "Snyk",
     "ats": "ashby",
     "token": "snyk"
   },
   {
+    "name": "Fireblocks",
+    "ats": "greenhouse",
+    "token": "fireblocks"
+  },
+  {
+    "name": "Elliptic",
+    "ats": "ashby",
+    "token": "elliptic"
+  },
+  {
+    "name": "Jumia",
+    "ats": "greenhouse",
+    "token": "jumia"
+  },
+  {
+    "name": "Alchemy",
+    "ats": "ashby",
+    "token": "alchemy"
+  },
+  {
     "name": "Contentful",
     "ats": "greenhouse",
     "token": "contentful"
+  },
+  {
+    "name": "Miro",
+    "ats": "ashby",
+    "token": "miro"
   },
   {
     "name": "Oyster",
@@ -290,14 +350,19 @@
     "token": "wise"
   },
   {
-    "name": "Metabase",
+    "name": "Contentsquare",
     "ats": "lever",
-    "token": "metabase"
+    "token": "contentsquare"
   },
   {
-    "name": "Toloka",
+    "name": "Symphony",
     "ats": "greenhouse",
-    "token": "toloka"
+    "token": "symphony"
+  },
+  {
+    "name": "IDinsight",
+    "ats": "ashby",
+    "token": "idinsight"
   },
   {
     "name": "Andela",
@@ -305,9 +370,29 @@
     "token": "andela"
   },
   {
-    "name": "Storyblok",
+    "name": "Andela Talent",
+    "ats": "ashby",
+    "token": "andela"
+  },
+  {
+    "name": "Substack",
+    "ats": "ashby",
+    "token": "substack"
+  },
+  {
+    "name": "Vestiaire Collective",
+    "ats": "lever",
+    "token": "vestiairecollective"
+  },
+  {
+    "name": "Dashlane",
     "ats": "greenhouse",
-    "token": "storyblok"
+    "token": "dashlane"
+  },
+  {
+    "name": "LemFi",
+    "ats": "ashby",
+    "token": "lemfi"
   },
   {
     "name": "Mintlify",
@@ -320,39 +405,19 @@
     "token": "paddle"
   },
   {
-    "name": "LemFi",
-    "ats": "ashby",
-    "token": "lemfi"
-  },
-  {
     "name": "Resend",
     "ats": "ashby",
     "token": "resend"
   },
   {
-    "name": "Veracode",
+    "name": "Dataiku",
     "ats": "greenhouse",
-    "token": "veracode"
+    "token": "dataiku"
   },
   {
-    "name": "Airbyte",
-    "ats": "ashby",
-    "token": "airbyte"
-  },
-  {
-    "name": "AssemblyAI",
+    "name": "Typeform",
     "ats": "greenhouse",
-    "token": "assemblyai"
-  },
-  {
-    "name": "Mattermost",
-    "ats": "greenhouse",
-    "token": "mattermost"
-  },
-  {
-    "name": "Semgrep",
-    "ats": "ashby",
-    "token": "semgrep"
+    "token": "typeform"
   },
   {
     "name": "Wikimedia Foundation",
@@ -360,19 +425,49 @@
     "token": "wikimedia"
   },
   {
-    "name": "ALX Africa",
+    "name": "AssemblyAI",
     "ats": "greenhouse",
-    "token": "alxafrica"
+    "token": "assemblyai"
   },
   {
-    "name": "PlanetScale",
+    "name": "Carbon",
     "ats": "greenhouse",
-    "token": "planetscale"
+    "token": "carbon"
+  },
+  {
+    "name": "Ledger",
+    "ats": "ashby",
+    "token": "ledger"
+  },
+  {
+    "name": "Semgrep",
+    "ats": "ashby",
+    "token": "semgrep"
+  },
+  {
+    "name": "Mattermost",
+    "ats": "greenhouse",
+    "token": "mattermost"
+  },
+  {
+    "name": "Ozow",
+    "ats": "greenhouse",
+    "token": "ozow"
   },
   {
     "name": "Zapier",
     "ats": "ashby",
     "token": "zapier"
+  },
+  {
+    "name": "PandaDoc",
+    "ats": "greenhouse",
+    "token": "pandadoc"
+  },
+  {
+    "name": "PlanetScale",
+    "ats": "greenhouse",
+    "token": "planetscale"
   },
   {
     "name": "PostHog",
@@ -385,19 +480,44 @@
     "token": "tala"
   },
   {
-    "name": "Prefect",
-    "ats": "ashby",
-    "token": "prefect"
+    "name": "BlaBlaCar",
+    "ats": "lever",
+    "token": "blablacar"
   },
   {
-    "name": "Bugcrowd",
+    "name": "ConsenSys",
     "ats": "greenhouse",
-    "token": "bugcrowd"
+    "token": "consensys"
   },
   {
-    "name": "HackerOne",
+    "name": "Kit",
     "ats": "ashby",
-    "token": "hackerone"
+    "token": "kit"
+  },
+  {
+    "name": "Lattice",
+    "ats": "greenhouse",
+    "token": "lattice"
+  },
+  {
+    "name": "Circle",
+    "ats": "ashby",
+    "token": "circle"
+  },
+  {
+    "name": "Help Scout",
+    "ats": "ashby",
+    "token": "helpscout"
+  },
+  {
+    "name": "Ampersand",
+    "ats": "ashby",
+    "token": "ampersand"
+  },
+  {
+    "name": "Compound",
+    "ats": "ashby",
+    "token": "compound"
   },
   {
     "name": "Railway",
@@ -405,14 +525,24 @@
     "token": "railway"
   },
   {
-    "name": "Stability AI",
-    "ats": "greenhouse",
-    "token": "stabilityai"
+    "name": "Close",
+    "ats": "ashby",
+    "token": "close"
   },
   {
-    "name": "InfluxData",
+    "name": "Ghost",
+    "ats": "greenhouse",
+    "token": "ghost"
+  },
+  {
+    "name": "Ghost Pro",
+    "ats": "greenhouse",
+    "token": "ghost"
+  },
+  {
+    "name": "Uniswap",
     "ats": "ashby",
-    "token": "influxdata"
+    "token": "uniswap"
   },
   {
     "name": "Netlify",
@@ -420,24 +550,9 @@
     "token": "netlify"
   },
   {
-    "name": "Pinecone",
-    "ats": "ashby",
-    "token": "pinecone"
-  },
-  {
-    "name": "Upbound",
+    "name": "Wallapop",
     "ats": "greenhouse",
-    "token": "upbound"
-  },
-  {
-    "name": "Airtable",
-    "ats": "greenhouse",
-    "token": "airtable"
-  },
-  {
-    "name": "Aleph Alpha",
-    "ats": "ashby",
-    "token": "alephalpha"
+    "token": "wallapop"
   },
   {
     "name": "Neon",
@@ -445,9 +560,9 @@
     "token": "neon"
   },
   {
-    "name": "Superset",
-    "ats": "greenhouse",
-    "token": "superset"
+    "name": "Apollo Agriculture",
+    "ats": "lever",
+    "token": "apolloagriculture"
   },
   {
     "name": "Kinsta",
@@ -455,14 +570,19 @@
     "token": "kinsta"
   },
   {
-    "name": "Runway",
-    "ats": "ashby",
-    "token": "runway"
+    "name": "Luminate",
+    "ats": "greenhouse",
+    "token": "luminate"
   },
   {
-    "name": "Weaviate",
+    "name": "TrueLayer",
+    "ats": "greenhouse",
+    "token": "truelayer"
+  },
+  {
+    "name": "Blockdaemon",
     "ats": "ashby",
-    "token": "weaviate"
+    "token": "blockdaemon"
   },
   {
     "name": "Branch",
@@ -475,9 +595,34 @@
     "token": "clerk"
   },
   {
+    "name": "Luno",
+    "ats": "greenhouse",
+    "token": "luno"
+  },
+  {
+    "name": "Omidyar Network",
+    "ats": "greenhouse",
+    "token": "omidyarnetwork"
+  },
+  {
+    "name": "QuickNode",
+    "ats": "ashby",
+    "token": "quicknode"
+  },
+  {
     "name": "ReadMe",
     "ats": "ashby",
     "token": "readme"
+  },
+  {
+    "name": "Sorare",
+    "ats": "ashby",
+    "token": "sorare"
+  },
+  {
+    "name": "Thinkific",
+    "ats": "ashby",
+    "token": "thinkific"
   },
   {
     "name": "Buffer",
@@ -485,8 +630,13 @@
     "token": "buffer"
   },
   {
-    "name": "Fathom",
+    "name": "Dimagi",
+    "ats": "greenhouse",
+    "token": "dimagi"
+  },
+  {
+    "name": "Hubstaff",
     "ats": "ashby",
-    "token": "fathom"
+    "token": "hubstaff"
   }
 ]

@@ -28,9 +28,28 @@ const ENDPOINTS: Record<Ats, (slug: string) => string> = {
 };
 
 type Candidates = {
-  names: string[];
+  names?: string[];
+  /** Grouped form; flattened before probing. Groups exist for readability. */
+  groups?: Record<string, string[]>;
   slugOverrides?: Record<string, string>;
 };
+
+/** Flatten `names` and `groups` into one de-duplicated candidate list. */
+function collectCandidates(candidates: Candidates): string[] {
+  const all = [
+    ...(candidates.names ?? []),
+    ...Object.values(candidates.groups ?? {}).flat(),
+  ];
+  const seen = new Set<string>();
+  const unique: string[] = [];
+  for (const name of all) {
+    const key = name.trim();
+    if (!key || seen.has(key.toLowerCase())) continue;
+    seen.add(key.toLowerCase());
+    unique.push(key);
+  }
+  return unique;
+}
 
 export type Board = {
   name: string;
@@ -116,16 +135,17 @@ async function main() {
     fs.readFileSync(CANDIDATES_FILE, "utf-8")
   );
   const overrides = candidates.slugOverrides ?? {};
+  const names = collectCandidates(candidates);
 
   console.log(
-    `Probing ${candidates.names.length} candidates against ${ATS_ORDER.length} ATS platforms...\n`
+    `Probing ${names.length} candidates against ${ATS_ORDER.length} ATS platforms...\n`
   );
 
   let done = 0;
-  const results = await pool(candidates.names, 6, async (name) => {
+  const results = await pool(names, 6, async (name) => {
     const result = await probeCompany(name, overrides);
     done++;
-    process.stdout.write(`\r  ${done}/${candidates.names.length} checked`);
+    process.stdout.write(`\r  ${done}/${names.length} checked`);
     return result;
   });
   process.stdout.write("\n\n");

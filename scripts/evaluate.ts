@@ -29,7 +29,13 @@ const STORED_EXCERPT_LIMIT = 1_200;
 
 function toExcerpt(text: string): string {
   if (text.length <= STORED_EXCERPT_LIMIT) return text;
-  return `${text.slice(0, STORED_EXCERPT_LIMIT).trimEnd()}…`;
+  return `${text.slice(0, STORED_EXCERPT_LIMIT).trimEnd()}${EXCERPT_MARKER}`;
+}
+
+const EXCERPT_MARKER = "…";
+
+function isStoredExcerpt(description: string | undefined): boolean {
+  return (description ?? "").trimEnd().endsWith(EXCERPT_MARKER);
 }
 
 /** A job as stored: collected fields, plus evaluation once it has been scored. */
@@ -44,8 +50,18 @@ type Facts = {
   skills: Array<{ name: string; evidence: string[] }>;
 };
 
+/**
+ * Strip HTML but keep paragraph breaks.
+ *
+ * Collapsing every newline made `description.split("\n")[0]` return the whole
+ * body, so `detectOpportunity` was scanning the entire posting for words like
+ * "contract" instead of its header line. That also made the result depend on how
+ * much text survived truncation, which silently changed verdicts between runs.
+ */
 function stripHtml(html: string): string {
   return html
+    .replace(/<\s*br\s*\/?\s*>/gi, "\n")
+    .replace(/<\s*\/\s*(p|div|li|h[1-6]|tr)\s*>/gi, "\n")
     .replace(/<[^>]*>/g, " ")
     .replace(/&nbsp;/g, " ")
     .replace(/&amp;/g, "&")
@@ -54,8 +70,16 @@ function stripHtml(html: string): string {
     .replace(/&quot;/g, '"')
     .replace(/&#39;/g, "'")
     .replace(/&#x2F;/g, "/")
-    .replace(/\s+/g, " ")
+    .replace(/[ \t\f\v]+/g, " ")
+    .replace(/ *\n */g, "\n")
+    .replace(/\n{3,}/g, "\n\n")
     .trim();
+}
+
+/** First meaningful line, capped so it is stable under description truncation. */
+function headerLine(description: string): string {
+  const line = description.split("\n").find((l) => l.trim().length > 0) ?? "";
+  return line.slice(0, 300);
 }
 
 function detectLevel(title: string): Level {
@@ -111,14 +135,14 @@ function detectRelevance(
   title: string,
   detectedSkills: string[]
 ): "software" | "other" {
+  // Non-technical role names win: "Junior Business Developer" contains
+  // "developer", so the keyword search must not run first.
+  if (NON_TECH_TITLE_PATTERN.test(title)) return "other";
+
   const lower = title.toLowerCase();
   if (SOFTWARE_TITLE_KEYWORDS.some((kw) => lower.includes(kw))) {
     return "software";
   }
-
-  // A sales or marketing posting that name-drops a framework is still not a
-  // software job, so check the title before trusting the skill signal.
-  if (NON_TECH_TITLE_PATTERN.test(title)) return "other";
 
   // Fall back to skills only for postings whose title we could not parse
   // (usually Hacker News), and require genuinely engineering skills.
@@ -156,7 +180,7 @@ function evaluateJob(job: StoredJob, knownSkills: Set<string>): Job["evaluation"
   );
 
   const level = detectLevel(job.title);
-  const header = job.description.split("\n")[0] ?? "";
+  const header = headerLine(job.description);
   const opportunity = detectOpportunity(
     job.title,
     header,
@@ -199,15 +223,26 @@ function evaluateJob(job: StoredJob, knownSkills: Set<string>): Job["evaluation"
 }
 
 function main() {
+  const force = process.argv.includes("--force");
   const jobs: StoredJob[] = JSON.parse(fs.readFileSync(JOBS_FILE, "utf-8"));
   const facts = loadFacts();
   const knownSkills = new Set(facts.skills.map((s) => s.name));
   const today = new Date();
 
   let deadlineCount = 0;
+  let skippedExcerpts = 0;
 
   for (const job of jobs) {
     if (job.source === "manual") continue;
+
+    // Re-scoring a stored excerpt would grade the posting on a fraction of its
+    // text and silently drift every score. Only the collector holds full bodies,
+    // so a deliberate re-score of stored data needs --force.
+    if (!force && isStoredExcerpt(job.description)) {
+      skippedExcerpts++;
+      continue;
+    }
+
     // Evaluate against the full body, then keep only an excerpt on disk.
     const plainDesc = stripHtml(job.description ?? "");
     job.description = plainDesc;
@@ -219,6 +254,13 @@ function main() {
     if (deadline.deadline && !deadline.expired) deadlineCount++;
 
     job.description = toExcerpt(plainDesc);
+  }
+
+  if (skippedExcerpts > 0) {
+    console.log(
+      `Skipped ${skippedExcerpts} job(s) already stored as excerpts. ` +
+        `Run "npm run collect" to re-score them against full text, or pass --force.`
+    );
   }
 
   fs.writeFileSync(JOBS_FILE, JSON.stringify(jobs, null, 2));

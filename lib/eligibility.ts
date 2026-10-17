@@ -12,10 +12,43 @@ import {
   bandOverlapsAfrica,
   detectTimezoneBand,
   parseRegions,
-  regionsAllowAfrica,
+  parsedAllowsCandidate,
   type Region,
   type TimezoneBand,
 } from "./regions";
+
+/** Nicer display for the place phrases that show up most often. */
+const PLACE_LABELS: Record<string, string> = {
+  us: "United States",
+  usa: "United States",
+  "u.s.": "United States",
+  uk: "United Kingdom",
+};
+
+function titleize(value: string): string {
+  return value
+    .split(/\s+/)
+    .map((word) =>
+      word.length <= 2 ? word.toUpperCase() : word[0]!.toUpperCase() + word.slice(1)
+    )
+    .join(" ");
+}
+
+function describeRestriction(
+  regionPhrases: string[],
+  places: string[],
+  regions: Region[]
+): string {
+  if (regionPhrases.length > 0) {
+    return regions.map((r) => REGION_LABELS[r]).join(", ");
+  }
+  if (places.length > 0) {
+    return places
+      .map((place) => PLACE_LABELS[place] ?? titleize(place))
+      .join(", ");
+  }
+  return "an unnamed region";
+}
 
 export type EligibilityVerdict =
   /** Structured signal explicitly includes Africa or is worldwide. */
@@ -148,24 +181,30 @@ export function assessEligibility(input: EligibilityInput): Eligibility {
 
   // The feed lists real regions and we understood them.
   if (parsed.regions.length > 0) {
-    const africaOpen = regionsAllowAfrica(parsed.regions);
-    const label = parsed.regions.map((r) => REGION_LABELS[r]).join(", ");
+    const reachable = parsedAllowsCandidate(parsed);
+    const label = describeRestriction(
+      parsed.regionPhrases,
+      parsed.places,
+      parsed.regions
+    );
 
-    if (blocker && africaOpen) {
+    if (blocker && reachable) {
       return base(
         "conflict",
         false,
         `Feed lists "${label}", but the posting states: ${blocker}.`
       );
     }
-    if (africaOpen) {
+    if (reachable) {
       return base("open", true, `Open to ${label}.`);
     }
-    return base(
-      "region-locked",
-      false,
-      `Restricted to ${label} — Africa is not listed.`
-    );
+    // A restriction to specific places reads differently from one to a whole
+    // region, so say which it was.
+    const reason =
+      parsed.regionPhrases.length > 0
+        ? `Restricted to ${label} — Africa is not listed.`
+        : `Restricted to ${label} — not open from Ethiopia.`;
+    return base("region-locked", false, reason);
   }
 
   // A structured string we could not fully map.

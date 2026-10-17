@@ -72,28 +72,42 @@ guessed list is worthless. `npm run discover` probes a candidate list against
 all three platforms and keeps only boards that return live jobs:
 
 ```
-Probing 162 candidates against 3 ATS platforms...
-Found 98 boards with live jobs.
-  greenhouse: 44   ashby: 48   lever: 6
+Probing 355 candidates against 3 ATS platforms...
+Found 128 boards with live jobs.
+  greenhouse: 62   ashby: 55   lever: 11
 ```
 
-Re-run it when the candidate list changes or a company migrates. Every entry in
-`data/companies.json` has been checked against the live API.
+Candidates are grouped by why they are on the list. Hit rates are informative —
+the groups most likely to hire globally were the European remote-friendly set
+(24/36) and crypto (19/37), while open source foundations mostly did not use
+these platforms at all (6/36):
+
+| Group | Boards found |
+|---|---|
+| developer tools and infrastructure | 35/49 |
+| european remote-friendly | 24/36 |
+| crypto and web3 remote-first | 19/37 |
+| async-first and work-from-anywhere | 16/39 |
+| african technology companies | 13/77 |
+| global engineering services | 7/24 |
+| open source and foundations | 6/36 |
+| employer of record and global payroll | 5/24 |
+| humanitarian, global health and development | 5/37 |
+
+Two platforms were evaluated and rejected: SmartRecruiters' public postings API
+now returns zero for every company, and Workable's widget API cannot distinguish
+"no such account" from "no jobs", which makes discovery unreliable.
 
 ### Why this matters
 
-Before ATS sourcing, across 380 postings:
+| | First collection | After ATS sourcing | After widening |
+|---|---|---|---|
+| Postings | 380 | 1,454 | **1,701** |
+| Open to me | 10 | 40 | **49** |
+| Open + entry-level | 1 | 5 | **4** |
+| Real deadlines | 0 | 3 | **6** |
 
-```
-open to me: 10      open AND internship/contract/junior/program: 1
-```
-
-After, across 1,454:
-
-```
-open to me: 40      open AND internship/contract/junior/program: 5
-real deadlines found: 3
-```
+Open roles cluster hard: 23 of 49 are Supabase, who publish "Worldwide".
 
 ## Scripts
 
