@@ -6,6 +6,7 @@ import { fetchRemotive } from "./adapters/remotive";
 import { fetchHackerNews } from "./adapters/hackernews";
 import { fetchJobicy } from "./adapters/jobicy";
 import { fetchAshby, fetchGreenhouse, fetchLever } from "./adapters/ats";
+import { fetchSimplify } from "./adapters/simplify";
 import { companiesFor } from "./companies";
 import { passesCollectionFilter, pruneJobs } from "./filters";
 import type { NormalizedJob } from "./types";
@@ -21,6 +22,7 @@ type SourceName =
   | "remotive"
   | "hackernews"
   | "jobicy"
+  | "simplify"
   | "greenhouse"
   | "ashby"
   | "lever";
@@ -126,6 +128,15 @@ async function collect() {
     { name: "remotive", fetcher: fetchRemotive },
     { name: "hackernews", fetcher: fetchHackerNews, replace: true },
     { name: "jobicy", fetcher: fetchJobicy },
+    {
+      name: "simplify",
+      fetcher: fetchSimplify,
+      // A GitHub catalogue of internships, not a company board: it carries no
+      // posting body, so the coarse title filter is the only relevance signal.
+      filter: true,
+      saveRaw: false,
+      replace: true,
+    },
     {
       name: "greenhouse",
       fetcher: () => fetchGreenhouse(companiesFor("greenhouse")),

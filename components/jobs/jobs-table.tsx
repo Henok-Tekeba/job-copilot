@@ -5,7 +5,6 @@ import {
   createColumnHelper,
   flexRender,
   getCoreRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
   type ColumnDef,
@@ -63,10 +62,6 @@ export function JobsTable({
 }: JobsTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [rowSelection, setRowSelection] = React.useState({});
-  const [pagination, setPagination] = React.useState({
-    pageIndex: 0,
-    pageSize: 8,
-  });
   const [now, setNow] = React.useState(0);
 
   React.useEffect(() => {
@@ -309,14 +304,11 @@ export function JobsTable({
     state: {
       sorting,
       rowSelection,
-      pagination,
     },
     onSortingChange: setSorting,
     onRowSelectionChange: setRowSelection,
-    onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
   });
 
   if (loading) {
@@ -408,44 +400,6 @@ export function JobsTable({
         </Table>
       </div>
 
-      <div className="flex items-center justify-between gap-2 px-1">
-        <span className="text-xs text-muted-foreground tabular-nums">
-          Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
-        </span>
-        <div className="flex items-center gap-1">
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-7"
-            disabled={!table.getCanPreviousPage()}
-            onClick={() => table.previousPage()}
-          >
-            Previous
-          </Button>
-          <div className="hidden sm:flex sm:items-center sm:gap-1">
-            {Array.from({ length: table.getPageCount() }, (_, i) => (
-              <Button
-                key={i}
-                variant={table.getState().pagination.pageIndex === i ? "outline" : "ghost"}
-                size="icon-sm"
-                className="h-7 w-7 font-mono text-xs tabular-nums"
-                onClick={() => table.setPageIndex(i)}
-              >
-                {i + 1}
-              </Button>
-            ))}
-          </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-7"
-            disabled={!table.getCanNextPage()}
-            onClick={() => table.nextPage()}
-          >
-            Next
-          </Button>
-        </div>
-      </div>
     </div>
   );
 }

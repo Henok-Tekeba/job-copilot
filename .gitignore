@@ -50,3 +50,6 @@ next-env.d.ts
 /data/jobs.previous.json
 /data/state.json
 /data/history/
+
+# generated at build time from the data branch snapshot
+/public/jobs.json

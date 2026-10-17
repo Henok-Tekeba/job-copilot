@@ -69,6 +69,7 @@ const SOURCE_LABELS: Record<Source, string> = {
   remotive: "Remotive",
   hackernews: "Hacker News",
   jobicy: "Jobicy",
+  simplify: "Simplify",
   greenhouse: "Greenhouse",
   lever: "Lever",
   ashby: "Ashby",
@@ -82,6 +83,7 @@ export function sourceLabel(source: Source): string {
 
 /** Sources offered in the source filter, in display order. */
 export const SOURCE_OPTIONS: Source[] = [
+  "simplify",
   "greenhouse",
   "ashby",
   "lever",

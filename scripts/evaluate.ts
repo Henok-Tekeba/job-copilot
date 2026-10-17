@@ -2,6 +2,7 @@ import * as fs from "fs";
 import * as path from "path";
 import { detectOpportunity } from "../lib/opportunity";
 import { assessEligibility, verdictToEligible } from "../lib/eligibility";
+import { REGION_LABELS } from "../lib/regions";
 import { extractDeadline } from "../lib/deadline";
 import { detectSkills, segmentText } from "../lib/requirements";
 import { computeFit } from "../lib/fit";
@@ -162,6 +163,7 @@ function evaluateJob(job: StoredJob, knownSkills: Set<string>): Job["evaluation"
     requiredLocation,
     location: job.location,
     description: job.description,
+    sponsorshipHint: job.sponsorshipHint,
   });
 
   // Requirements come from the structured field when present, but the posting
@@ -207,7 +209,6 @@ function evaluateJob(job: StoredJob, knownSkills: Set<string>): Job["evaluation"
   return {
     eligible: verdictToEligible(eligibility.verdict),
     remoteReason: eligibility.summary,
-    detectedSkills,
     matched,
     missing,
     fitScore: fit.score,
@@ -215,8 +216,6 @@ function evaluateJob(job: StoredJob, knownSkills: Set<string>): Job["evaluation"
     opportunity,
     eligibility,
     fit,
-    requiredSkills,
-    niceToHaveSkills,
     deadlineEvidence: deadline.evidence,
     redFlags,
   };
@@ -247,7 +246,10 @@ function main() {
     const plainDesc = stripHtml(job.description ?? "");
     job.description = plainDesc;
     job.evaluation = evaluateJob(job, knownSkills);
-    job.relevance = detectRelevance(job.title, job.evaluation.detectedSkills);
+    job.relevance = detectRelevance(job.title, [
+      ...job.evaluation.matched,
+      ...job.evaluation.missing,
+    ]);
 
     const deadline = extractDeadline(plainDesc, today);
     job.deadline = deadline.deadline;
@@ -299,7 +301,9 @@ function main() {
   console.log("\n3. Top regions that exclude me:");
   const exclusions = new Map<string, number>();
   for (const job of evaluated) {
-    const regions = job.evaluation!.eligibility?.regionLabels ?? [];
+    const regions = (job.evaluation!.eligibility?.regions ?? []).map(
+      (r) => REGION_LABELS[r]
+    );
     if (job.evaluation!.eligibility?.verdict === "region-locked" && regions.length) {
       for (const r of regions) exclusions.set(r, (exclusions.get(r) ?? 0) + 1);
     }

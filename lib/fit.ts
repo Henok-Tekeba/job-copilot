@@ -38,6 +38,9 @@ const LEVEL_WEIGHTS: Record<Level, number> = {
 
 const ELIGIBILITY_WEIGHTS: Record<EligibilityVerdict, number> = {
   open: 1,
+  // Reachable, but conditional on a visa and a move — a real path, ranked below
+  // roles that need neither.
+  relocation: 0.9,
   unknown: 0.85,
   conflict: 0.7,
   "region-locked": 0.4,

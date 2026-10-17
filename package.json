@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "tsx scripts/emit-public-data.ts && next build",
     "start": "next start",
     "lint": "eslint",
     "collect": "tsx scripts/collect.ts",
@@ -14,7 +14,8 @@
     "history": "tsx scripts/history.ts",
     "selfcheck": "tsx scripts/selfcheck.ts",
     "sync-data": "bash scripts/sync-data.sh",
-    "publish-data": "bash scripts/publish-data.sh"
+    "publish-data": "bash scripts/publish-data.sh",
+    "emit-data": "tsx scripts/emit-public-data.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",

@@ -12,7 +12,7 @@ import type { NormalizedJob } from "./types";
 
 /** Titles that indicate a role this project can actually help with. */
 const TARGET_ROLE_PATTERN =
-  /\b(engineer|engineering|developer|software|sde|swe|programmer|devops|sre|site reliability|backend|back-end|frontend|front-end|fullstack|full-stack|full stack|machine learning|mlops|data scientist|data engineer|data analyst|qa|quality assurance|tester|test engineer|mobile|ios|android|api|platform|infrastructure|cloud|security|architect|computer|web developer|technical writer|solutions engineer)\b/i;
+  /\b(engineer|engineering|developer|software|sde|swe|programmer|devops|sre|site reliability|backend|back-end|frontend|front-end|fullstack|full-stack|full stack|machine learning|mlops|data scientist|data engineer|data analyst|data science|data analytics|analytics engineer|research engineer|research scientist|applied scientist|quant|quantitative|computer vision|nlp|robotics|embedded|firmware|qa|quality assurance|tester|test engineer|mobile|ios|android|api|platform|infrastructure|cloud|security|architect|computer|web developer|technical writer|solutions engineer)\b/i;
 
 /**
  * Titles above the level this project targets. Keeping them out at collection

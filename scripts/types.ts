@@ -4,7 +4,7 @@ export const AtsSchema = z.enum(["greenhouse", "lever", "ashby"]);
 export type Ats = z.infer<typeof AtsSchema>;
 
 export const SourceSchema = z.union([
-  z.enum(["remoteok", "remotive", "hackernews", "jobicy"]),
+  z.enum(["remoteok", "remotive", "hackernews", "jobicy", "simplify"]),
   AtsSchema,
 ]);
 
@@ -33,6 +33,11 @@ export const NormalizedJobSchema = z.object({
   salary: z.string().optional(),
   /** Structured employment type, e.g. Ashby's "Intern" / "Contract". */
   employmentType: z.string().optional(),
+  /**
+   * Feed-provided sponsorship signal. Only set when the feed gives a real
+   * value; Simplify's "Other" carries no information so it is dropped.
+   */
+  sponsorshipHint: z.string().optional(),
 });
 
 export type Source = z.infer<typeof SourceSchema>;

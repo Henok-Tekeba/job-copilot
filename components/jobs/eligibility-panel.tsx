@@ -2,10 +2,12 @@
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
+import { REGION_LABELS } from "@/lib/regions";
 import type { Eligibility } from "@/lib/types";
 
 const VERDICT_LABEL: Record<Eligibility["verdict"], string> = {
   open: "Open to you",
+  relocation: "Needs relocation",
   "region-locked": "Region locked",
   conflict: "Conflicting signals",
   unknown: "Unknown",
@@ -13,6 +15,7 @@ const VERDICT_LABEL: Record<Eligibility["verdict"], string> = {
 
 const VERDICT_CLASS: Record<Eligibility["verdict"], string> = {
   open: "border-emerald-500/40 text-emerald-400",
+  relocation: "border-sky-500/40 text-sky-400",
   "region-locked": "border-red-500/40 text-red-400",
   conflict: "border-amber-500/40 text-amber-400",
   unknown: "border-amber-500/40 text-amber-400",
@@ -26,15 +29,43 @@ const VERDICT_CLASS: Record<Eligibility["verdict"], string> = {
 export function EligibilityPanel({ eligibility }: { eligibility?: Eligibility }) {
   if (!eligibility) return null;
 
-  const { verdict, summary, evidence, timezone, blockedBy, regionLabels } =
-    eligibility;
+  const { verdict, summary, evidence, timezone, blockedBy } = eligibility;
+  // Derived rather than stored: the label list was duplicated bytes in every job.
+  const regionLabels = eligibility.regions.map((r) => REGION_LABELS[r]);
+
+  const sponsorship = eligibility.sponsorship;
+  const workplace = eligibility.workplace;
+
+  const sponsorshipLabel =
+    sponsorship?.verdict === "offered"
+      ? "Sponsorship offered"
+      : sponsorship?.verdict === "not-offered"
+        ? "No sponsorship"
+        : null;
 
   return (
     <Alert className="mx-4 w-auto">
-      <AlertTitle className="flex items-center gap-2">
+      <AlertTitle className="flex flex-wrap items-center gap-2">
         <Badge variant="outline" className={VERDICT_CLASS[verdict]}>
           {VERDICT_LABEL[verdict]}
         </Badge>
+        {workplace && workplace !== "unknown" && (
+          <Badge variant="secondary" className="capitalize">
+            {workplace}
+          </Badge>
+        )}
+        {sponsorshipLabel && (
+          <Badge
+            variant="outline"
+            className={
+              sponsorship?.verdict === "offered"
+                ? "border-emerald-500/40 text-emerald-400"
+                : "border-red-500/40 text-red-400"
+            }
+          >
+            {sponsorshipLabel}
+          </Badge>
+        )}
         {regionLabels.length > 0 && (
           <span className="text-xs font-normal text-muted-foreground">
             {regionLabels.join(" · ")}
@@ -45,8 +76,12 @@ export function EligibilityPanel({ eligibility }: { eligibility?: Eligibility })
       <AlertDescription className="flex flex-col gap-2">
         <span>{summary}</span>
 
-        {blockedBy && (
-          <span className="text-xs text-red-400">{blockedBy}</span>
+        {blockedBy && <span className="text-xs text-red-400">{blockedBy}</span>}
+
+        {sponsorship && sponsorship.signals.length > 0 && (
+          <span className="text-xs text-muted-foreground">
+            Sponsorship evidence: {sponsorship.signals.join(", ")}
+          </span>
         )}
 
         {timezone.required && (

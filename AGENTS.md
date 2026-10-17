@@ -1,12 +1,60 @@
 # Rules
+
 - Stack: Next.js (App Router), TypeScript, Tailwind, shadcn/ui. Nothing else for UI.
-- Never write your own buttons, inputs, tables, dialogs, etc. Import from `@/components/ui/*`.
+- Never write your own buttons, inputs, tables, dialogs, badges, cards, menus. Import from `@/components/ui/*` and compose those primitives. Do not invent new UI primitives.
 - If a shadcn component is missing, install it with `npx shadcn@latest add <name>`. Do not hand-write it.
 - Dark theme only. Use theme tokens (bg-background, text-muted-foreground, border), not hardcoded hex colors.
-- Fonts: Geist Sans for text, Geist Mono for numbers, dates and scores.
-- Data comes from `data/seed.json` for now. No backend yet.
+- Fonts: Geist Sans for text, Geist Mono for numbers, dates, deadlines and scores.
 - Do not add new dependencies without asking.
 - Keep files small. One component per file.
+
+## What this project is
+
+Finds **tech internships and contracts** for a 3rd-year CS student, anywhere in the
+world — US, UK, Europe, remote or on-site.
+
+The question it answers is **not** "can I work from Ethiopia". It is:
+
+1. Will this employer take an international applicant?
+2. Would I pass the screen, or what am I missing before I apply?
+
+## Scope
+
+- **Tech only**: engineering, data, ML, security, infrastructure, QA. Not sales,
+  marketing, design, support, finance.
+- **Internships, contracts and junior roles.** Senior/staff/principal is out of scope.
+- **On-site abroad is IN scope** when the employer sponsors visas or accepts
+  international applicants. Never treat "London" or "New York" as closed on its own —
+  the reason people from here get Bloomberg offers is sponsorship, not remoteness.
+- Region restrictions still matter, but as a signal about hiring reach, not a hard no.
+
+## Data
+
+- Job data is **not** in this branch. `jobs.json` lives on the orphan `data` branch,
+  force-pushed as a single commit so it never grows the history. Curated files
+  (`companies.json`, `programs.json`, `facts.json`, `seed.json`) stay on `main`.
+- `npm run sync-data` before building. `npm run verify-data` before shipping.
+- `lib/data.ts` falls back to `data/seed.json` when `jobs.json` fails validation.
+  That is right for a fresh clone and dangerous in CI, which is why verify-data exists.
+
+## Pipeline
+
+```bash
+npm run discover      # probe candidate companies for live ATS boards
+npm run collect       # fetch all sources, filter, merge, evaluate, store
+npm run evaluate      # re-score and print a report
+npm run selfcheck     # engine assertions
+npm run verify-data   # fail loudly on a missing or malformed snapshot
+npm run sync-data     # pull the snapshot from the data branch
+npm run publish-data  # push the snapshot back to the data branch
+```
+
+- `npm run selfcheck` is the engine's safety net. Run it after touching
+  `lib/eligibility.ts`, `lib/regions.ts`, `lib/deadline.ts`, `lib/fit.ts` or
+  `lib/requirements.ts`.
+- `npm run collect` is the canonical path: it fetches full bodies, scores them, then
+  stores an excerpt. `evaluate` refuses to re-score a stored excerpt without `--force`,
+  because grading a posting on a fraction of its text silently drifts every score.
 
 <!-- BEGIN:nextjs-agent-rules -->
 

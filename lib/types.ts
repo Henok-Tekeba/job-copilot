@@ -5,6 +5,7 @@ export const sourceSchema = z.enum([
   "remotive",
   "hackernews",
   "jobicy",
+  "simplify",
   "greenhouse",
   "lever",
   "ashby",
@@ -34,16 +35,23 @@ export const regionSchema = z.enum([
 
 export const eligibilityVerdictSchema = z.enum([
   "open",
+  "relocation",
   "region-locked",
   "conflict",
   "unknown",
 ]);
 
+export const workplaceSchema = z.enum(["remote", "hybrid", "onsite", "unknown"]);
+
+export const sponsorshipSchema = z.object({
+  verdict: z.enum(["offered", "not-offered", "unstated"]),
+  signals: z.array(z.string()),
+});
+
 export const eligibilitySchema = z.object({
   verdict: eligibilityVerdictSchema,
   africaOpen: z.boolean(),
   regions: z.array(regionSchema),
-  regionLabels: z.array(z.string()),
   evidence: z.array(z.object({ field: z.string(), value: z.string() })),
   unknownSegments: z.array(z.string()),
   timezone: z.object({
@@ -51,6 +59,8 @@ export const eligibilitySchema = z.object({
     required: z.string().nullable(),
     overlapsAfrica: z.boolean().nullable(),
   }),
+  workplace: workplaceSchema.optional(),
+  sponsorship: sponsorshipSchema.optional(),
   blockedBy: z.string().nullable(),
   summary: z.string(),
 });
@@ -59,9 +69,9 @@ export const fitSchema = z.object({
   score: z.number().nullable(),
   priority: z.number(),
   coverage: z.number(),
-  requiredMatched: z.array(z.string()),
+  // Only the gaps are stored. The "matched" halves are derivable and were
+  // costing real bytes: the evaluation object was 47% of the whole payload.
   requiredMissing: z.array(z.string()),
-  niceMatched: z.array(z.string()),
   niceMissing: z.array(z.string()),
   levelWeight: z.number(),
   eligibilityWeight: z.number(),
@@ -72,7 +82,6 @@ export const fitSchema = z.object({
 export const evaluationSchema = z.object({
   eligible: eligibleSchema,
   remoteReason: z.string(),
-  detectedSkills: z.array(z.string()),
   matched: z.array(z.string()),
   missing: z.array(z.string()),
   fitScore: z.number().min(0).max(100).nullable(),
@@ -82,8 +91,6 @@ export const evaluationSchema = z.object({
   // before the change still validates instead of silently falling back to seed.
   eligibility: eligibilitySchema.optional(),
   fit: fitSchema.optional(),
-  requiredSkills: z.array(z.string()).optional(),
-  niceToHaveSkills: z.array(z.string()).optional(),
   deadlineEvidence: z.string().nullable().optional(),
   /** Unpaid / commission-only / fee-requesting signals worth warning about. */
   redFlags: z.array(z.string()).optional(),
@@ -147,6 +154,8 @@ export const jobSchema = z.object({
   deadline: z.string().nullable().optional(),
   /** Pay text as published, when the feed provides it. */
   salary: z.string().optional(),
+  /** Feed-provided sponsorship signal, when the feed gives a real value. */
+  sponsorshipHint: z.string().optional(),
 });
 
 export const seedJobSchema = z.object({

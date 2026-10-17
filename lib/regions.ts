@@ -653,7 +653,9 @@ export function parseRegions(raw: string | null | undefined): ParsedRegions {
     );
 
     if (hit) {
-      record(cleaned, hit[1], REGION_LEVEL_PHRASES.has(hit[0]));
+      // Label with the matched phrase, not the raw segment: "Hybrid - London"
+      // must read as London, not as "Hybrid - London".
+      record(hit[0], hit[1], REGION_LEVEL_PHRASES.has(hit[0]));
       continue;
     }
 
@@ -724,4 +726,24 @@ export function detectTimezoneBand(text: string): TimezoneBand {
 export function bandOverlapsAfrica(band: TimezoneBand): boolean | null {
   if (band === null) return null;
   return band === "europe-africa";
+}
+
+export type Workplace = "remote" | "hybrid" | "onsite" | "unknown";
+
+/**
+ * Whether a role is remote, hybrid or on-site.
+ *
+ * This decides whether a foreign restriction is escapable. A remote role
+ * restricted to the US genuinely cannot be taken from abroad — nobody sponsors
+ * a visa for a job that must be performed remotely from another country. An
+ * on-site role in London can be, because relocation is a thing that happens.
+ */
+export function detectWorkplace(text: string | null | undefined): Workplace {
+  const value = (text ?? "").toLowerCase();
+  if (!value.trim()) return "unknown";
+
+  if (/\bhybrid\b/.test(value)) return "hybrid";
+  if (/\b(on-?site|onsite|in-?office|in-?person|on site)\b/.test(value)) return "onsite";
+  if (/\bremote\b/.test(value)) return "remote";
+  return "unknown";
 }

@@ -21,6 +21,7 @@ import type { Job } from "@/lib/types";
 import { CommandPalette } from "@/components/jobs/command-palette";
 import { JobDetailSheet } from "@/components/jobs/job-detail-sheet";
 import { JobsCardList } from "@/components/jobs/jobs-card-list";
+import { JobsPagination } from "@/components/jobs/jobs-pagination";
 import { JobsTable } from "@/components/jobs/jobs-table";
 import {
   JobsToolbar,
@@ -28,13 +29,47 @@ import {
   type SortBy,
 } from "@/components/jobs/jobs-toolbar";
 import { StatCards } from "@/components/jobs/stat-cards";
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
 
 type EligibilityFilter = "open" | "all" | "no";
 type SourceFilter = "all" | Job["source"];
 
-export default function JobsPage({ initialJobs }: { initialJobs: Job[] }) {
-  const [jobs, setJobs] = React.useState<Job[]>(initialJobs);
-  const [loading] = React.useState(false);
+const PAGE_SIZE = 24;
+
+type LoadState = "loading" | "ready" | "error";
+
+export default function JobsPage() {
+  const [jobs, setJobs] = React.useState<Job[]>([]);
+  const [loadState, setLoadState] = React.useState<LoadState>("loading");
+  const [reloadToken, setReloadToken] = React.useState(0);
+
+  // Data arrives as an asset rather than as serialised props, so the HTML stays
+  // small enough to load on a phone.
+  React.useEffect(() => {
+    let cancelled = false;
+    const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
+    fetch(`${basePath}/jobs.json`)
+      .then((res) => {
+        if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+        return res.json() as Promise<Job[]>;
+      })
+      .then((data) => {
+        if (cancelled) return;
+        setJobs(Array.isArray(data) ? data : []);
+        setLoadState("ready");
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setLoadState("error");
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [reloadToken]);
+
+  const loading = loadState === "loading";
 
   const [search, setSearch] = React.useState("");
   // Defaults to "all" rather than "focus": with 128 company boards connected,
@@ -48,6 +83,26 @@ export default function JobsPage({ initialJobs }: { initialJobs: Job[] }) {
   const [minFit, setMinFit] = React.useState(0);
   // Defaults to priority so the prerendered order matches the hydrated order.
   const [sortBy, setSortBy] = React.useState<SortBy>("priority");
+
+  // Pagination is owned here, not by the table or the card list. Both render the
+  // same slice so the page can be prerendered small: 4,000 postings rendered in
+  // full produced a 17 MB index.html.
+  const [pageIndex, setPageIndex] = React.useState(0);
+
+  const filterKey = [
+    search,
+    opportunityFilter,
+    sourceFilter,
+    eligibilityFilter,
+    showNonSoftware,
+    minFit,
+    sortBy,
+  ].join("|");
+  const [lastFilterKey, setLastFilterKey] = React.useState(filterKey);
+  if (filterKey !== lastFilterKey) {
+    setLastFilterKey(filterKey);
+    setPageIndex(0);
+  }
 
   const [selectedJob, setSelectedJob] = React.useState<Job | null>(null);
   const [appliedIds, setAppliedIds] = React.useState<Set<string>>(new Set());
@@ -136,6 +191,13 @@ export default function JobsPage({ initialJobs }: { initialJobs: Job[] }) {
     sortBy,
   ]);
 
+  const pageCount = Math.max(1, Math.ceil(filteredJobs.length / PAGE_SIZE));
+  const safePageIndex = Math.min(pageIndex, pageCount - 1);
+  const pagedJobs = filteredJobs.slice(
+    safePageIndex * PAGE_SIZE,
+    safePageIndex * PAGE_SIZE + PAGE_SIZE
+  );
+
   const softwareCount = jobs.filter((j) => j.relevance === "software").length;
   const openCount = jobs.filter((j) => j.evaluation.eligible === "yes").length;
 
@@ -211,10 +273,36 @@ export default function JobsPage({ initialJobs }: { initialJobs: Job[] }) {
         <div className="flex flex-col gap-1 pt-1">
           <h1 className="font-heading text-xl font-semibold tracking-tight">Jobs</h1>
           <p className="text-sm text-muted-foreground">
-            {softwareCount} software jobs, {openCount} open to you
+            {loadState === "ready"
+              ? `${softwareCount} software jobs, ${openCount} open to you`
+              : "Loading postings…"}
           </p>
         </div>
 
+        {loadState === "error" ? (
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>Could not load postings</EmptyTitle>
+              <EmptyDescription>
+                The job snapshot did not load. Check your connection and try
+                again.
+              </EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  setLoadState("loading");
+                  setReloadToken((n) => n + 1);
+                }}
+              >
+                Retry
+              </Button>
+            </EmptyContent>
+          </Empty>
+        ) : (
+          <>
         <StatCards jobs={jobs} />
 
         <div className="flex flex-col gap-4">
@@ -238,7 +326,7 @@ export default function JobsPage({ initialJobs }: { initialJobs: Job[] }) {
           <div className="rounded-lg md:border md:border-border">
             <div className="hidden md:block">
               <JobsTable
-                jobs={filteredJobs}
+                jobs={pagedJobs}
                 loading={loading}
                 appliedIds={appliedIds}
                 onRowClick={setSelectedJob}
@@ -249,7 +337,7 @@ export default function JobsPage({ initialJobs }: { initialJobs: Job[] }) {
             </div>
             <div className="md:hidden">
               <JobsCardList
-                jobs={filteredJobs}
+                jobs={pagedJobs}
                 loading={loading}
                 appliedIds={appliedIds}
                 onRowClick={setSelectedJob}
@@ -257,7 +345,16 @@ export default function JobsPage({ initialJobs }: { initialJobs: Job[] }) {
               />
             </div>
           </div>
+
+          <JobsPagination
+            pageIndex={safePageIndex}
+            pageSize={PAGE_SIZE}
+            total={filteredJobs.length}
+            onPageChange={setPageIndex}
+          />
         </div>
+          </>
+        )}
       </div>
 
       <JobDetailSheet

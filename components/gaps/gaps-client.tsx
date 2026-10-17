@@ -34,6 +34,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Empty,
   EmptyHeader,
@@ -43,17 +44,54 @@ import {
 import { GapsCardList } from "@/components/gaps/gaps-card-list";
 import type { Job } from "@/lib/types";
 
+/** Opportunity types worth gap-analysing: the roles actually within reach. */
+const GAP_OPPORTUNITIES = new Set(["internship", "contract", "junior"]);
+
 export function GapsClient({
-  initialJobs,
   lastUpdated,
   knownSkills = [],
 }: {
-  initialJobs: Job[];
   lastUpdated: string;
   knownSkills?: string[];
 }) {
+  const [initialJobs, setInitialJobs] = React.useState<Job[]>([]);
+  const [loadState, setLoadState] = React.useState<"loading" | "ready" | "error">(
+    "loading"
+  );
   const [showOwned, setShowOwned] = React.useState(false);
   const [selectedSkill, setSelectedSkill] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    let cancelled = false;
+    const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
+    fetch(`${basePath}/jobs.json`)
+      .then((res) => {
+        if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+        return res.json() as Promise<Job[]>;
+      })
+      .then((data) => {
+        if (cancelled) return;
+        setInitialJobs(
+          (Array.isArray(data) ? data : []).filter(
+            (job) =>
+              job.relevance === "software" &&
+              GAP_OPPORTUNITIES.has(job.evaluation.opportunity) &&
+              (job.evaluation.eligible === "yes" ||
+                job.evaluation.eligible === "unclear")
+          )
+        );
+        setLoadState("ready");
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setLoadState("error");
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const knownSkillsSet = React.useMemo(() => new Set(knownSkills), [knownSkills]);
 
@@ -61,7 +99,7 @@ export function GapsClient({
     const skillMap = new Map<string, Job[]>();
 
     for (const job of initialJobs) {
-      for (const skill of job.evaluation.detectedSkills) {
+      for (const skill of [...job.evaluation.matched, ...job.evaluation.missing]) {
         if (!skillMap.has(skill)) {
           skillMap.set(skill, []);
         }
@@ -121,7 +159,22 @@ export function GapsClient({
           </p>
         </div>
 
-        {initialJobs.length === 0 ? (
+        {loadState === "loading" ? (
+          <div className="flex flex-col gap-2 p-2">
+            {Array.from({ length: 8 }, (_, i) => (
+              <Skeleton key={i} className="h-16" />
+            ))}
+          </div>
+        ) : loadState === "error" ? (
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>Could not load postings</EmptyTitle>
+              <EmptyDescription>
+                The job snapshot did not load. Check your connection and reload.
+              </EmptyDescription>
+            </EmptyHeader>
+          </Empty>
+        ) : initialJobs.length === 0 ? (
           <Empty>
             <EmptyHeader>
               <EmptyTitle>No opportunities to analyze</EmptyTitle>

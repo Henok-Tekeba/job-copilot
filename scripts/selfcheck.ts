@@ -241,21 +241,21 @@ check("nice-to-have gaps are counted separately", partial.niceMissing, ["Rust"])
 // --- country-level precision ----------------------------------------------
 
 check(
-  "a job open only to Kenya is NOT open from Ethiopia",
+  "a Kenya-only on-site role is a relocation, not remote work",
   assessEligibility({ requiredLocation: "Kenya" }).verdict,
+  "relocation"
+);
+
+check(
+  "a Kenya-only remote role is closed — nobody sponsors a remote visa",
+  assessEligibility({ requiredLocation: "Remote in Kenya" }).verdict,
   "region-locked"
 );
 
 check(
-  "a job open only to Kenya says so plainly",
-  assessEligibility({ requiredLocation: "Kenya" }).summary,
-  "Restricted to Kenya — not open from Ethiopia."
-);
-
-check(
-  "a multi-country African restriction is still closed",
+  "a multi-country African restriction needs relocation",
   assessEligibility({ requiredLocation: "Kenya, Nigeria, South Africa" }).verdict,
-  "region-locked"
+  "relocation"
 );
 
 check(
@@ -277,18 +277,95 @@ check(
 );
 
 check(
-  "a US-only restriction reads as a country, not a region",
-  assessEligibility({ requiredLocation: "United States" }).summary,
-  "Restricted to United States — not open from Ethiopia."
-);
-
-check(
-  "structured country arrays from Himalaya-style feeds collapse to a region",
+  "structured country arrays collapse to a region",
   parseRegions("United States").regions,
   ["north-america"]
 );
 
-// --- title relevance ------------------------------------------------------
+// --- sponsorship, the axis that actually matters --------------------------
+
+check(
+  "an on-site London internship is reachable, not closed",
+  assessEligibility({ requiredLocation: "London, UK" }).verdict,
+  "relocation"
+);
+
+check(
+  "an on-site London internship says sponsorship is unstated",
+  assessEligibility({ requiredLocation: "London, UK" }).summary,
+  "Based in London, United Kingdom. Sponsorship not stated — check the posting."
+);
+
+check(
+  "hybrid in London is reported as hybrid",
+  assessEligibility({ requiredLocation: "Hybrid - London" }).summary,
+  "Hybrid in London. Sponsorship not stated — check the posting."
+);
+
+check(
+  "an explicit sponsorship offer is detected",
+  assessEligibility({
+    requiredLocation: "London, UK",
+    description: "We provide visa sponsorship and relocation support.",
+  }).sponsorship.verdict,
+  "offered"
+);
+
+check(
+  "an explicit refusal closes the role",
+  assessEligibility({
+    requiredLocation: "London, UK",
+    description: "Unfortunately we are unable to provide sponsorship.",
+  }).verdict,
+  "region-locked"
+);
+
+check(
+  "a remote role tied to the US is closed, not a relocation",
+  assessEligibility({ requiredLocation: "Remote in USA" }).verdict,
+  "region-locked"
+);
+
+check(
+  "existing work authorization closes a role",
+  assessEligibility({
+    requiredLocation: "New York, NY",
+    description: "Candidates must be authorized to work in the United States.",
+  }).verdict,
+  "region-locked"
+);
+
+check(
+  "a feed that says worldwide while the body demands citizenship is a conflict",
+  assessEligibility({
+    requiredLocation: "Worldwide",
+    description: "US citizenship is required for this role.",
+  }).verdict,
+  "conflict"
+);
+
+check(
+  "the feed's sponsorship value is trusted when it has one",
+  assessEligibility({
+    requiredLocation: "London, UK",
+    sponsorshipHint: "Offers Sponsorship",
+  }).summary,
+  "Based in London, United Kingdom. Sponsorship offered."
+);
+
+check(
+  "relocation counts as reachable, which is the point of the change",
+  verdictToEligible("relocation"),
+  "yes"
+);
+
+check(
+  "silence about sponsorship is not a rejection",
+  assessEligibility({ requiredLocation: "Berlin, Germany" }).sponsorship.verdict,
+  "unstated"
+);
+
+// --- report ---------------------------------------------------------------
 
 check(
   "a Business Developer is not a software role despite the word 'developer'",

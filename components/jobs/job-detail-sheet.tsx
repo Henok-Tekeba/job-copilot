@@ -140,8 +140,7 @@ export function JobDetailSheet({
                   </span>
                 )}
 
-                {job.evaluation.requiredSkills &&
-                  job.evaluation.requiredSkills.length > 0 && (
+                {job.evaluation.fit?.basis === "required" && (
                     <>
                       <Separator />
                       <div className="flex flex-col gap-2">
@@ -169,8 +168,7 @@ export function JobDetailSheet({
                     </>
                   )}
 
-                {job.evaluation.niceToHaveSkills &&
-                  job.evaluation.niceToHaveSkills.length > 0 && (
+                {(job.evaluation.fit?.niceMissing.length ?? 0) > 0 && (
                     <>
                       <Separator />
                       <div className="flex flex-col gap-2">
