@@ -44,7 +44,6 @@ function main() {
   const jobs: Job[] = JSON.parse(fs.readFileSync(JOBS_FILE, "utf-8"));
   const hnJobs = jobs.filter((j) => j.source === "hackernews");
   const hnSoftwareJobs = hnJobs.filter((j) => j.relevance === "software");
-  const softwareJobs = jobs.filter((j) => j.relevance === "software");
 
   const cleanlyParsed = hnJobs.filter(isCleanlyParsed).length;
 

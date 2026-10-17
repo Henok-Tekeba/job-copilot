@@ -7,7 +7,6 @@ import {
   getCoreRowModel,
   getSortedRowModel,
   useReactTable,
-  type ColumnDef,
   type SortingState,
 } from "@tanstack/react-table";
 import { ArrowDown, ArrowUp, ArrowUpDown, MoreHorizontal } from "lucide-react";
@@ -301,7 +300,7 @@ export function JobsTable({
         },
       },
     ],
-    [appliedIds, savedIds, onDismiss, onToggleApplied, onToggleSaved],
+    [appliedIds, savedIds, onDismiss, onToggleApplied, onToggleSaved, now],
   );
 
   const table = useReactTable({

@@ -12,11 +12,11 @@ import { Button } from "@/components/ui/button";
  * only mirrors the class that is actually there.
  */
 export function ThemeToggle({ className }: { className?: string }) {
-  const [dark, setDark] = React.useState(true);
-
-  React.useEffect(() => {
-    setDark(document.documentElement.classList.contains("dark"));
-  }, []);
+  const [dark, setDark] = React.useState(() =>
+    typeof document !== "undefined"
+      ? document.documentElement.classList.contains("dark")
+      : true
+  );
 
   const toggle = () => {
     const next = !dark;
