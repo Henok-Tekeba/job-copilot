@@ -1,21 +1,16 @@
 import type { Eligibility } from "./types";
 
 /**
- * One accent, two intensities, and a muted floor.
+ * How each eligibility verdict is drawn.
  *
- * Reachability is the single most important thing about a posting, so it is the
- * only thing allowed to carry colour. Bright accent means you can act now; dim
- * accent means it needs a move; muted means it is simply not for you. Red is
- * reserved for red flags, which are a genuine alarm rather than a category.
- *
- * Defining this once stops the four competing status colours that had grown
- * across the panel, the cards and the table.
+ * Defined once so the detail panel, the cards and the table cannot drift apart,
+ * which is how the four status colours came to be repeated in three places.
  */
 export type VerdictStyle = {
   label: string;
   /** Badge treatment in the detail panel. */
   badge: string;
-  /** Text-only treatment for dense rows. */
+  /** Text-only treatment. */
   text: string;
   /** The dot beside a title in a list. */
   dot: string;
@@ -24,32 +19,32 @@ export type VerdictStyle = {
 export const VERDICT_STYLE: Record<Eligibility["verdict"], VerdictStyle> = {
   open: {
     label: "Open to you",
-    badge: "border-primary/50 text-primary",
-    text: "text-primary",
-    dot: "bg-primary",
+    badge: "border-emerald-500/40 text-emerald-400",
+    text: "text-emerald-400",
+    dot: "bg-emerald-500",
   },
   relocation: {
     label: "Needs relocation",
-    badge: "border-primary/25 text-primary/75",
-    text: "text-primary/75",
-    dot: "border border-primary/60",
+    badge: "border-sky-500/40 text-sky-400",
+    text: "text-sky-400",
+    dot: "border border-sky-500",
   },
   "region-locked": {
-    label: "Not open to you",
-    badge: "border-border text-muted-foreground",
-    text: "text-muted-foreground",
-    dot: "bg-muted-foreground/35",
+    label: "Region locked",
+    badge: "border-red-500/40 text-red-400",
+    text: "text-red-400",
+    dot: "border border-red-500/70",
   },
   conflict: {
     label: "Conflicting signals",
-    badge: "border-destructive/50 text-destructive",
-    text: "text-destructive",
-    dot: "bg-destructive",
+    badge: "border-amber-500/40 text-amber-400",
+    text: "text-amber-400",
+    dot: "border border-amber-500",
   },
   unknown: {
-    label: "Unclear",
-    badge: "border-border text-muted-foreground",
-    text: "text-muted-foreground",
-    dot: "border border-muted-foreground/50",
+    label: "Unknown",
+    badge: "border-amber-500/40 text-amber-400",
+    text: "text-amber-400",
+    dot: "border border-amber-500",
   },
 };

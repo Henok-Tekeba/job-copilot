@@ -36,7 +36,7 @@ export function StatCards({
   const closingSoon = loaded && today ? countClosingSoon(jobs, today) : null;
 
   const stats = [
-    { label: "Reachable", value: summary.reachable },
+    { label: "Open to you", value: summary.reachable },
     { label: "Internships & contracts", value: summary.entry },
     { label: "Closing in 14 days", value: closingSoon ?? "—" },
     { label: "Best priority", value: summary.best ?? "—" },

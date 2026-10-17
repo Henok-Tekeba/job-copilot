@@ -45,8 +45,8 @@ export function EligibilityPanel({ eligibility }: { eligibility?: Eligibility })
             variant="outline"
             className={
               sponsorship?.verdict === "offered"
-                ? VERDICT_STYLE.open.badge
-                : VERDICT_STYLE["region-locked"].badge
+                ? "border-emerald-500/40 text-emerald-400"
+                : "border-red-500/40 text-red-400"
             }
           >
             {sponsorshipLabel}
@@ -62,7 +62,7 @@ export function EligibilityPanel({ eligibility }: { eligibility?: Eligibility })
       <AlertDescription className="flex flex-col gap-2">
         <span>{summary}</span>
 
-        {blockedBy && <span className="text-xs text-destructive">{blockedBy}</span>}
+        {blockedBy && <span className="text-xs text-red-400">{blockedBy}</span>}
 
         {sponsorship && sponsorship.signals.length > 0 && (
           <span className="text-xs text-muted-foreground">

@@ -8,6 +8,20 @@
 - Do not add new dependencies without asking.
 - Keep files small. One component per file.
 
+## Look and feel
+
+The target is **Vercel's** look: pure black ground, neutral greys, Geist, tight
+radii, no decorative colour.
+
+- **Do not change the typefaces, the colour token values, or the radii.**
+- Do not introduce an accent colour, a tinted ground, or a custom palette.
+- Status colours (emerald / sky / amber / red for eligibility) are the only
+  colour in the UI. Keep them.
+- A visual restyle is its own task, not a side effect of another one. If you
+  think one is needed, ask first and say what and why. Do not fold it into a bug
+  fix, because that is exactly how the fonts and palette got changed once
+  already and had to be reverted.
+
 ## What this project is
 
 Finds **tech internships and contracts** for a 3rd-year CS student, anywhere in the
