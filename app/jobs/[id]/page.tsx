@@ -2,6 +2,35 @@ import { notFound } from "next/navigation";
 import { JobDetailPage } from "@/components/jobs/job-detail-page";
 import { loadJobsCached } from "@/lib/data";
 import { jobSchema } from "@/lib/types";
+import { VERDICT_STYLE } from "@/lib/verdict-style";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const decoded = decodeURIComponent(id);
+  const job = loadJobsCached().find(
+    (c) => c.id === id || c.id === decoded
+  );
+  if (!job) return { title: "Job not found" };
+  const verdict = job.evaluation.eligibility?.verdict;
+  const verdictLabel = verdict ? VERDICT_STYLE[verdict].label : null;
+  const desc = `${verdictLabel ? verdictLabel + ". " : ""}${job.evaluation.remoteReason}`.slice(
+    0,
+    200
+  );
+  return {
+    title: `${job.title} — ${job.company}`,
+    description: desc,
+    openGraph: {
+      title: `${job.title} at ${job.company}`,
+      description: desc,
+      type: "article",
+    },
+  };
+}
 
 /**
  * One static page per posting, so opening a posting is opening a page rather
