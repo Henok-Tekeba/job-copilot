@@ -21,7 +21,15 @@ import {
   type SortBy,
 } from "@/components/jobs/jobs-toolbar";
 import { StatCards } from "@/components/jobs/stat-cards";
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle,
+} from "@/components/ui/empty";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useTrackedJobs } from "@/hooks/use-tracked-jobs";
 
 type EligibilityFilter = "open" | "all" | "no";
 type SourceFilter = "all" | Job["source"];
@@ -88,6 +96,11 @@ export default function JobsPage({
   // full produced a 17 MB index.html.
   const [pageIndex, setPageIndex] = React.useState(0);
 
+  // Saved / applied / dismissed, persisted in the browser. The static site has
+  // no server, so this is the application tracker.
+  const tracked = useTrackedJobs();
+  const [tab, setTab] = React.useState<"all" | "saved" | "applied">("all");
+
   const filterKey = [
     search,
     opportunityFilter,
@@ -96,6 +109,7 @@ export default function JobsPage({
     showNonSoftware,
     minFit,
     sortBy,
+    tab,
   ].join("|");
   const [lastFilterKey, setLastFilterKey] = React.useState(filterKey);
   if (filterKey !== lastFilterKey) {
@@ -136,6 +150,14 @@ export default function JobsPage({
     const query = search.trim().toLowerCase();
     return jobs
       .filter((job) => {
+        if (tracked.dismissed.has(job.id)) return false;
+        if (tab === "saved" && !tracked.saved.has(job.id)) return false;
+        if (
+          tab === "applied" &&
+          !tracked.applied.has(job.id) &&
+          !appliedIds.has(job.id)
+        )
+          return false;
         if (!showNonSoftware && job.relevance !== "software") return false;
         if (query && !job.title.toLowerCase().includes(query) && !job.company.toLowerCase().includes(query)) {
           return false;
@@ -186,6 +208,11 @@ export default function JobsPage({
     showNonSoftware,
     minFit,
     sortBy,
+    tab,
+    tracked.saved,
+    tracked.applied,
+    tracked.dismissed,
+    appliedIds,
   ]);
 
   const pageCount = Math.max(1, Math.ceil(filteredJobs.length / PAGE_SIZE));
@@ -197,6 +224,10 @@ export default function JobsPage({
 
 
   const handleMarkApplied = async (job: Job) => {
+    if (process.env.NEXT_PUBLIC_STATIC === "1") {
+      tracked.markApplied(job.id);
+      return;
+    }
     const res = await fetch("/api/applications", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -215,7 +246,7 @@ export default function JobsPage({
   };
 
   const handleDismiss = (id: string) => {
-    setJobs((prev) => prev.filter((j) => j.id !== id));
+    tracked.dismiss(id);
     setSelectedJob((current) => (current?.id === id ? null : current));
   };
 
@@ -303,12 +334,37 @@ export default function JobsPage({
             onSortByChange={setSortBy}
           />
 
+          <Tabs value={tab} onValueChange={(v) => setTab(v as typeof tab)}>
+            <TabsList variant="line" className="max-w-full overflow-x-auto">
+              <TabsTrigger value="all">
+                All
+                <span className="font-mono text-xs tabular-nums">
+                  {filteredJobs.length}
+                </span>
+              </TabsTrigger>
+              <TabsTrigger value="saved">
+                Saved
+                <span className="font-mono text-xs tabular-nums">
+                  {tracked.saved.size}
+                </span>
+              </TabsTrigger>
+              <TabsTrigger value="applied">
+                Applied
+                <span className="font-mono text-xs tabular-nums">
+                  {tracked.applied.size + appliedIds.size}
+                </span>
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
+
           <div className="rounded-lg md:border md:border-border">
             <div className="hidden md:block">
               <JobsTable
                 jobs={pagedJobs}
                 loading={false}
                 appliedIds={appliedIds}
+                savedIds={tracked.saved}
+                onToggleSaved={tracked.toggleSaved}
                 onRowClick={setSelectedJob}
                 onMarkApplied={handleMarkApplied}
                 onDismiss={handleDismiss}
@@ -320,6 +376,27 @@ export default function JobsPage({
                 jobs={pagedJobs}
                 loading={false}
                 appliedIds={appliedIds}
+                savedIds={tracked.saved}
+                onToggleSaved={tracked.toggleSaved}
+                onToggleApplied={(id) =>
+                  tracked.applied.has(id) || appliedIds.has(id)
+                    ? tracked.unmarkApplied(id)
+                    : tracked.markApplied(id)
+                }
+                emptyTitle={
+                  tab === "saved"
+                    ? "Nothing saved yet"
+                    : tab === "applied"
+                      ? "Nothing marked applied"
+                      : "No jobs match"
+                }
+                emptyDescription={
+                  tab === "saved"
+                    ? "Save postings you want to come back to and they will collect here."
+                    : tab === "applied"
+                      ? "Mark a posting as applied to keep the list here."
+                      : "Try widening the search or lowering the minimum fit score."
+                }
                 onRowClick={setSelectedJob}
                 onResetFilters={handleResetFilters}
               />
@@ -341,7 +418,11 @@ export default function JobsPage({
 
       <JobDetailSheet
         job={selectedJob}
-        applied={selectedJob ? appliedIds.has(selectedJob.id) : false}
+        applied={
+          selectedJob
+            ? appliedIds.has(selectedJob.id) || tracked.applied.has(selectedJob.id)
+            : false
+        }
         notes={selectedJob ? (notes[selectedJob.id] ?? "") : ""}
         onNotesChange={handleNotesChange}
         onMarkApplied={handleMarkApplied}

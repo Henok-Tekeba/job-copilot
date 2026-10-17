@@ -71,22 +71,6 @@ function FiltersFields({
 }: FilterFieldProps) {
   return (
     <div className="flex flex-col gap-5">
-      <ToggleGroup
-        value={opportunityFilter === "focus" ? [] : [opportunityFilter]}
-        onValueChange={(values) =>
-          onOpportunityFilterChange(
-            (values[0] as OpportunityFilter | undefined) ?? "focus"
-          )
-        }
-        className="overflow-x-auto"
-      >
-        <ToggleGroupItem value="all">All</ToggleGroupItem>
-        <ToggleGroupItem value="internship">Internship</ToggleGroupItem>
-        <ToggleGroupItem value="contract">Contract</ToggleGroupItem>
-        <ToggleGroupItem value="junior">Junior</ToggleGroupItem>
-        <ToggleGroupItem value="program">Program</ToggleGroupItem>
-      </ToggleGroup>
-
       <div className="flex flex-col gap-2">
         <span className="text-xs font-medium text-muted-foreground">Eligibility</span>
         <Select

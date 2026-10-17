@@ -45,3 +45,20 @@ export function RedFlagBadge({ flags }: { flags: string[] | undefined }) {
     </Badge>
   );
 }
+
+/** Marks postings from the last two days, so repeat visits show what changed. */
+export function NewBadge({ postedAt }: { postedAt: string | null | undefined }) {
+  const today = useNow();
+
+  if (!postedAt || today === null) return null;
+
+  const posted = Date.parse(postedAt);
+  if (Number.isNaN(posted)) return null;
+  if (today.getTime() - posted > 48 * 3_600_000) return null;
+
+  return (
+    <Badge variant="secondary" className="text-xs">
+      New
+    </Badge>
+  );
+}

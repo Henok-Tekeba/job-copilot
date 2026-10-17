@@ -47,8 +47,10 @@ type JobsTableProps = {
   jobs: Job[];
   loading: boolean;
   appliedIds: Set<string>;
+  savedIds: Set<string>;
   onRowClick: (job: Job) => void;
   onMarkApplied: (job: Job) => void;
+  onToggleSaved: (id: string) => void;
   onDismiss: (id: string) => void;
   onResetFilters: () => void;
 };
@@ -57,8 +59,10 @@ export function JobsTable({
   jobs,
   loading,
   appliedIds,
+  savedIds,
   onRowClick,
   onMarkApplied,
+  onToggleSaved,
   onDismiss,
   onResetFilters,
 }: JobsTableProps) {
@@ -275,14 +279,15 @@ export function JobsTable({
                   >
                     Open posting
                   </DropdownMenuItem>
-                  {process.env.NEXT_PUBLIC_STATIC !== "1" && (
-                    <DropdownMenuItem
-                      disabled={applied}
-                      onSelect={() => onMarkApplied(job)}
-                    >
-                      {applied ? "Applied" : "Mark applied"}
-                    </DropdownMenuItem>
-                  )}
+                  <DropdownMenuItem onSelect={() => onToggleSaved(job.id)}>
+                    {savedIds.has(job.id) ? "Remove from saved" : "Save"}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    disabled={applied}
+                    onSelect={() => onMarkApplied(job)}
+                  >
+                    {applied ? "Applied" : "Mark applied"}
+                  </DropdownMenuItem>
                   <DropdownMenuItem
                     variant="destructive"
                     onSelect={() => onDismiss(job.id)}

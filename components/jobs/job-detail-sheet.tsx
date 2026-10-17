@@ -70,16 +70,14 @@ export function JobDetailSheet({
                   <ExternalLink />
                   Open posting
                 </Button>
-                {process.env.NEXT_PUBLIC_STATIC !== "1" && (
-                  <Button
-                    size="sm"
-                    variant="secondary"
-                    disabled={applied}
-                    onClick={() => job && onMarkApplied(job)}
-                  >
-                    {applied ? "Applied" : "Mark applied"}
-                  </Button>
-                )}
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  disabled={applied}
+                  onClick={() => job && onMarkApplied(job)}
+                >
+                  {applied ? "Applied" : "Mark applied"}
+                </Button>
                 <Button
                   size="sm"
                   variant="ghost"
