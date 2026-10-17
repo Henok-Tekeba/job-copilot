@@ -9,6 +9,7 @@ import {
   STATUS_LABELS,
 } from "@/components/applications/applications-client";
 import { ApplicationsCardList } from "@/components/applications/applications-card-list";
+import { CalibrationPanel } from "@/components/applications/calibration-panel";
 import { PageHeader } from "@/components/page-header";
 import {
   AlertDialog,
@@ -215,6 +216,8 @@ export function StaticApplications() {
             </form>
           </DialogContent>
         </Dialog>
+
+        <CalibrationPanel applications={applications} />
 
         {applications.length === 0 ? (
           <Empty>
