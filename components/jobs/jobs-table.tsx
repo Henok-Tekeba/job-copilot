@@ -1,21 +1,10 @@
 "use client";
 
 import * as React from "react";
-import {
-  createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  getSortedRowModel,
-  useReactTable,
-  type ColumnDef,
-  type SortingState,
-} from "@tanstack/react-table";
-import { ArrowDown, ArrowUp, ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { MoreHorizontal } from "lucide-react";
 
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,7 +12,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
-import { Progress } from "@/components/ui/progress";
 import {
   Table,
   TableBody,
@@ -32,16 +20,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
 import { DeadlineBadge } from "@/components/jobs/deadline-badge";
-import { initials, relativeTime, sourceLabel } from "@/lib/jobs";
+import { useNow } from "@/hooks/use-mounted";
+import { relativeTime, sourceLabel } from "@/lib/jobs";
 import { cn } from "@/lib/utils";
 import { VERDICT_STYLE } from "@/lib/verdict-style";
+import { isUnstatedLocation } from "@/lib/regions";
 import type { Job } from "@/lib/types";
-
-const columnHelper = createColumnHelper<Job>();
 
 type JobsTableProps = {
   jobs: Job[];
@@ -55,6 +42,56 @@ type JobsTableProps = {
   onResetFilters: () => void;
 };
 
+/**
+ * The verdict rail down the left edge of a row.
+ *
+ * It is the trigger for the reason the posting is reachable or not: a verdict
+ * you cannot inspect is not worth trusting, and this is the one place on the
+ * board where that reason can surface without leaving the list.
+ */
+function VerdictReason({ job }: { job: Job }) {
+  const verdict = job.evaluation.eligibility?.verdict ?? "unknown";
+  const reason =
+    job.evaluation.eligibility?.summary ||
+    job.evaluation.remoteReason ||
+    "Nothing in the posting says either way.";
+
+  const sponsorship = job.evaluation.eligibility?.sponsorship?.verdict;
+
+  return (
+    <HoverCard>
+      <HoverCardTrigger>
+        <span className="cursor-default font-mono text-sm font-medium tabular-nums underline decoration-dotted decoration-from-font underline-offset-4">
+          {job.evaluation.fit?.priority ?? job.evaluation.fitScore ?? "—"}
+        </span>
+      </HoverCardTrigger>
+      <HoverCardContent side="right" align="start" className="w-72">
+        <span className={cn("text-xs font-medium", VERDICT_STYLE[verdict].text)}>
+          {VERDICT_STYLE[verdict].label}
+        </span>
+        <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+          {reason}
+        </p>
+        {sponsorship === "offered" || sponsorship === "not-offered" ? (
+          <p className="mt-2 border-t border-border pt-2 text-xs text-muted-foreground">
+            {sponsorship === "offered"
+              ? "Visa sponsorship offered."
+              : "No visa sponsorship."}
+          </p>
+        ) : null}
+      </HoverCardContent>
+    </HoverCard>
+  );
+}
+
+/**
+ * The board itself: one dense ledger rather than a grid of boxes.
+ *
+ * Each row is a single line of type. The role carries the row, the numbers sit
+ * in mono, and everything that used to be a badge — opportunity, source, date —
+ * is set as plain text so only the verdict rail and an urgent deadline carry
+ * colour.
+ */
 export function JobsTable({
   jobs,
   loading,
@@ -66,270 +103,25 @@ export function JobsTable({
   onDismiss,
   onResetFilters,
 }: JobsTableProps) {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [rowSelection, setRowSelection] = React.useState({});
-  const [now, setNow] = React.useState(0);
-
-  React.useEffect(() => {
-    setNow(Date.now());
-  }, []);
-
-  const columns = React.useMemo(
-    () => [
-      {
-        id: "select",
-        header: ({ table }: { table: ReturnType<typeof useReactTable<Job>> }) => (
-          <Checkbox
-            checked={
-              table.getIsAllPageRowsSelected() ||
-              (table.getIsSomePageRowsSelected() as boolean)
-            }
-            onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          />
-        ),
-        cell: ({ row }: { row: import("@tanstack/table-core").Row<Job> }) => (
-          <div onClick={(e) => e.stopPropagation()}>
-            <Checkbox
-              checked={row.getIsSelected()}
-              onCheckedChange={(value) => row.toggleSelected(!!value)}
-            />
-          </div>
-        ),
-        enableSorting: false,
-        enableHiding: false,
-      },
-      columnHelper.accessor(
-        (row) => row.evaluation.fit?.priority ?? row.evaluation.fitScore,
-        {
-          id: "fit",
-          header: "Priority",
-          cell: ({ row }: { row: import("@tanstack/table-core").Row<Job> }) => {
-            const score =
-              row.original.evaluation.fit?.priority ??
-              row.original.evaluation.fitScore;
-            if (score === null || score === undefined) {
-              return <span className="text-sm text-muted-foreground">-</span>;
-            }
-            return (
-              <div className="flex items-center gap-2">
-                <span className="w-7 font-mono text-sm tabular-nums">{score}</span>
-                <Progress value={score} className="w-14" />
-              </div>
-            );
-          },
-        }
-      ),
-      columnHelper.accessor("title", {
-        id: "role",
-        header: "Role",
-        cell: ({ row }: { row: import("@tanstack/table-core").Row<Job> }) => {
-          const applied = appliedIds.has(row.original.id);
-          return (
-            <div className="flex items-center gap-2.5">
-              <Avatar size="sm">
-                <AvatarFallback>
-                  {initials(row.original.company || "?")}
-                </AvatarFallback>
-              </Avatar>
-              <div className="flex min-w-0 flex-col">
-                <div className="flex items-center gap-2">
-                  <span className="truncate text-sm font-medium text-foreground">
-                    {row.original.title}
-                  </span>
-                  {applied && (
-                    <Badge variant="secondary" className="text-xs">
-                      Applied
-                    </Badge>
-                  )}
-                </div>
-                <span className="truncate text-xs text-muted-foreground">
-                  {row.original.company || "Unknown company"}
-                </span>
-              </div>
-            </div>
-          );
-        },
-      }),
-      columnHelper.accessor((row) => row.evaluation.opportunity, {
-        id: "opportunity",
-        header: "Opportunity",
-        cell: ({ row }: { row: import("@tanstack/table-core").Row<Job> }) => (
-          <Badge variant="outline" className="capitalize">
-            {row.original.evaluation.opportunity}
-          </Badge>
-        ),
-      }),
-      {
-        id: "remote",
-        header: "",
-        enableSorting: false,
-        cell: ({ row }: { row: import("@tanstack/table-core").Row<Job> }) => {
-          const verdict = row.original.evaluation.eligibility?.verdict ?? "unknown";
-          const reason =
-            row.original.evaluation.eligibility?.summary ||
-            row.original.evaluation.remoteReason ||
-            "No information";
-          return (
-            <Tooltip>
-              <TooltipTrigger>
-                <span
-                  className={cn(
-                    "block size-2 rounded-full",
-                    VERDICT_STYLE[verdict].dot
-                  )}
-                />
-              </TooltipTrigger>
-              <TooltipContent>{reason}</TooltipContent>
-            </Tooltip>
-          );
-        },
-      },
-      columnHelper.accessor("source", {
-        id: "source",
-        header: "Source",
-        cell: ({ row }: { row: import("@tanstack/table-core").Row<Job> }) => (
-          <Badge variant="secondary">{sourceLabel(row.original.source)}</Badge>
-        ),
-      }),
-      columnHelper.accessor("postedAt", {
-        id: "posted",
-        header: "Posted",
-        cell: ({ row }: { row: import("@tanstack/table-core").Row<Job> }) => (
-          <span className="font-mono text-xs text-muted-foreground tabular-nums">
-            {row.original.postedAt
-              ? relativeTime(row.original.postedAt, now)
-              : "—"}
-          </span>
-        ),
-      }),
-      columnHelper.accessor("deadline", {
-        id: "deadline",
-        header: "Closes",
-        cell: ({ row }: { row: import("@tanstack/table-core").Row<Job> }) => {
-          const deadline = row.original.deadline;
-          if (!deadline) {
-            return <span className="text-xs text-muted-foreground">—</span>;
-          }
-          return (
-            <div className="flex items-center gap-1.5">
-              <span className="font-mono text-xs tabular-nums text-muted-foreground">
-                {deadline}
-              </span>
-              <DeadlineBadge deadline={deadline} />
-            </div>
-          );
-        },
-      }),
-      {
-        id: "missing",
-        header: "Missing",
-        enableSorting: false,
-        cell: ({ row }: { row: import("@tanstack/table-core").Row<Job> }) => {
-          const missing = row.original.evaluation.missing;
-          if (missing.length === 0) {
-            return <span className="text-xs text-muted-foreground">—</span>;
-          }
-          return (
-            <div className="flex items-center gap-1">
-              {missing.slice(0, 2).map((skill: string) => (
-                <Badge key={skill} variant="secondary">
-                  {skill}
-                </Badge>
-              ))}
-              {missing.length > 2 && (
-                <HoverCard>
-                  <HoverCardTrigger>
-                    <Badge variant="outline">+{missing.length - 2}</Badge>
-                  </HoverCardTrigger>
-                  <HoverCardContent>
-                    <div className="flex flex-wrap gap-1">
-                      {missing.map((skill: string) => (
-                        <Badge key={skill} variant="secondary">
-                          {skill}
-                        </Badge>
-                      ))}
-                    </div>
-                  </HoverCardContent>
-                </HoverCard>
-              )}
-            </div>
-          );
-        },
-      },
-      {
-        id: "actions",
-        header: "",
-        enableSorting: false,
-        cell: ({ row }: { row: import("@tanstack/table-core").Row<Job> }) => {
-          const job = row.original;
-          const applied = appliedIds.has(job.id);
-          return (
-            <div onClick={(e) => e.stopPropagation()}>
-              <DropdownMenu>
-                <DropdownMenuTrigger>
-                  <Button variant="ghost" size="icon-sm">
-                    <MoreHorizontal />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem
-                    onSelect={() =>
-                      window.open(job.applyUrl || job.sourceUrl, "_blank", "noopener")
-                    }
-                  >
-                    Open posting
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onSelect={() => onToggleSaved(job.id)}>
-                    {savedIds.has(job.id) ? "Remove from saved" : "Save"}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    disabled={applied}
-                    onSelect={() => onToggleApplied(job)}
-                  >
-                    {applied ? "Applied" : "Mark applied"}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    variant="destructive"
-                    onSelect={() => onDismiss(job.id)}
-                  >
-                    Dismiss
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-          );
-        },
-      },
-    ],
-    [appliedIds, savedIds, onDismiss, onToggleApplied, onToggleSaved],
-  );
-
-  const table = useReactTable({
-    data: jobs,
-    columns,
-    state: {
-      sorting,
-      rowSelection,
-    },
-    onSortingChange: setSorting,
-    onRowSelectionChange: setRowSelection,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-  });
+  // `now` is only needed after hydration: the page is prerendered at build
+  // time, and a relative date computed during the prerender would not match
+  // the browser's.
+  const now = useNow()?.getTime() ?? 0;
 
   if (loading) {
     return (
-      <div className="flex flex-col gap-2">
-        {Array.from({ length: 8 }, (_, i) => (
-          <div key={i} className="flex items-center gap-4 px-2 py-3">
-            <Skeleton className="size-4" />
-            <Skeleton className="h-4 w-16" />
-            <Skeleton className="size-8 rounded-full" />
-            <Skeleton className="h-4 flex-1" />
-            <Skeleton className="h-5 w-16" />
-            <Skeleton className="h-4 w-20" />
-            <Skeleton className="h-4 w-14" />
-            <Skeleton className="h-5 w-20" />
+      <div className="flex flex-col">
+        {Array.from({ length: 10 }, (_, i) => (
+          <div
+            key={i}
+            className="flex items-center gap-4 border-b border-border py-3"
+          >
+            <Skeleton className="h-3 w-[3px] rounded-full" />
+            <Skeleton className="h-3 w-6" />
+            <Skeleton className="h-3 flex-1" />
+            <Skeleton className="h-3 w-16" />
+            <Skeleton className="h-3 w-14" />
+            <Skeleton className="h-3 w-20" />
           </div>
         ))}
       </div>
@@ -355,57 +147,181 @@ export function JobsTable({
   }
 
   return (
-    <div className="flex flex-col gap-3">
-      <div className="overflow-x-auto">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id} className="whitespace-nowrap">
-                    {header.isPlaceholder ? null : header.column.getCanSort() ? (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-7 gap-1 px-2 text-xs"
-                        onClick={header.column.getToggleSortingHandler()}
-                      >
-                        {flexRender(header.column.columnDef.header, header.getContext())}
-                        {header.column.getIsSorted() === "asc" ? (
-                          <ArrowUp />
-                        ) : header.column.getIsSorted() === "desc" ? (
-                          <ArrowDown />
-                        ) : (
-                          <ArrowUpDown />
-                        )}
-                      </Button>
-                    ) : (
-                      flexRender(header.column.columnDef.header, header.getContext())
-                    )}
-                  </TableHead>
-                ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-                className="cursor-pointer"
-                onClick={() => onRowClick(row.original)}
-              >
-                {row.getAllCells().map((cell) => (
-                  <TableCell key={cell.id} className="whitespace-nowrap">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+    <Table>
+      <TableHeader>
+        <TableRow className="border-b-border hover:bg-transparent">
+          <TableHead className="w-14 pl-4 text-xs font-normal text-muted-foreground sm:pl-6">
+            Priority
+          </TableHead>
+          <TableHead className="text-xs font-normal text-muted-foreground">
+            Role
+          </TableHead>
+          <TableHead className="hidden w-28 text-xs font-normal text-muted-foreground lg:table-cell">
+            Type
+          </TableHead>
+          <TableHead className="hidden w-24 text-xs font-normal text-muted-foreground md:table-cell">
+            Source
+          </TableHead>
+          <TableHead className="hidden w-20 text-xs font-normal text-muted-foreground sm:table-cell">
+            Posted
+          </TableHead>
+          <TableHead className="hidden w-28 text-xs font-normal text-muted-foreground lg:table-cell">
+            Closes
+          </TableHead>
+          <TableHead className="hidden w-40 text-xs font-normal text-muted-foreground xl:table-cell">
+            Missing
+          </TableHead>
+          <TableHead className="w-14 pr-4 sm:pr-6" />
+        </TableRow>
+      </TableHeader>
 
-    </div>
+      <TableBody>
+        {jobs.map((job) => {
+          const applied = appliedIds.has(job.id);
+          const location = isUnstatedLocation(job.location)
+            ? null
+            : job.location;
+          const missing = job.evaluation.missing;
+          const verdict = job.evaluation.eligibility?.verdict ?? "unknown";
+
+          return (
+            <TableRow
+              key={job.id}
+              className={cn(
+                "group cursor-pointer border-b-border/70 border-l-2",
+                VERDICT_STYLE[verdict].rail
+              )}
+              onClick={() => onRowClick(job)}
+            >
+              <TableCell className="py-2 pl-4 align-top sm:pl-6">
+                <VerdictReason job={job} />
+              </TableCell>
+
+              <TableCell className="max-w-0 py-2 align-top">
+                <div className="flex min-w-0 flex-col gap-0.5">
+                  <span className="flex items-center gap-2">
+                    <span className="truncate text-sm font-medium text-foreground">
+                      {job.title}
+                    </span>
+                    {applied && (
+                      <span className="shrink-0 text-[0.65rem] tracking-wide text-muted-foreground uppercase">
+                        applied
+                      </span>
+                    )}
+                  </span>
+                  <span className="truncate text-xs text-muted-foreground">
+                    {[
+                      job.company || "Unknown company",
+                      location,
+                      job.postedAt && relativeTime(job.postedAt, now),
+                    ]
+                      .filter(Boolean)
+                      .join(" · ")}
+                  </span>
+                </div>
+              </TableCell>
+
+              <TableCell className="hidden py-2 align-top lg:table-cell">
+                <span className="text-xs text-muted-foreground">
+                  {job.evaluation.opportunity}
+                </span>
+              </TableCell>
+
+              <TableCell className="hidden py-2 align-top md:table-cell">
+                <span className="font-mono text-xs text-muted-foreground">
+                  {sourceLabel(job.source)}
+                </span>
+              </TableCell>
+
+              <TableCell className="hidden py-2 align-top sm:table-cell">
+                <span className="font-mono text-xs tabular-nums text-muted-foreground">
+                  {job.postedAt ? job.postedAt.slice(0, 10) : "—"}
+                </span>
+              </TableCell>
+
+              <TableCell className="hidden py-2 align-top lg:table-cell">
+                {job.deadline ? (
+                  <DeadlineBadge deadline={job.deadline} />
+                ) : (
+                  <span className="text-xs text-muted-foreground">—</span>
+                )}
+              </TableCell>
+
+              <TableCell className="hidden py-2 align-top xl:table-cell">
+                {missing.length === 0 ? (
+                  <span className="text-xs text-muted-foreground">nothing</span>
+                ) : (
+                  <HoverCard>
+                    <HoverCardTrigger>
+                      <span className="cursor-default text-xs text-muted-foreground underline decoration-dotted underline-offset-4">
+                        {missing.slice(0, 2).join(", ")}
+                        {missing.length > 2 && (
+                          <span className="font-mono">
+                            {" "}
+                            +{missing.length - 2}
+                          </span>
+                        )}
+                      </span>
+                    </HoverCardTrigger>
+                    <HoverCardContent side="top" align="start" className="w-64">
+                      <div className="flex flex-wrap gap-1">
+                        {missing.map((skill) => (
+                          <Badge key={skill} variant="secondary">
+                            {skill}
+                          </Badge>
+                        ))}
+                      </div>
+                    </HoverCardContent>
+                  </HoverCard>
+                )}
+              </TableCell>
+
+              <TableCell className="py-2 pr-4 align-top sm:pr-6">
+                <div
+                  className="flex justify-end opacity-0 transition-opacity group-hover:opacity-100 focus-within:opacity-100"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <DropdownMenu>
+                    <DropdownMenuTrigger>
+                      <Button variant="ghost" size="icon-sm">
+                        <MoreHorizontal />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem
+                        onSelect={() =>
+                          window.open(
+                            job.applyUrl || job.sourceUrl,
+                            "_blank",
+                            "noopener"
+                          )
+                        }
+                      >
+                        Open posting
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onSelect={() => onToggleSaved(job.id)}>
+                        {savedIds.has(job.id) ? "Remove from saved" : "Save"}
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        disabled={applied}
+                        onSelect={() => onToggleApplied(job)}
+                      >
+                        {applied ? "Applied" : "Mark applied"}
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        variant="destructive"
+                        onSelect={() => onDismiss(job.id)}
+                      >
+                        Dismiss
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              </TableCell>
+            </TableRow>
+          );
+        })}
+      </TableBody>
+    </Table>
   );
 }

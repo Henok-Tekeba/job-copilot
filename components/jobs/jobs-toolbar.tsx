@@ -175,9 +175,9 @@ export function JobsToolbar({
   );
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-3">
       <div className="flex flex-wrap items-center gap-2">
-        <InputGroup className="w-full sm:w-72">
+        <InputGroup className="min-w-0 flex-1 sm:max-w-md">
           <InputGroupAddon>
             <SearchIcon />
           </InputGroupAddon>
