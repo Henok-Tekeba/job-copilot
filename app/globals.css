@@ -136,6 +136,82 @@
   box-shadow: none;
 }
 
+/*
+ * The ASCII world map behind the hero. The "lit" disc is a mask whose center
+ * follows the pointer (CSS vars written by AsciiBackdrop); the "sweep" is a
+ * one-shot pass that prints the map in on load. Both wear the same ink.
+ */
+.ascii-lit {
+  --ascii-x: 55%;
+  --ascii-y: 35%;
+  mask-image: radial-gradient(
+    15rem circle at var(--ascii-x) var(--ascii-y),
+    black 0%,
+    transparent 75%
+  );
+  mask-repeat: no-repeat;
+}
+
+.ascii-sweep {
+  mask-image: linear-gradient(to right, black 0%, black 35%, transparent 70%);
+  mask-size: 60% 100%;
+  mask-repeat: no-repeat;
+  animation: ascii-sweep 2.8s cubic-bezier(0.3, 0, 0.4, 1) 0.9s both;
+}
+
+@keyframes ascii-sweep {
+  0% {
+    mask-position: -65% 0;
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  60% {
+    mask-position: 108% 0;
+  }
+  100% {
+    mask-position: 108% 0;
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ascii-sweep {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+.ascii-beacon {
+  color: var(--color-emerald-400);
+  text-shadow:
+    0 0 0.75rem color-mix(in oklab, var(--color-emerald-400) 55%, transparent),
+    0 0 2.5rem color-mix(in oklab, var(--color-emerald-400) 25%, transparent);
+  animation: ascii-beacon 2.6s ease-in-out infinite;
+}
+
+:not(.dark) .ascii-beacon {
+  color: var(--color-emerald-500);
+}
+
+@keyframes ascii-beacon {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ascii-beacon {
+    animation: none;
+    opacity: 0.85;
+  }
+}
+
 @media (max-width: 767.98px) {
   [data-slot="button"],
   [data-slot="tabs-trigger"],

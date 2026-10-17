@@ -7,6 +7,8 @@ import { Briefcase, TrendingUp, Database, Rss, ClipboardList } from "lucide-reac
 
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { SidebarAutoClose } from "@/components/sidebar-auto-close";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { AsciiMap } from "@/components/ascii-map";
 import {
   Sidebar,
   SidebarContent,
@@ -51,6 +53,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <span className="font-heading text-sm font-semibold tracking-tight">
                 Job Copilot
               </span>
+              <ThemeToggle className="ml-auto size-7" />
             </div>
           </SidebarHeader>
           <SidebarContent className="px-2">
@@ -75,8 +78,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             </SidebarGroup>
             </SidebarContent>
         </Sidebar>
-        <SidebarInset className="min-h-svh">
-          <div className="flex min-h-svh flex-col">{children}</div>
+        <SidebarInset className="relative min-h-svh">
+          <AsciiMap
+            sweep={false}
+            className="absolute inset-y-0 right-0 top-0 hidden w-max [mask-image:linear-gradient(to_bottom,black_50%,transparent_92%)] text-[9px] md:block lg:text-[12px]"
+          />
+          <div className="relative flex min-h-svh flex-col">{children}</div>
         </SidebarInset>
       </SidebarProvider>
     </TooltipProvider>

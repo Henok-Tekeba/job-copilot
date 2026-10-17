@@ -73,7 +73,10 @@ export function VerdictInspector({ samples }: { samples: LandingSample[] }) {
         ))}
       </ToggleGroup>
 
-      <div className="flex flex-col gap-4 p-4 sm:p-5">
+      <div
+        key={selected.id}
+        className="flex animate-in flex-col gap-4 p-4 fade-in slide-in-from-bottom-2 duration-300 ease-out sm:p-5"
+      >
         <div className="flex flex-wrap items-center gap-1.5">
           <Badge
             variant="outline"

@@ -1,10 +1,12 @@
 import Link from "next/link";
 
-import { Button } from "@/components/ui/button";
+import { AsciiMap } from "@/components/ascii-map";
 import {
   VerdictInspector,
   type LandingSample,
 } from "@/components/landing/verdict-inspector";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { Button } from "@/components/ui/button";
 import type { JobsSummary } from "@/lib/summary";
 
 /**
@@ -51,31 +53,41 @@ export function LandingPage({
           <span className="font-heading text-sm font-semibold tracking-tight">
             Job Copilot
           </span>
-          <Link
-            href="/jobs"
-            className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Browse the board
-          </Link>
+          <div className="flex items-center gap-4">
+            <Link
+              href="/jobs"
+              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+            >
+              Browse the board
+            </Link>
+            <ThemeToggle className="size-8" />
+          </div>
         </div>
       </header>
 
       <main className="flex-1">
-        <section className="mx-auto w-full max-w-5xl px-4 pt-14 pb-16 sm:px-6 sm:pt-20 sm:pb-24">
-          <h1 className="max-w-3xl text-balance text-4xl font-semibold leading-[1.08] tracking-tight sm:text-5xl">
-            Will this employer take an international applicant?
-          </h1>
-          <p className="mt-6 max-w-[62ch] text-base leading-relaxed text-muted-foreground sm:text-lg">
-            A personal board of tech internships, contracts and junior roles from{" "}
-            {feeds} hiring feeds, each one read for that question — and for what
-            you would still be missing if you applied.
-          </p>
-
-          <div className="mt-12">
-            <p className="mb-3 text-xs text-muted-foreground">
-              Three postings from the current snapshot. Pick one to see the read.
+        <section className="relative mx-auto w-full max-w-5xl px-4 pt-14 pb-16 sm:px-6 sm:pt-20 sm:pb-24">
+          <AsciiMap
+            className="inset-x-0 top-0 h-64 [mask-image:linear-gradient(to_bottom,black_60%,transparent)] text-[10px] sm:h-[22rem] sm:text-[14px] lg:h-[30rem] lg:text-[18px]"
+          />
+          <div className="relative">
+            <h1
+              className="max-w-3xl animate-in text-balance text-4xl font-semibold leading-[1.08] tracking-tight fill-mode-backwards slide-in-from-bottom-4 fade-in duration-700 ease-out sm:text-5xl"
+            >
+              Will this employer take an international applicant?
+            </h1>
+            <p className="mt-6 max-w-[62ch] animate-in text-base leading-relaxed text-muted-foreground fill-mode-backwards slide-in-from-bottom-4 fade-in delay-[120ms] duration-700 ease-out sm:text-lg">
+              A personal board of tech internships, contracts and junior roles from{" "}
+              {feeds} hiring feeds, each one read for that question — and for what
+              you would still be missing if you applied.
             </p>
-            <VerdictInspector samples={samples} />
+
+            <div className="mt-12 animate-in fill-mode-backwards fade-in delay-[260ms] duration-700 ease-out">
+              <p className="mb-3 text-xs text-muted-foreground">
+                Three postings from the current snapshot. Pick one to see the read.
+              </p>
+              <VerdictInspector samples={samples} />
+            </div>
           </div>
         </section>
 
