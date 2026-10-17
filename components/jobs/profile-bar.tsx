@@ -21,6 +21,8 @@ type ProfileBarProps = {
   onToggleSkill: (skill: string) => void;
   onSetSkills: (skills: string[]) => void;
   onSetActive: (active: boolean) => void;
+  sheetOpen?: boolean;
+  onSheetOpenChange?: (open: boolean) => void;
 };
 
 /**
@@ -36,8 +38,15 @@ export function ProfileBar({
   onToggleSkill,
   onSetSkills,
   onSetActive,
+  sheetOpen: sheetOpenProp,
+  onSheetOpenChange,
 }: ProfileBarProps) {
-  const [open, setOpen] = React.useState(false);
+  const [internalOpen, setInternalOpen] = React.useState(false);
+  const open = sheetOpenProp ?? internalOpen;
+  const setOpen = (v: boolean) => {
+    if (onSheetOpenChange) onSheetOpenChange(v);
+    else setInternalOpen(v);
+  };
   const [query, setQuery] = React.useState("");
 
   const active = profile.active && profile.skills.length > 0;
