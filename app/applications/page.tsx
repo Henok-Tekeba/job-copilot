@@ -1,10 +1,10 @@
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { StaticUnavailable } from "@/components/static-unavailable";
+import { StaticApplications } from "@/components/applications/static-applications";
 
 export default async function ApplicationsPage() {
   if (process.env.NEXT_PUBLIC_STATIC === "1") {
-    return <StaticUnavailable title="Applications" />;
+    return <StaticApplications />;
   }
 
   return (

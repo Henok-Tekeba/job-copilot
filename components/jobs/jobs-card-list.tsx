@@ -31,7 +31,7 @@ type JobsCardListProps = {
   appliedIds: Set<string>;
   savedIds: Set<string>;
   onToggleSaved: (id: string) => void;
-  onToggleApplied: (id: string) => void;
+  onToggleApplied: (job: Job) => void;
   onRowClick: (job: Job) => void;
   onResetFilters: () => void;
   emptyTitle?: string;
@@ -75,7 +75,7 @@ function JobCard({
   applied: boolean;
   saved: boolean;
   onToggleSaved: (id: string) => void;
-  onToggleApplied: (id: string) => void;
+  onToggleApplied: (job: Job) => void;
   onRowClick: (job: Job) => void;
 }) {
   const fit = job.evaluation.fit;
@@ -150,7 +150,7 @@ function JobCard({
           <Button
             variant={applied ? "secondary" : "outline"}
             size="xs"
-            onClick={() => onToggleApplied(job.id)}
+            onClick={() => onToggleApplied(job)}
           >
             <CheckIcon />
             {applied ? "Applied" : "Mark applied"}

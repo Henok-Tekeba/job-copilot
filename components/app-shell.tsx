@@ -29,9 +29,7 @@ const NAV_ITEMS = [
 
 const visibleNavItems =
   process.env.NEXT_PUBLIC_STATIC === "1"
-    ? NAV_ITEMS.filter(
-        (item) => item.href !== "/applications" && item.href !== "/facts"
-      )
+    ? NAV_ITEMS.filter((item) => item.href !== "/facts")
     : NAV_ITEMS;
 
 export function AppShell({ children }: { children: React.ReactNode }) {

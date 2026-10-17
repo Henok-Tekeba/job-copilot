@@ -10,8 +10,9 @@ import { byPriority, summarizeJobs, type JobsSummary } from "@/lib/summary";
 import { daysUntil } from "@/lib/jobs";
 import type { Job } from "@/lib/types";
 
+import { useRouter } from "next/navigation";
+
 import { CommandPalette } from "@/components/jobs/command-palette";
-import { JobDetailSheet } from "@/components/jobs/job-detail-sheet";
 import { JobsCardList } from "@/components/jobs/jobs-card-list";
 import { JobsPagination } from "@/components/jobs/jobs-pagination";
 import { JobsTable } from "@/components/jobs/jobs-table";
@@ -117,9 +118,8 @@ export default function JobsPage({
     setPageIndex(0);
   }
 
-  const [selectedJob, setSelectedJob] = React.useState<Job | null>(null);
+  const router = useRouter();
   const [appliedIds, setAppliedIds] = React.useState<Set<string>>(new Set());
-  const [notes, setNotes] = React.useState<Record<string, string>>({});
   const [paletteOpen, setPaletteOpen] = React.useState(false);
 
   React.useEffect(() => {
@@ -223,31 +223,13 @@ export default function JobsPage({
   );
 
 
-  const handleMarkApplied = async (job: Job) => {
-    if (process.env.NEXT_PUBLIC_STATIC === "1") {
-      tracked.markApplied(job.id);
-      return;
-    }
-    const res = await fetch("/api/applications", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        title: job.title,
-        company: job.company,
-        url: job.applyUrl || job.sourceUrl,
-        appliedAt: new Date().toISOString().slice(0, 10),
-        notes: "",
-      }),
-    });
-      if (res.ok) {
-      await res.json();
-      setAppliedIds((prev) => new Set(prev).add(job.id));
-    }
-  };
 
   const handleDismiss = (id: string) => {
     tracked.dismiss(id);
-    setSelectedJob((current) => (current?.id === id ? null : current));
+  };
+
+  const openJob = (job: Job) => {
+    router.push(`/jobs/${job.id}`);
   };
 
   const handleResetFilters = () => {
@@ -257,11 +239,6 @@ export default function JobsPage({
     setEligibilityFilter("open");
     setShowNonSoftware(false);
     setMinFit(0);
-  };
-
-  const handleNotesChange = (value: string) => {
-    if (!selectedJob) return;
-    setNotes((prev) => ({ ...prev, [selectedJob.id]: value }));
   };
 
   return (
@@ -365,8 +342,12 @@ export default function JobsPage({
                 appliedIds={appliedIds}
                 savedIds={tracked.saved}
                 onToggleSaved={tracked.toggleSaved}
-                onRowClick={setSelectedJob}
-                onMarkApplied={handleMarkApplied}
+                onToggleApplied={(job) =>
+                  tracked.applied.has(job.id) || appliedIds.has(job.id)
+                    ? tracked.unmarkApplied(job.id)
+                    : tracked.markApplied(job)
+                }
+                onRowClick={openJob}
                 onDismiss={handleDismiss}
                 onResetFilters={handleResetFilters}
               />
@@ -378,10 +359,10 @@ export default function JobsPage({
                 appliedIds={appliedIds}
                 savedIds={tracked.saved}
                 onToggleSaved={tracked.toggleSaved}
-                onToggleApplied={(id) =>
-                  tracked.applied.has(id) || appliedIds.has(id)
-                    ? tracked.unmarkApplied(id)
-                    : tracked.markApplied(id)
+                onToggleApplied={(job) =>
+                  tracked.applied.has(job.id) || appliedIds.has(job.id)
+                    ? tracked.unmarkApplied(job.id)
+                    : tracked.markApplied(job)
                 }
                 emptyTitle={
                   tab === "saved"
@@ -397,7 +378,7 @@ export default function JobsPage({
                       ? "Mark a posting as applied to keep the list here."
                       : "Try widening the search or lowering the minimum fit score."
                 }
-                onRowClick={setSelectedJob}
+                onRowClick={openJob}
                 onResetFilters={handleResetFilters}
               />
             </div>
@@ -416,27 +397,11 @@ export default function JobsPage({
         )}
       </div>
 
-      <JobDetailSheet
-        job={selectedJob}
-        applied={
-          selectedJob
-            ? appliedIds.has(selectedJob.id) || tracked.applied.has(selectedJob.id)
-            : false
-        }
-        notes={selectedJob ? (notes[selectedJob.id] ?? "") : ""}
-        onNotesChange={handleNotesChange}
-        onMarkApplied={handleMarkApplied}
-        onDismiss={handleDismiss}
-        onOpenChange={(open) => {
-          if (!open) setSelectedJob(null);
-        }}
-      />
-
       <CommandPalette
         jobs={jobs}
         open={paletteOpen}
         onOpenChange={setPaletteOpen}
-        onSelect={setSelectedJob}
+        onSelect={openJob}
       />
     </>
   );

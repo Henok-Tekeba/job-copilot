@@ -104,6 +104,21 @@ export function loadLastUpdated(): string {
   return new Date().toISOString();
 }
 
+let jobsCache: Job[] | null = null;
+
+/**
+ * Like loadJobs, but memoised for the lifetime of the process.
+ *
+ * The detail route is prerendered once per posting (thousands of pages), and
+ * each render used to read and parse the multi-megabyte jobs.json in full.
+ * The cache is per worker, so the build parses it a handful of times instead of
+ * thousands.
+ */
+export function loadJobsCached(): Job[] {
+  if (jobsCache === null) jobsCache = loadJobs();
+  return jobsCache;
+}
+
 export function loadJobs(): Job[] {
   const jobsPath = path.join(DATA_DIR, "jobs.json");
   const programs = loadPrograms();

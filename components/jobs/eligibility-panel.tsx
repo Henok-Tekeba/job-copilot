@@ -30,7 +30,7 @@ export function EligibilityPanel({ eligibility }: { eligibility?: Eligibility })
         : null;
 
   return (
-    <Alert className="mx-4 w-auto">
+    <Alert className="w-auto">
       <AlertTitle className="flex flex-wrap items-center gap-2">
         <Badge variant="outline" className={VERDICT_STYLE[verdict].badge}>
           {VERDICT_STYLE[verdict].label}

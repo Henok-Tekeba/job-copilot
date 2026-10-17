@@ -62,7 +62,7 @@ import { format } from "date-fns";
 import type { Application, Status } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
-const STATUS_LABELS: Record<Status, string> = {
+export const STATUS_LABELS: Record<Status, string> = {
   applied: "Applied",
   replied: "Replied",
   interview: "Interview",
@@ -80,7 +80,7 @@ const STATUS_DOT_COLORS: Record<Status, string> = {
   ghosted: "bg-muted-foreground",
 };
 
-function StatusDot({ status }: { status: Status }) {
+export function StatusDot({ status }: { status: Status }) {
   return (
     <span
       className={cn(
@@ -91,7 +91,7 @@ function StatusDot({ status }: { status: Status }) {
   );
 }
 
-function StatusText({ status }: { status: Status }) {
+export function StatusText({ status }: { status: Status }) {
   return (
     <span className="inline-flex items-center text-sm">
       <StatusDot status={status} />

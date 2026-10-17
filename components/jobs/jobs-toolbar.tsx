@@ -45,8 +45,6 @@ const ELIGIBILITY_LABELS: Record<EligibilityFilter, string> = {
 };
 
 type FilterFieldProps = {
-  opportunityFilter: OpportunityFilter;
-  onOpportunityFilterChange: (value: OpportunityFilter) => void;
   sourceFilter: SourceFilter;
   onSourceFilterChange: (value: SourceFilter) => void;
   eligibilityFilter: EligibilityFilter;
@@ -58,8 +56,6 @@ type FilterFieldProps = {
 };
 
 function FiltersFields({
-  opportunityFilter,
-  onOpportunityFilterChange,
   sourceFilter,
   onSourceFilterChange,
   eligibilityFilter,
@@ -147,6 +143,8 @@ function FiltersFields({
 type JobsToolbarProps = FilterFieldProps & {
   search: string;
   onSearchChange: (value: string) => void;
+  opportunityFilter: OpportunityFilter;
+  onOpportunityFilterChange: (value: OpportunityFilter) => void;
   sortBy: SortBy;
   onSortByChange: (value: SortBy) => void;
 };
@@ -195,8 +193,6 @@ export function JobsToolbar({
             <PopoverTrigger>{filtersButton}</PopoverTrigger>
             <PopoverContent align="end" className="w-64">
               <FiltersFields
-                opportunityFilter={opportunityFilter}
-                onOpportunityFilterChange={onOpportunityFilterChange}
                 sourceFilter={sourceFilter}
                 onSourceFilterChange={onSourceFilterChange}
                 eligibilityFilter={eligibilityFilter}
@@ -232,8 +228,6 @@ export function JobsToolbar({
                 <SheetTitle>Filters</SheetTitle>
               </SheetHeader>
               <FiltersFields
-                opportunityFilter={opportunityFilter}
-                onOpportunityFilterChange={onOpportunityFilterChange}
                 sourceFilter={sourceFilter}
                 onSourceFilterChange={onSourceFilterChange}
                 eligibilityFilter={eligibilityFilter}

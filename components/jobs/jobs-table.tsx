@@ -49,7 +49,7 @@ type JobsTableProps = {
   appliedIds: Set<string>;
   savedIds: Set<string>;
   onRowClick: (job: Job) => void;
-  onMarkApplied: (job: Job) => void;
+  onToggleApplied: (job: Job) => void;
   onToggleSaved: (id: string) => void;
   onDismiss: (id: string) => void;
   onResetFilters: () => void;
@@ -61,7 +61,7 @@ export function JobsTable({
   appliedIds,
   savedIds,
   onRowClick,
-  onMarkApplied,
+  onToggleApplied,
   onToggleSaved,
   onDismiss,
   onResetFilters,
@@ -284,7 +284,7 @@ export function JobsTable({
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     disabled={applied}
-                    onSelect={() => onMarkApplied(job)}
+                    onSelect={() => onToggleApplied(job)}
                   >
                     {applied ? "Applied" : "Mark applied"}
                   </DropdownMenuItem>
@@ -301,7 +301,7 @@ export function JobsTable({
         },
       },
     ],
-    [appliedIds, onDismiss, onMarkApplied],
+    [appliedIds, savedIds, onDismiss, onToggleApplied, onToggleSaved],
   );
 
   const table = useReactTable({
