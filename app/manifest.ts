@@ -7,7 +7,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Job Copilot",
     short_name: "Job Copilot",
     description: "Track, score, and close the gap on job opportunities.",
-    start_url: "/",
+    start_url: "./jobs",
     display: "standalone",
     background_color: "#000000",
     theme_color: "#000000",

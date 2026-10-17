@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/sidebar";
 
 const NAV_ITEMS = [
-  { label: "Jobs", href: "/", icon: Briefcase },
+  { label: "Jobs", href: "/jobs", icon: Briefcase },
   { label: "Applications", href: "/applications", icon: ClipboardList },
   { label: "Gaps", href: "/gaps", icon: TrendingUp },
   { label: "Facts", href: "/facts", icon: Database },
@@ -34,6 +34,12 @@ const visibleNavItems =
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+
+  // The landing page is the front door; the dashboard chrome starts at the
+  // routes behind it.
+  if (pathname === "/") {
+    return <>{children}</>;
+  }
 
   return (
     <TooltipProvider delay={200}>
@@ -51,8 +57,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <SidebarGroup>
               <SidebarMenu>
               {visibleNavItems.map((item) => {
-                const isActive =
-                  item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+                const isActive = pathname.startsWith(item.href);
                 const Icon = item.icon;
                 return (
                   <SidebarMenuItem key={item.href}>

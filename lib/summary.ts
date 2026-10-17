@@ -19,7 +19,8 @@ export type JobsSummary = {
   best: number | null;
 };
 
-const ENTRY_OPPORTUNITIES = new Set(["internship", "contract", "junior", "program"]);
+/** Opportunities the board counts as entry-level. */
+export const ENTRY_OPPORTUNITIES = new Set(["internship", "contract", "junior", "program"]);
 
 export function summarizeJobs(jobs: Job[]): JobsSummary {
   let open = 0;
