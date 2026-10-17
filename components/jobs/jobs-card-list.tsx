@@ -22,6 +22,7 @@ import {
 } from "@/components/jobs/deadline-badge";
 import { sourceLabel } from "@/lib/jobs";
 import { cn } from "@/lib/utils";
+import { isUnstatedLocation } from "@/lib/regions";
 import { VERDICT_STYLE } from "@/lib/verdict-style";
 import type { Job } from "@/lib/types";
 
@@ -109,7 +110,11 @@ function JobCard({
         </div>
 
         <p className="truncate text-xs text-muted-foreground">
-          {[job.company || "Unknown company", job.location, job.postedAt && formatDate(job.postedAt)]
+          {[
+            job.company || "Unknown company",
+            isUnstatedLocation(job.location) ? "" : job.location,
+            job.postedAt && formatDate(job.postedAt),
+          ]
             .filter(Boolean)
             .join(" · ")}
         </p>

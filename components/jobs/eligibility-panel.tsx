@@ -2,8 +2,8 @@
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { REGION_LABELS } from "@/lib/regions";
-import { VERDICT_STYLE } from "@/lib/verdict-style";
+import { REGION_LABELS, isUnstatedLocation } from "@/lib/regions";
+import { EVIDENCE_FIELD_LABELS, VERDICT_STYLE } from "@/lib/verdict-style";
 import type { Eligibility } from "@/lib/types";
 
 
@@ -80,10 +80,21 @@ export function EligibilityPanel({ eligibility }: { eligibility?: Eligibility })
 
         {evidence.length > 0 && (
           <div className="flex flex-col gap-0.5 border-t border-border pt-2">
+            <span className="text-xs font-medium text-muted-foreground">
+              Read from the posting
+            </span>
             {evidence.map((item, i) => (
               <span key={i} className="text-xs">
-                <span className="text-muted-foreground">{item.field}: </span>
-                <span className="font-mono">{item.value}</span>
+                <span className="text-muted-foreground">
+                  {EVIDENCE_FIELD_LABELS[item.field] ?? item.field}:{" "}
+                </span>
+                {isUnstatedLocation(item.value) ? (
+                  <span className="italic text-muted-foreground">
+                    not stated
+                  </span>
+                ) : (
+                  <span className="font-mono">{item.value}</span>
+                )}
               </span>
             ))}
           </div>

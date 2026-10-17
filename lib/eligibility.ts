@@ -15,6 +15,7 @@ import {
   bandOverlapsAfrica,
   detectTimezoneBand,
   detectWorkplace,
+  isUnstatedLocation,
   parseRegions,
   parsedAllowsCandidate,
   type Region,
@@ -119,8 +120,14 @@ export type EligibilityInput = {
  *  - `unknown`       no usable signal
  */
 export function assessEligibility(input: EligibilityInput): Eligibility {
-  const structured = (input.requiredLocation ?? "").trim();
-  const locationText = (input.location ?? "").trim();
+  // Placeholder locations ("na", "N/A") say nothing. Left in, they became the
+  // verdict and the summary for jobs that simply did not state a location.
+  const structured = isUnstatedLocation(input.requiredLocation)
+    ? ""
+    : (input.requiredLocation ?? "").trim();
+  const locationText = isUnstatedLocation(input.location)
+    ? ""
+    : (input.location ?? "").trim();
   const body = (input.description ?? "").trim();
   const haystack = `${body} ${locationText} ${structured}`;
 
@@ -200,7 +207,7 @@ export function assessEligibility(input: EligibilityInput): Eligibility {
       return base(
         "unknown",
         false,
-        `Unrecognised region: "${parsed.unknown.join(", ")}".`
+        `Couldn't place "${primary}" — check the posting.`
       );
     }
     if (parsed.bare || (!primary && /remote/i.test(body))) {

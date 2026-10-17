@@ -16,6 +16,16 @@ export type VerdictStyle = {
   dot: string;
 };
 
+/**
+ * Feed field names are snake_case jargon (`candidate_required_location`); the
+ * UI speaks plain English. Defined once so the eligibility panel and the
+ * landing inspector cannot label the same field differently.
+ */
+export const EVIDENCE_FIELD_LABELS: Record<string, string> = {
+  candidate_required_location: "Required location",
+  location: "Location",
+};
+
 export const VERDICT_STYLE: Record<Eligibility["verdict"], VerdictStyle> = {
   open: {
     label: "Open to you",
@@ -42,7 +52,7 @@ export const VERDICT_STYLE: Record<Eligibility["verdict"], VerdictStyle> = {
     dot: "border border-amber-500",
   },
   unknown: {
-    label: "Unknown",
+    label: "Reach unclear",
     badge: "border-amber-500/40 text-amber-400",
     text: "text-amber-400",
     dot: "border border-amber-500",

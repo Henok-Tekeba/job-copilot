@@ -156,11 +156,11 @@ function loadFacts(): Facts {
 }
 
 function evaluateJob(job: StoredJob, knownSkills: Set<string>): Job["evaluation"] {
-  // Structured region field wins over the human-readable location string.
-  const requiredLocation = job.requiredLocation ?? job.location ?? "";
-
+  // The structured region field wins over the human-readable location string,
+  // but both are passed as-is so the evidence names the field the value really
+  // came from instead of always blaming `candidate_required_location`.
   const eligibility = assessEligibility({
-    requiredLocation,
+    requiredLocation: job.requiredLocation,
     location: job.location,
     description: job.description,
     sponsorshipHint: job.sponsorshipHint,

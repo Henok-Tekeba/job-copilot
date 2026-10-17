@@ -26,6 +26,7 @@ import {
 } from "@/components/jobs/deadline-badge";
 import { EligibilityPanel } from "@/components/jobs/eligibility-panel";
 import { useTrackedJobs } from "@/hooks/use-tracked-jobs";
+import { isUnstatedLocation } from "@/lib/regions";
 import { stripHtml } from "@/lib/jobs";
 import type { Job } from "@/lib/types";
 
@@ -47,6 +48,8 @@ export function JobDetailPage({ job }: { job: Job }) {
 
   const fit = job.evaluation.fit;
   const plainDescription = stripHtml(job.description);
+  // "na" is a feed placeholder, not a place. Printing it verbatim reads as a bug.
+  const locationLabel = isUnstatedLocation(job.location) ? "" : job.location;
 
   return (
     <>
@@ -54,7 +57,7 @@ export function JobDetailPage({ job }: { job: Job }) {
         <Button
           variant="ghost"
           size="sm"
-          render={<Link href="/" />}
+          render={<Link href="/jobs" />}
           className="-ml-1"
         >
           <ArrowLeftIcon />
@@ -69,7 +72,7 @@ export function JobDetailPage({ job }: { job: Job }) {
           </h1>
 
           <p className="text-sm text-muted-foreground">
-            {[job.company || "Unknown company", job.location]
+            {[job.company || "Unknown company", locationLabel]
               .filter(Boolean)
               .join(" · ")}
           </p>
@@ -112,7 +115,7 @@ export function JobDetailPage({ job }: { job: Job }) {
               variant="ghost"
               onClick={() => {
                 tracked.dismiss(job.id);
-                router.push("/");
+                router.push("/jobs");
               }}
             >
               <Trash />

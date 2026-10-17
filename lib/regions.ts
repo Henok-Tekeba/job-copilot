@@ -549,6 +549,18 @@ const REGION_LEVEL_PHRASES = new Set([
 /** Places the candidate themselves can work from. */
 export const DEFAULT_CANDIDATE_PLACES = ["ethiopia", "addis ababa", "addis"];
 
+/**
+ * Feeds publish placeholder values ("na", "N/A", "-") when they have no
+ * location at all. Treated as text they become junk: `Unrecognised region:
+ * "na"`. Shared with the UI so the same values are never rendered raw.
+ */
+const UNSTATED_LOCATION = /^(n\/?a|none|null|nil|unknown|tbd|location|[-–—]+)$/i;
+
+export function isUnstatedLocation(value: string | null | undefined): boolean {
+  const text = (value ?? "").trim();
+  return text === "" || UNSTATED_LOCATION.test(text);
+}
+
 /** Split a structured region string into its segments. */
 export function splitRegionSegments(raw: string): string[] {
   return raw
