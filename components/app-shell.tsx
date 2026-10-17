@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Briefcase, TrendingUp, Database, Rss, ClipboardList } from "lucide-react";
+import { Briefcase, TrendingUp, Database, Rss, ClipboardList, Mail } from "lucide-react";
 
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { SidebarAutoClose } from "@/components/sidebar-auto-close";
@@ -24,6 +24,7 @@ import {
 const NAV_ITEMS = [
   { label: "Jobs", href: "/jobs", icon: Briefcase },
   { label: "Applications", href: "/applications", icon: ClipboardList },
+  { label: "Digest", href: "/digest", icon: Mail },
   { label: "Gaps", href: "/gaps", icon: TrendingUp },
   { label: "Facts", href: "/facts", icon: Database },
   { label: "Sources", href: "/sources", icon: Rss },
