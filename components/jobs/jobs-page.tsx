@@ -34,6 +34,7 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useTrackedJobs } from "@/hooks/use-tracked-jobs";
 
 type EligibilityFilter = "open" | "all" | "no";
@@ -128,6 +129,7 @@ export default function JobsPage({
   const router = useRouter();
   const [appliedIds, setAppliedIds] = React.useState<Set<string>>(new Set());
   const [paletteOpen, setPaletteOpen] = React.useState(false);
+  const [shortcutsOpen, setShortcutsOpen] = React.useState(false);
 
   React.useEffect(() => {
     if (process.env.NEXT_PUBLIC_STATIC === "1") return;
@@ -147,6 +149,12 @@ export default function JobsPage({
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
         setPaletteOpen(true);
+      }
+      if (event.key === "?" && !event.metaKey && !event.ctrlKey) {
+        const target = event.target as HTMLElement | null;
+        if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA")) return;
+        event.preventDefault();
+        setShortcutsOpen(true);
       }
     };
     window.addEventListener("keydown", handler);
@@ -430,6 +438,32 @@ export default function JobsPage({
         onOpenChange={setPaletteOpen}
         onSelect={openJob}
       />
+
+      <Dialog open={shortcutsOpen} onOpenChange={setShortcutsOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Keyboard shortcuts</DialogTitle>
+          </DialogHeader>
+          <div className="flex flex-col gap-2 text-sm">
+            <div className="flex items-center justify-between gap-4">
+              <span className="text-muted-foreground">Open search</span>
+              <span className="font-mono text-xs">⌘ K</span>
+            </div>
+            <div className="flex items-center justify-between gap-4">
+              <span className="text-muted-foreground">Show shortcuts</span>
+              <span className="font-mono text-xs">?</span>
+            </div>
+            <div className="flex items-center justify-between gap-4">
+              <span className="text-muted-foreground">Navigate a row</span>
+              <span className="font-mono text-xs">↑ ↓</span>
+            </div>
+            <div className="flex items-center justify-between gap-4">
+              <span className="text-muted-foreground">Open a posting</span>
+              <span className="font-mono text-xs">Enter</span>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
