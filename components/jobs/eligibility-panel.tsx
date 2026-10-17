@@ -1,19 +1,16 @@
 "use client";
 
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import { REGION_LABELS, isUnstatedLocation } from "@/lib/regions";
 import { EVIDENCE_FIELD_LABELS, VERDICT_STYLE } from "@/lib/verdict-style";
-import { cn } from "@/lib/utils";
 import type { Eligibility } from "@/lib/types";
 
+
 /**
- * The verdict, as the spine of the posting.
- *
- * Shows why a job is or is not reachable, with the field the verdict came from.
- * Evidence is the point: a verdict the user cannot inspect is not worth
- * trusting. Set as a ruled block rather than an alert, so it reads as the
- * answer to the page's question instead of a warning that happened to appear.
+ * Shows why a job is or is not reachable from Africa, with the field the
+ * verdict came from. Evidence is the point: a verdict the user cannot inspect
+ * is not worth trusting.
  */
 export function EligibilityPanel({ eligibility }: { eligibility?: Eligibility }) {
   if (!eligibility) return null;
@@ -33,27 +30,13 @@ export function EligibilityPanel({ eligibility }: { eligibility?: Eligibility })
         : null;
 
   return (
-    <section
-      className={cn(
-        "flex flex-col gap-3 border-l-2 py-1 pl-4",
-        VERDICT_STYLE[verdict].rail
-      )}
-    >
-      <div className="flex flex-col gap-1.5">
-        <span
-          className={cn(
-            "text-sm font-medium",
-            VERDICT_STYLE[verdict].text
-          )}
-        >
+    <Alert className="w-auto">
+      <AlertTitle className="flex flex-wrap items-center gap-2">
+        <Badge variant="outline" className={VERDICT_STYLE[verdict].badge}>
           {VERDICT_STYLE[verdict].label}
-        </span>
-        <p className="text-sm leading-relaxed text-muted-foreground">{summary}</p>
-      </div>
-
-      <div className="flex flex-wrap items-center gap-1.5">
+        </Badge>
         {workplace && workplace !== "unknown" && (
-          <Badge variant="outline" className="capitalize">
+          <Badge variant="secondary" className="capitalize">
             {workplace}
           </Badge>
         )}
@@ -70,28 +53,33 @@ export function EligibilityPanel({ eligibility }: { eligibility?: Eligibility })
           </Badge>
         )}
         {regionLabels.length > 0 && (
-          <span className="text-xs text-muted-foreground">
+          <span className="text-xs font-normal text-muted-foreground">
             {regionLabels.join(" · ")}
           </span>
         )}
-      </div>
+      </AlertTitle>
 
-      {blockedBy && (
-        <p className="text-xs text-red-400">{blockedBy}</p>
-      )}
+      <AlertDescription className="flex flex-col gap-2">
+        <span>{summary}</span>
 
-      {timezone.required && (
-        <p className="text-xs text-muted-foreground">
-          Timezone: {timezone.required}
-          {timezone.overlapsAfrica === false && " — poor overlap with East Africa"}
-          {timezone.overlapsAfrica === true && " — good overlap with East Africa"}
-        </p>
-      )}
+        {blockedBy && <span className="text-xs text-red-400">{blockedBy}</span>}
 
-      {evidence.length > 0 && (
-        <>
-          <Separator />
-          <div className="flex flex-col gap-1">
+        {sponsorship && sponsorship.signals.length > 0 && (
+          <span className="text-xs text-muted-foreground">
+            Sponsorship evidence: {sponsorship.signals.join(", ")}
+          </span>
+        )}
+
+        {timezone.required && (
+          <span className="text-xs text-muted-foreground">
+            Timezone: {timezone.required}
+            {timezone.overlapsAfrica === false && " — poor overlap with East Africa"}
+            {timezone.overlapsAfrica === true && " — good overlap with East Africa"}
+          </span>
+        )}
+
+        {evidence.length > 0 && (
+          <div className="flex flex-col gap-0.5 border-t border-border pt-2">
             <span className="text-xs font-medium text-muted-foreground">
               Read from the posting
             </span>
@@ -110,8 +98,8 @@ export function EligibilityPanel({ eligibility }: { eligibility?: Eligibility })
               </span>
             ))}
           </div>
-        </>
-      )}
-    </section>
+        )}
+      </AlertDescription>
+    </Alert>
   );
 }

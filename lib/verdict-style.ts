@@ -14,8 +14,6 @@ export type VerdictStyle = {
   text: string;
   /** The dot beside a title in a list. */
   dot: string;
-  /** The rail down the left edge of a board row. */
-  rail: string;
 };
 
 /**
@@ -34,34 +32,29 @@ export const VERDICT_STYLE: Record<Eligibility["verdict"], VerdictStyle> = {
     badge: "border-emerald-500/40 text-emerald-400",
     text: "text-emerald-400",
     dot: "bg-emerald-500",
-    rail: "border-l-emerald-500",
   },
   relocation: {
     label: "Needs relocation",
     badge: "border-sky-500/40 text-sky-400",
     text: "text-sky-400",
     dot: "border border-sky-500",
-    rail: "border-l-sky-500/70",
   },
   "region-locked": {
     label: "Region locked",
     badge: "border-red-500/40 text-red-400",
     text: "text-red-400",
     dot: "border border-red-500/70",
-    rail: "border-l-red-500/70",
   },
   conflict: {
     label: "Conflicting signals",
     badge: "border-amber-500/40 text-amber-400",
     text: "text-amber-400",
     dot: "border border-amber-500",
-    rail: "border-l-amber-500/70",
   },
   unknown: {
     label: "Reach unclear",
     badge: "border-amber-500/40 text-amber-400",
     text: "text-amber-400",
     dot: "border border-amber-500",
-    rail: "border-l-amber-500/40",
   },
 };

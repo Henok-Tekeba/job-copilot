@@ -1,6 +1,6 @@
 "use client";
 
-import { Separator } from "@/components/ui/separator";
+import { Card, CardContent } from "@/components/ui/card";
 import { useNow } from "@/hooks/use-mounted";
 import { daysUntil } from "@/lib/jobs";
 import type { JobsSummary } from "@/lib/summary";
@@ -23,13 +23,6 @@ function countClosingSoon(jobs: Job[], today: Date): number {
   return count;
 }
 
-/**
- * The board's ledger strip.
- *
- * One ruled line rather than four boxes: the reachable count is the only number
- * worth reading first, so it is set large in mono and the rest sit beside it as
- * supporting figures. Cards here would give four things equal weight.
- */
 export function StatCards({
   summary,
   jobs,
@@ -42,35 +35,25 @@ export function StatCards({
   const today = useNow();
   const closingSoon = loaded && today ? countClosingSoon(jobs, today) : null;
 
-  const rest = [
+  const stats = [
+    { label: "Open to you", value: summary.reachable },
     { label: "Internships & contracts", value: summary.entry },
     { label: "Closing in 14 days", value: closingSoon ?? "—" },
     { label: "Best priority", value: summary.best ?? "—" },
   ];
 
   return (
-    <div className="flex flex-col gap-4 border-y border-border py-4 sm:flex-row sm:items-end sm:gap-8">
-      <div className="flex shrink-0 flex-col gap-1">
-        <span className="font-mono text-4xl leading-none font-semibold tracking-tight tabular-nums">
-          {summary.reachable}
-        </span>
-        <span className="text-xs text-muted-foreground">
-          open to you, of {summary.total} postings
-        </span>
-      </div>
-
-      <Separator orientation="vertical" className="hidden h-10 sm:block" />
-
-      <div className="flex flex-wrap gap-x-8 gap-y-3">
-        {rest.map((stat) => (
-          <div key={stat.label} className="flex flex-col gap-1">
-            <span className="font-mono text-lg leading-none font-medium tabular-nums">
+    <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+      {stats.map((stat) => (
+        <Card key={stat.label} size="sm">
+          <CardContent className="flex flex-col gap-0.5">
+            <span className="font-mono text-2xl font-semibold tabular-nums">
               {stat.value}
             </span>
             <span className="text-xs text-muted-foreground">{stat.label}</span>
-          </div>
-        ))}
-      </div>
+          </CardContent>
+        </Card>
+      ))}
     </div>
   );
 }

@@ -13,6 +13,7 @@ import {
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -64,9 +65,9 @@ export function JobDetailPage({ job }: { job: Job }) {
         </Button>
       </PageHeader>
 
-      <div className="mx-auto flex w-full max-w-3xl flex-col gap-8 px-4 py-6 sm:px-6 sm:py-8">
+      <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 py-6 sm:px-6 sm:py-8">
         <div className="flex flex-col gap-3">
-          <h1 className="font-heading text-2xl font-semibold leading-snug tracking-tight text-balance">
+          <h1 className="font-heading text-2xl font-semibold leading-snug tracking-tight">
             {job.title}
           </h1>
 
@@ -76,11 +77,13 @@ export function JobDetailPage({ job }: { job: Job }) {
               .join(" · ")}
           </p>
 
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
-            <span>{job.evaluation.opportunity}</span>
-            {job.deadline && <DeadlineBadge deadline={job.deadline} />}
-            {job.salary && <span className="font-mono">{job.salary}</span>}
+          <div className="flex flex-wrap items-center gap-1.5">
+            <Badge variant="outline" className="capitalize">
+              {job.evaluation.opportunity}
+            </Badge>
+            {job.salary && <Badge variant="secondary">{job.salary}</Badge>}
             <NewBadge postedAt={job.postedAt} />
+            <DeadlineBadge deadline={job.deadline} />
             <RedFlagBadge flags={job.evaluation.redFlags} />
           </div>
 
@@ -110,7 +113,6 @@ export function JobDetailPage({ job }: { job: Job }) {
             </Button>
             <Button
               variant="ghost"
-              className="ml-auto text-muted-foreground"
               onClick={() => {
                 tracked.dismiss(job.id);
                 router.push("/jobs");
@@ -125,11 +127,11 @@ export function JobDetailPage({ job }: { job: Job }) {
         <EligibilityPanel eligibility={job.evaluation.eligibility} />
 
         {job.evaluation.deadlineEvidence && (
-          <div className="flex flex-col gap-1 border-t border-border pt-3">
+          <div className="rounded-lg border border-border p-3">
             <span className="text-xs font-medium text-muted-foreground">
               Deadline read from the posting
             </span>
-            <p className="text-xs">{job.evaluation.deadlineEvidence}</p>
+            <p className="mt-1 text-xs">{job.evaluation.deadlineEvidence}</p>
           </div>
         )}
 
@@ -146,17 +148,18 @@ export function JobDetailPage({ job }: { job: Job }) {
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="match" className="flex flex-col gap-5 pt-2">
+          <TabsContent value="match" className="flex flex-col gap-4 pt-2">
             {fit && fit.score !== null ? (
               <div className="flex flex-col gap-2">
-                <div className="flex items-end gap-3 border-b border-border pb-3">
-                  <span className="font-mono text-5xl leading-none font-semibold tracking-tight tabular-nums">
+                <div className="flex items-baseline gap-3">
+                  <span className="font-mono text-3xl font-semibold tabular-nums">
                     {fit.priority}
                   </span>
-                  <span className="pb-1 text-xs text-muted-foreground">
+                  <span className="text-xs text-muted-foreground">
                     priority · {fit.score} skill fit
                   </span>
                 </div>
+                <Progress value={fit.priority} />
                 <p className="text-xs text-muted-foreground">
                   {fit.reasons.join(" · ")}
                 </p>

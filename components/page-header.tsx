@@ -13,7 +13,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
  */
 export function PageHeader({ children }: { children?: React.ReactNode }) {
   return (
-    <header className="sticky top-0 z-20 flex h-14 shrink-0 items-center gap-3 border-b border-border bg-background/80 px-4 backdrop-blur-sm sm:px-6">
+    <header className="flex h-14 shrink-0 items-center gap-3 border-b border-border px-4 sm:px-6">
       <SidebarTrigger />
       <Separator orientation="vertical" className="hidden h-6 md:block" />
       {children}
