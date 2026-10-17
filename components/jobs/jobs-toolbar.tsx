@@ -3,7 +3,6 @@
 import * as React from "react";
 import { SearchIcon, SlidersHorizontalIcon } from "lucide-react";
 
-import { Kbd } from "@/components/ui/kbd";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -32,6 +31,18 @@ type EligibilityFilter = "open" | "all" | "no";
 type SourceFilter = "all" | Source;
 
 export type SortBy = "priority" | "closing" | "newest";
+
+const SORT_LABELS: Record<SortBy, string> = {
+  priority: "Best match",
+  closing: "Closing soon",
+  newest: "Newest",
+};
+
+const ELIGIBILITY_LABELS: Record<EligibilityFilter, string> = {
+  open: "Reachable",
+  all: "Any",
+  no: "Closed to me",
+};
 
 type FilterFieldProps = {
   opportunityFilter: OpportunityFilter;
@@ -83,7 +94,9 @@ function FiltersFields({
           onValueChange={(value) => onEligibilityFilterChange(value as EligibilityFilter)}
         >
           <SelectTrigger size="sm" className="w-full">
-            <SelectValue placeholder="All" />
+            <SelectValue>
+              {(value) => ELIGIBILITY_LABELS[value as EligibilityFilter]}
+            </SelectValue>
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All</SelectItem>
@@ -100,7 +113,11 @@ function FiltersFields({
           onValueChange={(value) => onSourceFilterChange(value as SourceFilter)}
         >
           <SelectTrigger size="sm" className="w-full">
-            <SelectValue placeholder="All sources" />
+            <SelectValue>
+              {(value) =>
+                value === "all" ? "All sources" : sourceLabel(value as Source)
+              }
+            </SelectValue>
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All sources</SelectItem>
@@ -187,9 +204,6 @@ export function JobsToolbar({
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
           />
-          <InputGroupAddon align="inline-end">
-            <Kbd>⌘K</Kbd>
-          </InputGroupAddon>
         </InputGroup>
 
         <div className="hidden md:block">
@@ -214,7 +228,7 @@ export function JobsToolbar({
 
         <Select value={sortBy} onValueChange={(v) => onSortByChange(v as SortBy)}>
           <SelectTrigger size="sm" className="w-[9.75rem]" aria-label="Sort jobs">
-            <SelectValue placeholder="Sort" />
+            <SelectValue>{(value) => SORT_LABELS[value as SortBy]}</SelectValue>
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="priority">Best match</SelectItem>

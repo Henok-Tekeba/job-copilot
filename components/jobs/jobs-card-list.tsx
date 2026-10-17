@@ -14,6 +14,8 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { DeadlineBadge, RedFlagBadge } from "@/components/jobs/deadline-badge";
 import { sourceLabel } from "@/lib/jobs";
+import { cn } from "@/lib/utils";
+import { VERDICT_STYLE } from "@/lib/verdict-style";
 import type { Job } from "@/lib/types";
 
 type JobsCardListProps = {
@@ -24,21 +26,21 @@ type JobsCardListProps = {
   onResetFilters: () => void;
 };
 
-function RemoteDot({ job }: { job: Job }) {
-  const verdict = job.evaluation.eligibility?.verdict;
-  const eligible = job.evaluation.eligible;
-  const reason = job.evaluation.eligibility?.summary || job.evaluation.remoteReason || "No info";
-
-  const open = verdict ? verdict === "open" : eligible === "yes";
-  const locked = verdict ? verdict === "region-locked" : eligible === "no";
+function VerdictDot({ job }: { job: Job }) {
+  const verdict = job.evaluation.eligibility?.verdict ?? "unknown";
+  const reason =
+    job.evaluation.eligibility?.summary ||
+    job.evaluation.remoteReason ||
+    "No information";
 
   return (
-    <span className="flex size-4 items-center justify-center" title={reason}>
-      {open && <span className="size-2 rounded-full bg-emerald-500" />}
-      {!open && !locked && (
-        <span className="size-2 rounded-full border border-amber-500" />
+    <span
+      className={cn(
+        "size-2 shrink-0 rounded-full",
+        VERDICT_STYLE[verdict].dot
       )}
-      {locked && <span className="size-2 rounded-full border border-red-500/70" />}
+      title={reason}
+    >
       <span className="sr-only">Eligibility: {reason}</span>
     </span>
   );
@@ -91,7 +93,7 @@ function JobCard({
           {applied && <Badge variant="secondary">Applied</Badge>}
           <DeadlineBadge deadline={job.deadline} />
           <RedFlagBadge flags={job.evaluation.redFlags} />
-          <RemoteDot job={job} />
+          <VerdictDot job={job} />
         </div>
 
         {missing.length > 0 && (

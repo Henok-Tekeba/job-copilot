@@ -1,20 +1,12 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
 import { SearchIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { Kbd, KbdGroup } from "@/components/ui/kbd";
 import { PageHeader } from "@/components/page-header";
+import { byPriority, summarizeJobs, type JobsSummary } from "@/lib/summary";
 import { daysUntil } from "@/lib/jobs";
 import type { Job } from "@/lib/types";
 
@@ -36,11 +28,18 @@ type SourceFilter = "all" | Job["source"];
 
 const PAGE_SIZE = 24;
 
-type LoadState = "loading" | "ready" | "error";
-
-export default function JobsPage() {
-  const [jobs, setJobs] = React.useState<Job[]>([]);
-  const [loadState, setLoadState] = React.useState<LoadState>("loading");
+export default function JobsPage({
+  initialJobs,
+  initialSummary,
+}: {
+  initialJobs: Job[];
+  initialSummary: JobsSummary;
+}) {
+  // Seeded with a real first page from the server, so the first paint is
+  // postings rather than skeletons.
+  const [jobs, setJobs] = React.useState<Job[]>(initialJobs);
+  const [loaded, setLoaded] = React.useState(false);
+  const [loadFailed, setLoadFailed] = React.useState(false);
   const [reloadToken, setReloadToken] = React.useState(0);
 
   // Data arrives as an asset rather than as serialised props, so the HTML stays
@@ -57,11 +56,11 @@ export default function JobsPage() {
       .then((data) => {
         if (cancelled) return;
         setJobs(Array.isArray(data) ? data : []);
-        setLoadState("ready");
+        setLoaded(true);
       })
       .catch(() => {
         if (cancelled) return;
-        setLoadState("error");
+        setLoadFailed(true);
       });
 
     return () => {
@@ -69,7 +68,7 @@ export default function JobsPage() {
     };
   }, [reloadToken]);
 
-  const loading = loadState === "loading";
+  const summary = loaded ? summarizeJobs(jobs) : initialSummary;
 
   const [search, setSearch] = React.useState("");
   // Defaults to "all" rather than "focus": with 128 company boards connected,
@@ -176,9 +175,7 @@ export default function JobsPage() {
         }
 
         // `priority` already folds in seniority and eligibility.
-        const aPriority = a.evaluation.fit?.priority ?? a.evaluation.fitScore ?? 0;
-        const bPriority = b.evaluation.fit?.priority ?? b.evaluation.fitScore ?? 0;
-        return bPriority - aPriority;
+        return byPriority(a, b);
       });
   }, [
     jobs,
@@ -198,8 +195,6 @@ export default function JobsPage() {
     safePageIndex * PAGE_SIZE + PAGE_SIZE
   );
 
-  const softwareCount = jobs.filter((j) => j.relevance === "software").length;
-  const openCount = jobs.filter((j) => j.evaluation.eligible === "yes").length;
 
   const handleMarkApplied = async (job: Job) => {
     const res = await fetch("/api/applications", {
@@ -241,19 +236,6 @@ export default function JobsPage() {
   return (
     <>
       <PageHeader>
-        <Breadcrumb className="hidden md:flex">
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/" render={<Link href="/" />}>
-                Jobs
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>All</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
         <Button
           variant="secondary"
           size="sm"
@@ -273,13 +255,11 @@ export default function JobsPage() {
         <div className="flex flex-col gap-1 pt-1">
           <h1 className="font-heading text-xl font-semibold tracking-tight">Jobs</h1>
           <p className="text-sm text-muted-foreground">
-            {loadState === "ready"
-              ? `${softwareCount} software jobs, ${openCount} open to you`
-              : "Loading postings…"}
+            {`${summary.reachable} of ${summary.total} postings are reachable`}
           </p>
         </div>
 
-        {loadState === "error" ? (
+        {loadFailed && jobs.length === 0 ? (
           <Empty>
             <EmptyHeader>
               <EmptyTitle>Could not load postings</EmptyTitle>
@@ -293,7 +273,7 @@ export default function JobsPage() {
                 variant="outline"
                 size="sm"
                 onClick={() => {
-                  setLoadState("loading");
+                  setLoadFailed(false);
                   setReloadToken((n) => n + 1);
                 }}
               >
@@ -303,7 +283,7 @@ export default function JobsPage() {
           </Empty>
         ) : (
           <>
-        <StatCards jobs={jobs} />
+        <StatCards summary={summary} jobs={jobs} loaded={loaded} />
 
         <div className="flex flex-col gap-4">
           <JobsToolbar
@@ -327,7 +307,7 @@ export default function JobsPage() {
             <div className="hidden md:block">
               <JobsTable
                 jobs={pagedJobs}
-                loading={loading}
+                loading={false}
                 appliedIds={appliedIds}
                 onRowClick={setSelectedJob}
                 onMarkApplied={handleMarkApplied}
@@ -338,7 +318,7 @@ export default function JobsPage() {
             <div className="md:hidden">
               <JobsCardList
                 jobs={pagedJobs}
-                loading={loading}
+                loading={false}
                 appliedIds={appliedIds}
                 onRowClick={setSelectedJob}
                 onResetFilters={handleResetFilters}
@@ -346,12 +326,14 @@ export default function JobsPage() {
             </div>
           </div>
 
-          <JobsPagination
-            pageIndex={safePageIndex}
-            pageSize={PAGE_SIZE}
-            total={filteredJobs.length}
-            onPageChange={setPageIndex}
-          />
+          {loaded && (
+            <JobsPagination
+              pageIndex={safePageIndex}
+              pageSize={PAGE_SIZE}
+              total={filteredJobs.length}
+              onPageChange={setPageIndex}
+            />
+          )}
         </div>
           </>
         )}

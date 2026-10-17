@@ -37,6 +37,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
 import { DeadlineBadge } from "@/components/jobs/deadline-badge";
 import { initials, relativeTime, sourceLabel } from "@/lib/jobs";
+import { cn } from "@/lib/utils";
+import { VERDICT_STYLE } from "@/lib/verdict-style";
 import type { Job } from "@/lib/types";
 
 const columnHelper = createColumnHelper<Job>();
@@ -155,26 +157,25 @@ export function JobsTable({
       }),
       {
         id: "remote",
-        header: "Remote",
+        header: "",
         enableSorting: false,
         cell: ({ row }: { row: import("@tanstack/table-core").Row<Job> }) => {
-          const eligible = row.original.evaluation.eligible;
+          const verdict = row.original.evaluation.eligibility?.verdict ?? "unknown";
+          const reason =
+            row.original.evaluation.eligibility?.summary ||
+            row.original.evaluation.remoteReason ||
+            "No information";
           return (
             <Tooltip>
               <TooltipTrigger>
-                <span className="flex size-4 items-center justify-center">
-                  {eligible === "yes" && (
-                    <span className="size-2 rounded-full bg-emerald-500" />
+                <span
+                  className={cn(
+                    "block size-2 rounded-full",
+                    VERDICT_STYLE[verdict].dot
                   )}
-                  {eligible === "unclear" && (
-                    <span className="size-2 rounded-full border border-amber-500" />
-                  )}
-                  {eligible === "no" && <span className="size-2" />}
-                </span>
+                />
               </TooltipTrigger>
-              <TooltipContent>
-                {row.original.evaluation.remoteReason || "No info"}
-              </TooltipContent>
+              <TooltipContent>{reason}</TooltipContent>
             </Tooltip>
           );
         },
