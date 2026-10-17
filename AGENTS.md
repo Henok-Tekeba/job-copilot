@@ -79,3 +79,44 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+# Agent rules: save tokens, save cost
+
+My usage limit is based on cost. Big context = expensive. Follow these rules.
+
+## Reading code
+
+- Never read the whole repo. Use grep/glob to find the exact file first.
+- Read only the lines you need (line ranges), not full files.
+- Don't re-read a file you already read this session unless it changed.
+- Skip: node_modules, dist, build, .git, lockfiles, generated files, large data/log files.
+
+## Commands and output
+
+- Limit long output: pipe to `head`, `tail`, or `grep`.
+- Never print full logs, full test output, or full diffs. Show only errors and the relevant lines.
+- Don't run installs, builds, or full test suites unless needed. Run the single relevant test.
+
+## Editing
+
+- Make small, targeted edits. Don't rewrite whole files.
+- Group related edits together instead of many tiny steps.
+- No refactors, renames, or "improvements" I didn't ask for.
+- Don't create extra files, docs, or comments unless I ask.
+
+## Responses
+
+- Be short. No long explanations, no restating my request, no summary of what you just did.
+- Don't paste code back at me if it's already in the file.
+- If something is unclear, ask one short question instead of guessing and redoing work.
+
+## Working style
+
+- For anything bigger than a small change, give a 3-5 line plan first and wait for my OK.
+- If a step fails twice, stop and tell me. Don't loop on retries.
+- When the task is done, stop. Don't keep checking or polishing.
+
+## Context hygiene
+
+- If the conversation gets long or I switch tasks, tell me to start a new session or compact.
+- Use the cheapest model that can do the job. Flag if a task seems to need a stronger one.
