@@ -36,6 +36,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className="dark h-full antialiased">
       <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      {process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN && (
+        <script
+          defer
+          data-domain={process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN}
+          src="https://plausible.io/js/script.js"
+        />
+      )}
       <body
         className={`${geistSans.variable} ${geistMono.variable} min-h-full bg-background font-sans text-foreground`}
       >
