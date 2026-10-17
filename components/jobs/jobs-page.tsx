@@ -21,7 +21,10 @@ import {
   type OpportunityFilter,
   type SortBy,
 } from "@/components/jobs/jobs-toolbar";
+import { ProfileBar } from "@/components/jobs/profile-bar";
 import { StatCards } from "@/components/jobs/stat-cards";
+import { useProfile } from "@/hooks/use-profile";
+import { applyProfile, isDefaultProfile } from "@/lib/profile";
 import {
   Empty,
   EmptyContent,
@@ -100,6 +103,7 @@ export default function JobsPage({
   // Saved / applied / dismissed, persisted in the browser. The static site has
   // no server, so this is the application tracker.
   const tracked = useTrackedJobs();
+  const { profile, toggleSkill, setSkills, setActive } = useProfile();
   const [tab, setTab] = React.useState<"all" | "saved" | "applied">("all");
 
   const filterKey = [
@@ -146,9 +150,14 @@ export default function JobsPage({
     return () => window.removeEventListener("keydown", handler);
   }, []);
 
+  const effectiveJobs = React.useMemo(() => {
+    if (isDefaultProfile(profile)) return jobs;
+    return jobs.map((j) => applyProfile(j, profile.skills));
+  }, [jobs, profile]);
+
   const filteredJobs = React.useMemo(() => {
     const query = search.trim().toLowerCase();
-    return jobs
+    return effectiveJobs
       .filter((job) => {
         if (tracked.dismissed.has(job.id)) return false;
         if (tab === "saved" && !tracked.saved.has(job.id)) return false;
@@ -200,7 +209,7 @@ export default function JobsPage({
         return byPriority(a, b);
       });
   }, [
-    jobs,
+    effectiveJobs,
     search,
     opportunityFilter,
     sourceFilter,
@@ -289,6 +298,13 @@ export default function JobsPage({
         ) : (
           <>
         <StatCards summary={summary} jobs={jobs} loaded={loaded} />
+
+        <ProfileBar
+          profile={profile}
+          onToggleSkill={toggleSkill}
+          onSetSkills={setSkills}
+          onSetActive={setActive}
+        />
 
         <div className="flex flex-col gap-4">
           <JobsToolbar

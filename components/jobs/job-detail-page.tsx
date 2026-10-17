@@ -25,6 +25,8 @@ import {
 } from "@/components/jobs/deadline-badge";
 import { EligibilityPanel } from "@/components/jobs/eligibility-panel";
 import { useTrackedJobs } from "@/hooks/use-tracked-jobs";
+import { useProfile } from "@/hooks/use-profile";
+import { applyProfile, isDefaultProfile } from "@/lib/profile";
 import { isUnstatedLocation } from "@/lib/regions";
 import { stripHtml } from "@/lib/jobs";
 import type { Job } from "@/lib/types";
@@ -40,12 +42,19 @@ import type { Job } from "@/lib/types";
 export function JobDetailPage({ job }: { job: Job }) {
   const router = useRouter();
   const tracked = useTrackedJobs();
+  const { profile } = useProfile();
+  const activeProfile = !isDefaultProfile(profile);
+
+  const jobForView = React.useMemo(
+    () => (isDefaultProfile(profile) ? job : applyProfile(job, profile.skills)),
+    [job, profile]
+  );
 
   const applied = tracked.isApplied(job.id);
   const saved = tracked.saved.has(job.id);
   const notes = tracked.jobNotesFor(job.id);
 
-  const fit = job.evaluation.fit;
+  const fit = jobForView.evaluation.fit;
   const plainDescription = stripHtml(job.description);
   const locationLabel = isUnstatedLocation(job.location) ? "" : job.location;
 
@@ -82,6 +91,12 @@ export function JobDetailPage({ job }: { job: Job }) {
             <NewBadge postedAt={job.postedAt} />
             <RedFlagBadge flags={job.evaluation.redFlags} />
           </div>
+
+          {activeProfile && (
+            <p className="text-xs text-muted-foreground">
+              Fit shown for your profile ({profile.skills.length} skills).
+            </p>
+          )}
 
           <div className="flex flex-wrap items-center gap-2">
             <Button
@@ -215,10 +230,10 @@ export function JobDetailPage({ job }: { job: Job }) {
                 You have
               </span>
               <div className="flex flex-wrap gap-1">
-                {job.evaluation.matched.length === 0 ? (
+                {jobForView.evaluation.matched.length === 0 ? (
                   <span className="text-sm text-muted-foreground">None</span>
                 ) : (
-                  job.evaluation.matched.map((skill) => (
+                  jobForView.evaluation.matched.map((skill) => (
                     <Badge key={skill} variant="outline">
                       {skill}
                     </Badge>
