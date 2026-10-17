@@ -23,6 +23,7 @@ import {
 } from "@/components/jobs/jobs-toolbar";
 import { ProfileBar } from "@/components/jobs/profile-bar";
 import { StatCards } from "@/components/jobs/stat-cards";
+import { OnboardingDialog, useOnboarding } from "@/components/jobs/onboarding";
 import { useProfile } from "@/hooks/use-profile";
 import { applyProfile, isDefaultProfile } from "@/lib/profile";
 import {
@@ -105,6 +106,8 @@ export default function JobsPage({
   const tracked = useTrackedJobs();
   const { profile, toggleSkill, setSkills, setActive } = useProfile();
   const [tab, setTab] = React.useState<"all" | "saved" | "applied">("all");
+  const [profileSheetOpen, setProfileSheetOpen] = React.useState(false);
+  const { show: showOnboarding, dismiss: dismissOnboarding } = useOnboarding();
 
   const filterKey = [
     search,
@@ -304,6 +307,17 @@ export default function JobsPage({
           onToggleSkill={toggleSkill}
           onSetSkills={setSkills}
           onSetActive={setActive}
+          sheetOpen={profileSheetOpen}
+          onSheetOpenChange={setProfileSheetOpen}
+        />
+
+        <OnboardingDialog
+          open={showOnboarding}
+          onOpenProfile={() => {
+            dismissOnboarding();
+            setProfileSheetOpen(true);
+          }}
+          onSkip={dismissOnboarding}
         />
 
         <div className="flex flex-col gap-4">
