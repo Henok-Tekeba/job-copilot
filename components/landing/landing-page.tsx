@@ -5,6 +5,7 @@ import {
   VerdictInspector,
   type LandingSample,
 } from "@/components/landing/verdict-inspector";
+import { VerdictTool } from "@/components/landing/verdict-tool";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import type { JobsSummary } from "@/lib/summary";
@@ -87,6 +88,22 @@ export function LandingPage({
                 Three postings from the current snapshot. Pick one to see the read.
               </p>
               <VerdictInspector samples={samples} />
+            </div>
+          </div>
+        </section>
+
+        <section className="border-t border-border">
+          <div className="mx-auto w-full max-w-5xl px-4 py-14 sm:px-6 sm:py-20">
+            <h2 className="text-lg font-semibold tracking-tight">
+              Or read your own posting
+            </h2>
+            <p className="mt-2 max-w-[62ch] text-sm text-muted-foreground">
+              Paste any job description. The same engine that scores the board
+              reads it for reach and fit, and names what you would still be
+              missing.
+            </p>
+            <div className="mt-8">
+              <VerdictTool />
             </div>
           </div>
         </section>
