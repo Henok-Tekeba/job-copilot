@@ -259,12 +259,9 @@ export default function JobsPage({
         </Button>
       </PageHeader>
 
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-6 sm:px-6 sm:py-8">
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-5 px-4 py-6 sm:px-6 sm:py-8">
         <div className="flex flex-col gap-1 pt-1">
           <h1 className="font-heading text-xl font-semibold tracking-tight">Jobs</h1>
-          <p className="text-sm text-muted-foreground">
-            {`${summary.reachable} of ${summary.total} postings are reachable`}
-          </p>
         </div>
 
         {loadFailed && jobs.length === 0 ? (
@@ -334,7 +331,7 @@ export default function JobsPage({
             </TabsList>
           </Tabs>
 
-          <div className="rounded-lg md:border md:border-border">
+          <div className="-mx-4 border-t border-border sm:-mx-6">
             <div className="hidden md:block">
               <JobsTable
                 jobs={pagedJobs}
