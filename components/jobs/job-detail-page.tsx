@@ -14,8 +14,6 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { PageHeader } from "@/components/page-header";
 import {
@@ -147,122 +145,109 @@ export function JobDetailPage({ job }: { job: Job }) {
           </div>
         )}
 
-        <Tabs defaultValue="match" className="flex flex-col gap-2">
-          <TabsList variant="line" className="w-full justify-start">
-            <TabsTrigger value="match" className="flex-1">
-              Match
-            </TabsTrigger>
-            <TabsTrigger value="posting" className="flex-1">
-              Posting
-            </TabsTrigger>
-            <TabsTrigger value="notes" className="flex-1">
-              Notes
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="match" className="flex flex-col gap-5 pt-2">
-            {fit && fit.score !== null ? (
-              <div className="flex flex-col gap-2">
-                <div className="flex items-end gap-3 border-b border-border pb-3">
-                  <span className="font-mono text-5xl leading-none font-semibold tracking-tight tabular-nums">
-                    {fit.priority}
-                  </span>
-                  <span className="pb-1 text-xs text-muted-foreground">
-                    priority · {fit.score} skill fit
-                  </span>
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  {fit.reasons.join(" · ")}
-                </p>
+        <section className="flex flex-col gap-3 border-t border-border pt-6">
+          <h2 className="font-heading text-lg font-semibold tracking-tight">
+            Match
+          </h2>
+          {fit && fit.score !== null ? (
+            <div className="flex flex-col gap-3">
+              <div className="flex items-end gap-3">
+                <span className="font-mono text-5xl leading-none font-semibold tracking-tight tabular-nums">
+                  {fit.priority}
+                </span>
+                <span className="pb-1 text-xs text-muted-foreground">
+                  priority · {fit.score} skill fit
+                </span>
               </div>
-            ) : (
-              <span className="text-sm text-muted-foreground">
-                Not enough skills detected
-              </span>
-            )}
+              <p className="text-xs text-muted-foreground">
+                {fit.reasons.join(" · ")}
+              </p>
+            </div>
+          ) : (
+            <span className="text-sm text-muted-foreground">
+              Not enough skills detected
+            </span>
+          )}
 
-            {fit?.basis === "required" && (
-              <>
-                <Separator />
-                <div className="flex flex-col gap-2">
-                  <span className="text-xs font-medium text-muted-foreground">
-                    Required — you lack
-                  </span>
-                  <div className="flex flex-wrap gap-1">
-                    {fit.requiredMissing.length === 0 ? (
-                      <span className="text-sm text-muted-foreground">
-                        Nothing — you meet every requirement.
-                      </span>
-                    ) : (
-                      fit.requiredMissing.map((skill) => (
-                        <Badge key={skill} variant="outline" className="border-dashed">
-                          {skill}
-                        </Badge>
-                      ))
-                    )}
-                  </div>
-                </div>
-              </>
-            )}
-
-            {fit && fit.niceMissing.length > 0 && (
-              <>
-                <Separator />
-                <div className="flex flex-col gap-2">
-                  <span className="text-xs font-medium text-muted-foreground">
-                    Nice to have — you lack
-                  </span>
-                  <div className="flex flex-wrap gap-1">
-                    {fit.niceMissing.map((skill) => (
-                      <Badge key={skill} variant="secondary">
-                        {skill}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              </>
-            )}
-
-            <Separator />
-
-            <div className="flex flex-col gap-2">
+          {fit?.basis === "required" && (
+            <div className="flex flex-col gap-2 pt-2">
               <span className="text-xs font-medium text-muted-foreground">
-                You have
+                Required — you lack
               </span>
               <div className="flex flex-wrap gap-1">
-                {jobForView.evaluation.matched.length === 0 ? (
-                  <span className="text-sm text-muted-foreground">None</span>
+                {fit.requiredMissing.length === 0 ? (
+                  <span className="text-sm text-muted-foreground">
+                    Nothing — you meet every requirement.
+                  </span>
                 ) : (
-                  jobForView.evaluation.matched.map((skill) => (
-                    <Badge key={skill} variant="outline">
+                  fit.requiredMissing.map((skill) => (
+                    <Badge key={skill} variant="outline" className="border-dashed">
                       {skill}
                     </Badge>
                   ))
                 )}
               </div>
             </div>
-          </TabsContent>
+          )}
 
-          <TabsContent value="posting" className="pt-2">
-            <ScrollArea className="h-[55vh] rounded-lg border border-border p-4">
-              <p className="text-sm leading-relaxed whitespace-pre-wrap">
-                {plainDescription || "No description in the snapshot."}
-              </p>
-            </ScrollArea>
-          </TabsContent>
+          {fit && fit.niceMissing.length > 0 && (
+            <div className="flex flex-col gap-2 pt-2">
+              <span className="text-xs font-medium text-muted-foreground">
+                Nice to have — you lack
+              </span>
+              <div className="flex flex-wrap gap-1">
+                {fit.niceMissing.map((skill) => (
+                  <Badge key={skill} variant="secondary">
+                    {skill}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          )}
 
-          <TabsContent value="notes" className="flex flex-col gap-2 pt-2">
-            <Textarea
-              placeholder="Notes for this posting…"
-              value={notes}
-              onChange={(e) => tracked.setJobNotes(job.id, e.target.value)}
-              className="min-h-40"
-            />
-            <p className="text-xs text-muted-foreground">
-              Notes are saved in this browser and survive reloads.
+          <div className="flex flex-col gap-2 pt-2">
+            <span className="text-xs font-medium text-muted-foreground">
+              You have
+            </span>
+            <div className="flex flex-wrap gap-1">
+              {jobForView.evaluation.matched.length === 0 ? (
+                <span className="text-sm text-muted-foreground">None</span>
+              ) : (
+                jobForView.evaluation.matched.map((skill) => (
+                  <Badge key={skill} variant="outline">
+                    {skill}
+                  </Badge>
+                ))
+              )}
+            </div>
+          </div>
+        </section>
+
+        <section className="flex flex-col gap-3 border-t border-border pt-6">
+          <h2 className="font-heading text-lg font-semibold tracking-tight">
+            Posting
+          </h2>
+          <ScrollArea className="h-[55vh] rounded-lg border border-border p-4">
+            <p className="text-sm leading-relaxed whitespace-pre-wrap">
+              {plainDescription || "No description in the snapshot."}
             </p>
-          </TabsContent>
-        </Tabs>
+          </ScrollArea>
+        </section>
+
+        <section className="flex flex-col gap-3 border-t border-border pt-6">
+          <h2 className="font-heading text-lg font-semibold tracking-tight">
+            Notes
+          </h2>
+          <Textarea
+            placeholder="Notes for this posting…"
+            value={notes}
+            onChange={(e) => tracked.setJobNotes(job.id, e.target.value)}
+            className="min-h-40"
+          />
+          <p className="text-xs text-muted-foreground">
+            Notes are saved in this browser and survive reloads.
+          </p>
+        </section>
 
         <div className="flex flex-wrap items-center justify-between gap-2 border-t border-border pt-4">
           <a

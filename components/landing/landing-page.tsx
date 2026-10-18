@@ -7,7 +7,6 @@ import {
 } from "@/components/landing/verdict-inspector";
 import { VerdictTool } from "@/components/landing/verdict-tool";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { Button } from "@/components/ui/button";
 import type { JobsSummary } from "@/lib/summary";
 
 /**
@@ -34,9 +33,10 @@ const STEPS = [
 ] as const;
 
 /**
- * Site front door. One loud element — the inspector of real verdicts — and
- * everything else quiet: figures in Geist Mono, hairlines instead of cards,
- * status colour only where the board itself uses it.
+ * Site front door.
+ *
+ * The hero is the read itself: paste a posting, get the verdict. Everything
+ * else is proof that the read is real and reproducible.
  */
 export function LandingPage({
   samples,
@@ -50,7 +50,7 @@ export function LandingPage({
   return (
     <div className="flex min-h-svh flex-col">
       <header className="border-b border-border">
-        <div className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between px-4 sm:px-6">
+        <div className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between px-4 sm:px-6">
           <span className="font-heading text-sm font-semibold tracking-tight">
             Job Copilot
           </span>
@@ -67,49 +67,55 @@ export function LandingPage({
       </header>
 
       <main className="flex-1">
-        <section className="relative mx-auto w-full max-w-5xl px-4 pt-14 pb-16 sm:px-6 sm:pt-20 sm:pb-24">
+        <section className="relative mx-auto w-full max-w-6xl px-4 pt-10 pb-16 sm:px-6 sm:pt-14 sm:pb-24">
           <AsciiMap
-            className="inset-x-0 top-0 h-64 [mask-image:linear-gradient(to_bottom,black_60%,transparent)] text-[10px] sm:h-[22rem] sm:text-[14px] lg:h-[30rem] lg:text-[18px]"
+            className="absolute inset-x-0 top-0 h-72 [mask-image:linear-gradient(to_bottom,black_50%,transparent)] text-[10px] sm:h-[26rem] sm:text-[13px] lg:h-[34rem] lg:text-[16px]"
           />
-          <div className="relative">
-            <h1
-              className="max-w-3xl animate-in text-balance text-4xl font-semibold leading-[1.08] tracking-tight fill-mode-backwards slide-in-from-bottom-4 fade-in duration-700 ease-out sm:text-5xl"
-            >
-              Will this employer take an international applicant?
-            </h1>
-            <p className="mt-6 max-w-[62ch] animate-in text-base leading-relaxed text-muted-foreground fill-mode-backwards slide-in-from-bottom-4 fade-in delay-[120ms] duration-700 ease-out sm:text-lg">
-              A personal board of tech internships, contracts and junior roles from{" "}
-              {feeds} hiring feeds, each one read for that question — and for what
-              you would still be missing if you applied.
-            </p>
-
-            <div className="mt-12 animate-in fill-mode-backwards fade-in delay-[260ms] duration-700 ease-out">
-              <p className="mb-3 text-xs text-muted-foreground">
-                Three postings from the current snapshot. Pick one to see the read.
+          <div className="relative grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:items-start">
+            <div className="flex flex-col gap-6">
+              <h1 className="max-w-xl text-balance text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">
+                Will this employer take an international applicant?
+              </h1>
+              <p className="max-w-[58ch] text-base leading-relaxed text-muted-foreground sm:text-lg">
+                A board of tech internships, contracts and junior roles from{" "}
+                {feeds} hiring feeds, each one read for that question — and for
+                what you would still be missing if you applied.
               </p>
-              <VerdictInspector samples={samples} />
+              <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                <span className="font-mono tabular-nums">
+                  {summary.total} postings
+                </span>
+                <span className="font-mono tabular-nums">
+                  {summary.reachable} open to you
+                </span>
+              </div>
             </div>
-          </div>
-        </section>
 
-        <section className="border-t border-border">
-          <div className="mx-auto w-full max-w-5xl px-4 py-14 sm:px-6 sm:py-20">
-            <h2 className="text-lg font-semibold tracking-tight">
-              Or read your own posting
-            </h2>
-            <p className="mt-2 max-w-[62ch] text-sm text-muted-foreground">
-              Paste any job description. The same engine that scores the board
-              reads it for reach and fit, and names what you would still be
-              missing.
-            </p>
-            <div className="mt-8">
+            <div className="border border-border bg-background/60 p-4 backdrop-blur-sm sm:p-6">
+              <p className="mb-3 text-xs text-muted-foreground">
+                Paste any posting. The read appears here.
+              </p>
               <VerdictTool />
             </div>
           </div>
         </section>
 
         <section className="border-t border-border">
-          <div className="mx-auto w-full max-w-5xl px-4 py-14 sm:px-6 sm:py-20">
+          <div className="mx-auto w-full max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
+            <h2 className="text-lg font-semibold tracking-tight">
+              Or try three from the current snapshot
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Pick one to see the read the board gives it.
+            </p>
+            <div className="mt-8">
+              <VerdictInspector samples={samples} />
+            </div>
+          </div>
+        </section>
+
+        <section className="border-t border-border">
+          <div className="mx-auto w-full max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
             <h2 className="text-lg font-semibold tracking-tight">
               How a posting is read
             </h2>
@@ -129,33 +135,6 @@ export function LandingPage({
                 </li>
               ))}
             </ol>
-          </div>
-        </section>
-
-        <section className="border-t border-border">
-          <div className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-14 sm:px-6 sm:py-20">
-            <p className="max-w-[68ch] text-base leading-relaxed">
-              <span className="font-mono tabular-nums">{summary.total}</span>{" "}
-              postings,{" "}
-              <span className="font-mono tabular-nums">{summary.reachable}</span>{" "}
-              open to you or worth relocating for;{" "}
-              <span className="font-mono tabular-nums">{summary.entry}</span> of
-              those are internships, contracts or junior roles. Rebuilt from{" "}
-              <span className="font-mono tabular-nums">{feeds}</span> hiring
-              feeds every 8 hours, and stale postings are dropped.
-            </p>
-            <div className="flex flex-col gap-3">
-              <Button
-                size="lg"
-                className="self-start"
-                render={<Link href="/jobs" />}
-              >
-                Browse the board
-              </Button>
-              <p className="text-xs text-muted-foreground">
-                Saved jobs and notes stay in this browser.
-              </p>
-            </div>
           </div>
         </section>
       </main>

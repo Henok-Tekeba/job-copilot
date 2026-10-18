@@ -42,13 +42,6 @@ type JobsTableProps = {
   onResetFilters: () => void;
 };
 
-/**
- * The verdict, as a readable word rather than a dot.
- *
- * It is the trigger for the reason the posting is reachable or not: a verdict
- * you cannot inspect is not worth trusting, and this is the place on the board
- * where that reason can surface without leaving the list.
- */
 function VerdictCell({ job }: { job: Job }) {
   const verdict = job.evaluation.eligibility?.verdict ?? "unknown";
   const reason =
@@ -62,7 +55,7 @@ function VerdictCell({ job }: { job: Job }) {
       <HoverCardTrigger>
         <span
           className={cn(
-            "cursor-default text-xs font-medium",
+            "cursor-default text-sm font-medium",
             VERDICT_STYLE[verdict].text
           )}
         >
@@ -88,14 +81,6 @@ function VerdictCell({ job }: { job: Job }) {
   );
 }
 
-/**
- * The board itself: one dense ledger rather than a grid of boxes.
- *
- * Each row is two lines of type. The role carries the row, the verdict is a
- * coloured word, the numbers sit in mono, and everything that used to be a
- * badge is set as plain text so only the verdict and an urgent deadline carry
- * colour.
- */
 export function JobsTable({
   jobs,
   loading,
@@ -114,15 +99,10 @@ export function JobsTable({
     return (
       <div className="flex flex-col">
         {Array.from({ length: 10 }, (_, i) => (
-          <div
-            key={i}
-            className="flex items-center gap-4 border-b border-border py-3"
-          >
-            <Skeleton className="h-3 w-6" />
-            <Skeleton className="h-3 flex-1" />
+          <div key={i} className="flex items-center gap-4 border-b border-border py-3">
             <Skeleton className="h-3 w-16" />
-            <Skeleton className="h-3 w-14" />
-            <Skeleton className="h-3 w-20" />
+            <Skeleton className="h-3 flex-1" />
+            <Skeleton className="h-3 w-10" />
           </div>
         ))}
       </div>
@@ -151,14 +131,14 @@ export function JobsTable({
     <Table>
       <TableHeader>
         <TableRow className="hover:bg-transparent">
-          <TableHead className="w-14 pl-4 text-xs font-normal text-muted-foreground sm:pl-6">
-            Priority
+          <TableHead className="w-32 pl-4 text-xs font-normal text-muted-foreground sm:pl-6">
+            Verdict
           </TableHead>
           <TableHead className="text-xs font-normal text-muted-foreground">
             Role
           </TableHead>
-          <TableHead className="hidden w-28 text-xs font-normal text-muted-foreground lg:table-cell">
-            Verdict
+          <TableHead className="w-16 text-xs font-normal text-muted-foreground">
+            Priority
           </TableHead>
           <TableHead className="hidden w-24 text-xs font-normal text-muted-foreground md:table-cell">
             Type
@@ -166,7 +146,7 @@ export function JobsTable({
           <TableHead className="hidden w-28 text-xs font-normal text-muted-foreground lg:table-cell">
             Closes
           </TableHead>
-          <TableHead className="hidden w-40 text-xs font-normal text-muted-foreground xl:table-cell">
+          <TableHead className="hidden w-44 text-xs font-normal text-muted-foreground xl:table-cell">
             Missing
           </TableHead>
           <TableHead className="w-14 pr-4 sm:pr-6" />
@@ -176,21 +156,21 @@ export function JobsTable({
       <TableBody>
         {jobs.map((job) => {
           const applied = appliedIds.has(job.id);
-          const location = isUnstatedLocation(job.location)
-            ? null
-            : job.location;
+          const location = isUnstatedLocation(job.location) ? null : job.location;
           const missing = job.evaluation.missing;
+          const verdict = job.evaluation.eligibility?.verdict ?? "unknown";
 
           return (
             <TableRow
               key={job.id}
-              className="group cursor-pointer border-b-border/70"
+              className={cn(
+                "group cursor-pointer border-b-border/70 border-l-2",
+                VERDICT_STYLE[verdict].rail
+              )}
               onClick={() => onRowClick(job)}
             >
               <TableCell className="py-2 pl-4 align-top sm:pl-6">
-                <span className="font-mono text-sm font-medium tabular-nums">
-                  {job.evaluation.fit?.priority ?? job.evaluation.fitScore ?? "—"}
-                </span>
+                <VerdictCell job={job} />
               </TableCell>
 
               <TableCell className="max-w-0 py-2 align-top">
@@ -218,8 +198,10 @@ export function JobsTable({
                 </div>
               </TableCell>
 
-              <TableCell className="hidden py-2 align-top lg:table-cell">
-                <VerdictCell job={job} />
+              <TableCell className="py-2 align-top">
+                <span className="font-mono text-sm font-medium tabular-nums">
+                  {job.evaluation.fit?.priority ?? job.evaluation.fitScore ?? "—"}
+                </span>
               </TableCell>
 
               <TableCell className="hidden py-2 align-top md:table-cell">
