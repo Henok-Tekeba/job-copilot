@@ -127,7 +127,7 @@ export function DigestView() {
       ) : (
         <>
           <section className="flex flex-col gap-3">
-            <h2 className="text-sm font-medium">New this week</h2>
+            <h2 className="font-display text-base font-semibold tracking-tight">New this week</h2>
             {newThisWeek.length === 0 ? (
               <p className="text-xs text-muted-foreground">
                 No new postings in the last 7 days.
@@ -155,7 +155,7 @@ export function DigestView() {
           </section>
 
           <section className="flex flex-col gap-3">
-            <h2 className="text-sm font-medium">Closing soon</h2>
+            <h2 className="font-display text-base font-semibold tracking-tight">Closing soon</h2>
             {closingSoon.length === 0 ? (
               <p className="text-xs text-muted-foreground">
                 Nothing closing in the next 14 days.

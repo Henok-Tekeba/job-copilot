@@ -194,7 +194,7 @@ export function ApplicationsClient({
       <PageHeader>
         <div className="flex min-w-0 flex-1 items-center justify-between gap-2">
           <div className="flex min-w-0 items-center gap-2">
-            <h1 className="truncate font-heading text-base font-semibold tracking-tight sm:text-xl">Applications</h1>
+            <h1 className="truncate font-display text-2xl font-semibold tracking-tight sm:text-3xl">Applications</h1>
             <span className="hidden text-sm whitespace-nowrap text-muted-foreground sm:inline">
               {applications.length} total · {dueCount} follow-up{dueCount !== 1 ? "s" : ""} due
             </span>

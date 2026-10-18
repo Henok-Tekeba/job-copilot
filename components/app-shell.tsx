@@ -13,24 +13,26 @@ import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarInset,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
+  SidebarSeparator,
 } from "@/components/ui/sidebar";
 
 const NAV_ITEMS = [
-  { label: "Jobs", href: "/jobs", icon: Briefcase },
-  { label: "Applications", href: "/applications", icon: ClipboardList },
-  { label: "Digest", href: "/digest", icon: Mail },
-  { label: "Reach", href: "/reach", icon: Globe },
-  { label: "Gaps", href: "/gaps", icon: TrendingUp },
-  { label: "About", href: "/about", icon: User },
-  { label: "Method", href: "/method", icon: BookOpen },
-  { label: "Facts", href: "/facts", icon: Database },
-  { label: "Sources", href: "/sources", icon: Rss },
+  { label: "Jobs", href: "/jobs", icon: Briefcase, group: "Work" },
+  { label: "Applications", href: "/applications", icon: ClipboardList, group: "Work" },
+  { label: "Digest", href: "/digest", icon: Mail, group: "Work" },
+  { label: "Reach", href: "/reach", icon: Globe, group: "Insights" },
+  { label: "Gaps", href: "/gaps", icon: TrendingUp, group: "Insights" },
+  { label: "Facts", href: "/facts", icon: Database, group: "You" },
+  { label: "Sources", href: "/sources", icon: Rss, group: "You" },
+  { label: "Method", href: "/method", icon: BookOpen, group: "You" },
+  { label: "About", href: "/about", icon: User, group: "You" },
 ];
 
 const visibleNavItems =
@@ -47,40 +49,54 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     return <>{children}</>;
   }
 
+  const groups = Array.from(new Set(visibleNavItems.map((i) => i.group)));
+
   return (
     <TooltipProvider delay={200}>
       <SidebarProvider>
         <SidebarAutoClose />
         <Sidebar variant="inset" collapsible="icon">
-          <SidebarHeader className="px-4 py-4">
-            <div className="flex h-8 items-center gap-2">
-              <span className="font-heading text-sm font-semibold tracking-tight">
+          <SidebarHeader className="px-4 py-5">
+            <div className="flex h-9 items-center gap-2.5">
+              <span className="font-display text-base font-semibold tracking-tight text-foreground">
                 Job Copilot
               </span>
               <ThemeToggle className="ml-auto size-7" />
             </div>
           </SidebarHeader>
-          <SidebarContent className="px-2">
-            <SidebarGroup>
-              <SidebarMenu>
-              {visibleNavItems.map((item) => {
-                const isActive = pathname.startsWith(item.href);
-                const Icon = item.icon;
-                return (
-                  <SidebarMenuItem key={item.href}>
-                    <SidebarMenuButton
-                      isActive={isActive}
-                      render={<Link href={item.href} />}
-                    >
-                      <Icon className="ml-2" />
-                      {item.label}
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                );
-              })}
-</SidebarMenu>
-            </SidebarGroup>
-            </SidebarContent>
+          <SidebarContent className="px-2 py-2">
+            {groups.map((group, gi) => (
+              <React.Fragment key={group}>
+                {gi > 0 && <SidebarSeparator className="my-2" />}
+                <SidebarGroup>
+                  <SidebarGroupLabel className="px-2 text-[10px] font-medium uppercase tracking-[0.12em] text-muted-foreground/70">
+                    {group}
+                  </SidebarGroupLabel>
+                  <SidebarMenu>
+                    {visibleNavItems
+                      .filter((i) => i.group === group)
+                      .map((item) => {
+                        const isActive = pathname.startsWith(item.href);
+                        const Icon = item.icon;
+                        return (
+                          <SidebarMenuItem key={item.href}>
+                            <SidebarMenuButton
+                              isActive={isActive}
+                              size="sm"
+                              className="h-8 gap-2.5 rounded-md text-[13px] font-medium"
+                              render={<Link href={item.href} />}
+                            >
+                              <Icon className="size-4" />
+                              {item.label}
+                            </SidebarMenuButton>
+                          </SidebarMenuItem>
+                        );
+                      })}
+                  </SidebarMenu>
+                </SidebarGroup>
+              </React.Fragment>
+            ))}
+          </SidebarContent>
         </Sidebar>
         <SidebarInset className="relative min-h-svh">
           <AsciiMap

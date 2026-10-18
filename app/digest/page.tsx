@@ -5,7 +5,7 @@ export default function DigestPage() {
   return (
     <>
       <PageHeader>
-        <h1 className="font-heading text-base font-semibold tracking-tight sm:text-xl">
+        <h1 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
           Digest
         </h1>
       </PageHeader>

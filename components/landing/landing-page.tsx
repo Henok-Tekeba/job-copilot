@@ -51,7 +51,7 @@ export function LandingPage({
     <div className="flex min-h-svh flex-col">
       <header className="border-b border-border">
         <div className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between px-4 sm:px-6">
-          <span className="font-heading text-sm font-semibold tracking-tight">
+          <span className="font-display text-sm font-semibold tracking-tight">
             Job Copilot
           </span>
           <div className="flex items-center gap-4">
