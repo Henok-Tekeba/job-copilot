@@ -312,7 +312,15 @@ export default function JobsPage({
           </Empty>
         ) : (
           <>
-        <StatCards summary={summary} jobs={jobs} loaded={loaded} />
+        <StatCards
+          summary={summary}
+          jobs={jobs}
+          loaded={loaded}
+          onReachable={() => setEligibilityFilter("open")}
+          onInternships={() => setOpportunityFilter("internship")}
+          onClosingSoon={() => setSortBy("closing")}
+          onBestPriority={() => setSortBy("priority")}
+        />
 
         <ProfileBar
           profile={profile}
