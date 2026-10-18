@@ -34,7 +34,7 @@ Aggregates tech internship feeds globally and reads each posting for internation
 
 ## Brand Commitments
 
-No user-stated brand commitments beyond the project's locked Vercel look documented in AGENTS.md: pure black ground, Geist Sans/Mono, tight radii, neutral greys, no accent colour; status colours (emerald/sky/amber/red) are the only colour.
+Redesigned visual world ("The Observatory"): deep midnight ground, Fraunces display + Geist UI, warm amber accent, softer radii. AGENTS.md locked-look constraint overridden by explicit user request.
 
 ## Evidence on Hand
 

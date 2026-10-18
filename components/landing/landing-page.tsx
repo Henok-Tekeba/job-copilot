@@ -72,7 +72,7 @@ export function LandingPage({
             className="absolute inset-x-0 top-0 h-72 [mask-image:linear-gradient(to_bottom,black_50%,transparent)] text-[10px] sm:h-[26rem] sm:text-[13px] lg:h-[34rem] lg:text-[16px]"
           />
           <div className="relative flex flex-col items-center gap-10 text-center">
-            <h1 className="max-w-3xl text-balance text-4xl font-semibold leading-[1.02] tracking-tight sm:text-5xl">
+            <h1 className="max-w-3xl text-balance font-display text-4xl font-semibold leading-[1.02] tracking-tight sm:text-5xl">
               Will this employer take an international applicant?
             </h1>
             <p className="max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">

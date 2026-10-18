@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Fraunces } from "next/font/google";
 import { AppShell } from "@/components/app-shell";
 import "./globals.css";
 
@@ -11,6 +11,12 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
+  subsets: ["latin"],
+  axes: ["opsz"],
 });
 
 export const metadata: Metadata = {
@@ -44,7 +50,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
       )}
       <body
-        className={`${geistSans.variable} ${geistMono.variable} min-h-full bg-background font-sans text-foreground`}
+        className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} min-h-full bg-background font-sans text-foreground`}
       >
         <AppShell>{children}</AppShell>
       </body>
