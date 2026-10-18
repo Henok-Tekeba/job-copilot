@@ -63,8 +63,8 @@ export function LandingPage({
           />
           <div className="relative grid gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:items-start lg:gap-16">
             <div className="flex flex-col gap-8">
-              <h1 className="max-w-xl text-balance text-4xl font-semibold leading-[1.0] tracking-tight sm:text-5xl">
-                Will this employer take an international applicant?
+              <h1 className="max-w-xl font-serif text-4xl font-normal leading-[1.0] tracking-tight sm:text-5xl">
+                Will this employer take an <em className="italic">international</em> applicant?
               </h1>
               <p className="max-w-md text-base leading-relaxed text-muted-foreground">
                 A board of tech internships, contracts and junior roles from{" "}
@@ -92,7 +92,7 @@ export function LandingPage({
 
         <section className="border-t border-border">
           <div className="mx-auto w-full max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
-            <h2 className="text-balance text-lg font-semibold tracking-tight">
+            <h2 className="text-balance font-serif text-2xl font-normal tracking-tight">
               Or try three from the current snapshot
             </h2>
             <p className="mt-2 text-sm text-muted-foreground">
@@ -106,7 +106,7 @@ export function LandingPage({
 
         <section className="border-t border-border">
           <div className="mx-auto w-full max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
-            <h2 className="text-balance text-lg font-semibold tracking-tight">
+            <h2 className="text-balance font-serif text-2xl font-normal tracking-tight">
               How a posting is read
             </h2>
             <ol className="mt-10 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
@@ -128,6 +128,17 @@ export function LandingPage({
           </div>
         </section>
       </main>
+
+      <footer className="border-t border-border">
+        <div className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6">
+          <p className="max-w-2xl text-xs leading-relaxed text-muted-foreground">
+            This tool reads the words in a posting. It cannot know what an
+            employer decides in the room, whether a role is already filled, or
+            whether a visa will be granted. Treat every verdict as a signal, not
+            a promise.
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }
