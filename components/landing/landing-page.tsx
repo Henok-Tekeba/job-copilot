@@ -67,13 +67,13 @@ export function LandingPage({
       </header>
 
       <main className="flex-1">
-        <section className="relative mx-auto w-full max-w-6xl px-4 pt-10 pb-16 sm:px-6 sm:pt-14 sm:pb-24">
+        <section className="relative mx-auto w-full max-w-6xl px-4 pt-16 pb-20 sm:px-6 sm:pt-24 sm:pb-32">
           <AsciiMap
             className="absolute inset-x-0 top-0 h-72 [mask-image:linear-gradient(to_bottom,black_50%,transparent)] text-[10px] sm:h-[26rem] sm:text-[13px] lg:h-[34rem] lg:text-[16px]"
           />
-          <div className="relative grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:items-start">
-            <div className="flex flex-col gap-6">
-              <h1 className="max-w-xl text-balance text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">
+          <div className="relative grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:items-start lg:gap-16">
+            <div className="flex flex-col gap-8">
+              <h1 className="max-w-xl text-balance text-4xl font-semibold leading-[1.02] tracking-tight sm:text-5xl">
                 Will this employer take an international applicant?
               </h1>
               <p className="max-w-[58ch] text-base leading-relaxed text-muted-foreground sm:text-lg">
@@ -91,7 +91,7 @@ export function LandingPage({
               </div>
             </div>
 
-            <div className="border border-border bg-card p-4 sm:p-6">
+            <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 border border-border bg-card p-4 sm:p-6 motion-reduce:animate-none">
               <p className="mb-3 text-xs text-muted-foreground">
                 Paste any posting. The read appears here.
               </p>
@@ -119,13 +119,13 @@ export function LandingPage({
             <h2 className="text-balance text-lg font-semibold tracking-tight">
               How a posting is read
             </h2>
-            <ol className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            <ol className="mt-10 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
               {STEPS.map((step, index) => (
                 <li
                   key={step.title}
-                  className="flex flex-col gap-2 border-t border-border pt-4"
+                  className="flex flex-col gap-3 border-t border-border pt-5"
                 >
-                  <span className="font-mono text-xs tabular-nums text-muted-foreground">
+                  <span className="font-mono text-sm tabular-nums text-muted-foreground">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   <span className="text-sm font-medium">{step.title}</span>
