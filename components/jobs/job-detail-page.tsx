@@ -72,7 +72,7 @@ export function JobDetailPage({ job }: { job: Job }) {
 
       <div className="mx-auto flex w-full max-w-3xl flex-col gap-8 px-4 py-6 sm:px-6 sm:py-8">
         <div className="flex flex-col gap-3">
-          <h1 className="font-display text-3xl font-semibold leading-snug tracking-tight text-balance">
+          <h1 className="font-heading text-3xl font-semibold leading-snug tracking-tight text-balance">
             {job.title}
           </h1>
 
@@ -146,7 +146,7 @@ export function JobDetailPage({ job }: { job: Job }) {
         )}
 
         <section className="flex flex-col gap-3 border-t border-border pt-6">
-          <h2 className="font-display text-xl font-semibold tracking-tight">
+          <h2 className="font-heading text-xl font-semibold tracking-tight">
             Match
           </h2>
           {fit && fit.score !== null ? (
@@ -224,7 +224,7 @@ export function JobDetailPage({ job }: { job: Job }) {
         </section>
 
         <section className="flex flex-col gap-3 border-t border-border pt-6">
-          <h2 className="font-display text-xl font-semibold tracking-tight">
+          <h2 className="font-heading text-xl font-semibold tracking-tight">
             Posting
           </h2>
           <ScrollArea className="h-[55vh] rounded-lg border border-border p-4">
@@ -235,7 +235,7 @@ export function JobDetailPage({ job }: { job: Job }) {
         </section>
 
         <section className="flex flex-col gap-3 border-t border-border pt-6">
-          <h2 className="font-display text-xl font-semibold tracking-tight">
+          <h2 className="font-heading text-xl font-semibold tracking-tight">
             Notes
           </h2>
           <Textarea

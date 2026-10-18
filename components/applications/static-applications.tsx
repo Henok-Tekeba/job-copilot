@@ -127,7 +127,7 @@ export function StaticApplications() {
       <PageHeader>
         <div className="flex min-w-0 flex-1 items-center justify-between gap-2">
           <div className="flex min-w-0 items-center gap-2">
-            <h1 className="truncate font-display text-2xl font-semibold tracking-tight sm:text-3xl">
+            <h1 className="truncate font-heading text-2xl font-semibold tracking-tight sm:text-3xl">
               Applications
             </h1>
             <span className="hidden text-sm whitespace-nowrap text-muted-foreground sm:inline">

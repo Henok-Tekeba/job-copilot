@@ -7,9 +7,9 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-display: var(--font-fraunces);
+  --font-sans: var(--font-space-grotesk);
+  --font-mono: var(--font-jetbrains-mono);
+  --font-heading: var(--font-space-grotesk);
   --font-heading: var(--font-geist-sans);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -50,30 +50,30 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  --background: oklch(0.97 0.005 250);
+  --foreground: oklch(0.18 0.015 250);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  --card-foreground: oklch(0.18 0.015 250);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.18 0.015 250);
+  --primary: oklch(0.55 0.15 195);
+  --primary-foreground: oklch(0.98 0.005 250);
+  --secondary: oklch(0.94 0.005 250);
+  --secondary-foreground: oklch(0.18 0.015 250);
+  --muted: oklch(0.94 0.005 250);
+  --muted-foreground: oklch(0.45 0.015 250);
+  --accent: oklch(0.94 0.005 250);
+  --accent-foreground: oklch(0.18 0.015 250);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --border: oklch(0.88 0.01 250);
+  --input: oklch(0.88 0.01 250);
+  --ring: oklch(0.55 0.15 195);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
+  --radius: 0.375rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
@@ -85,24 +85,24 @@
 }
 
 .dark {
-  --background: oklch(0.13 0.02 260);
-  --foreground: oklch(0.96 0.01 260);
-  --card: oklch(0.17 0.02 260);
-  --card-foreground: oklch(0.96 0.01 260);
-  --popover: oklch(0.17 0.02 260);
-  --popover-foreground: oklch(0.96 0.01 260);
-  --primary: oklch(0.78 0.16 70);
-  --primary-foreground: oklch(0.18 0.04 70);
-  --secondary: oklch(0.22 0.02 260);
-  --secondary-foreground: oklch(0.96 0.01 260);
-  --muted: oklch(0.22 0.02 260);
-  --muted-foreground: oklch(0.68 0.02 260);
-  --accent: oklch(0.22 0.02 260);
-  --accent-foreground: oklch(0.96 0.01 260);
-  --destructive: oklch(0.7 0.2 25);
-  --border: oklch(1 0 0 / 12%);
-  --input: oklch(1 0 0 / 16%);
-  --ring: oklch(0.78 0.16 70);
+  --background: oklch(0.15 0.015 250);
+  --foreground: oklch(0.94 0.01 250);
+  --card: oklch(0.19 0.015 250);
+  --card-foreground: oklch(0.94 0.01 250);
+  --popover: oklch(0.19 0.015 250);
+  --popover-foreground: oklch(0.94 0.01 250);
+  --primary: oklch(0.78 0.15 195);
+  --primary-foreground: oklch(0.16 0.03 195);
+  --secondary: oklch(0.24 0.015 250);
+  --secondary-foreground: oklch(0.94 0.01 250);
+  --muted: oklch(0.24 0.015 250);
+  --muted-foreground: oklch(0.62 0.015 250);
+  --accent: oklch(0.24 0.015 250);
+  --accent-foreground: oklch(0.94 0.01 250);
+  --destructive: oklch(0.68 0.2 25);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 14%);
+  --ring: oklch(0.78 0.15 195);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -110,7 +110,7 @@
   --chart-5: oklch(0.269 0 0);
   --sidebar: oklch(0.145 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary: oklch(0.78 0.15 195);
   --sidebar-primary-foreground: oklch(0.985 0 0);
   --sidebar-accent: oklch(0.269 0 0);
   --sidebar-accent-foreground: oklch(0.985 0 0);
@@ -197,15 +197,15 @@
 }
 
 .ascii-beacon {
-  color: var(--color-emerald-400);
+  color: var(--color-cyan-400);
   text-shadow:
-    0 0 0.75rem color-mix(in oklab, var(--color-emerald-400) 55%, transparent),
-    0 0 2.5rem color-mix(in oklab, var(--color-emerald-400) 25%, transparent);
+    0 0 0.75rem color-mix(in oklab, var(--color-cyan-400) 55%, transparent),
+    0 0 2.5rem color-mix(in oklab, var(--color-cyan-400) 25%, transparent);
   animation: ascii-beacon 2.6s ease-in-out infinite;
 }
 
 :not(.dark) .ascii-beacon {
-  color: var(--color-emerald-500);
+  color: var(--color-cyan-500);
 }
 
 @keyframes ascii-beacon {

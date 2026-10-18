@@ -34,7 +34,7 @@ Aggregates tech internship feeds globally and reads each posting for internation
 
 ## Brand Commitments
 
-Redesigned visual world ("The Observatory"): deep midnight ground, Fraunces display + Geist UI, warm amber accent, softer radii. AGENTS.md locked-look constraint overridden by explicit user request.
+Redesigned visual world ("The Radar"): deep cool-charcoal ground, Space Grotesk UI + JetBrains Mono data, electric teal accent, tighter radii (0.375rem). AGENTS.md locked-look constraint overridden by explicit user request. Distinctive, subject-grounded identity (radar/sonar scanning feel), avoiding default AI tells.
 
 ## Evidence on Hand
 

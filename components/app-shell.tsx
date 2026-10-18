@@ -58,7 +58,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <Sidebar variant="inset" collapsible="icon">
           <SidebarHeader className="px-4 py-5">
             <div className="flex h-9 items-center gap-2.5">
-              <span className="font-display text-base font-semibold tracking-tight text-foreground">
+              <span className="font-heading text-base font-semibold tracking-tight text-foreground">
                 Job Copilot
               </span>
               <ThemeToggle className="ml-auto size-7" />
