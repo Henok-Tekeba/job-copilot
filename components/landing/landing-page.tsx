@@ -71,27 +71,24 @@ export function LandingPage({
           <AsciiMap
             className="absolute inset-x-0 top-0 h-72 [mask-image:linear-gradient(to_bottom,black_50%,transparent)] text-[10px] sm:h-[26rem] sm:text-[13px] lg:h-[34rem] lg:text-[16px]"
           />
-          <div className="relative grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:items-start lg:gap-16">
-            <div className="flex flex-col gap-8">
-              <h1 className="max-w-xl text-balance text-4xl font-semibold leading-[1.02] tracking-tight sm:text-5xl">
-                Will this employer take an international applicant?
-              </h1>
-              <p className="max-w-[58ch] text-base leading-relaxed text-muted-foreground sm:text-lg">
-                A board of tech internships, contracts and junior roles from{" "}
-                {feeds} hiring feeds, each one read for that question — and for
-                what you would still be missing if you applied.
-              </p>
-              <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                <span className="font-mono tabular-nums">
-                  {summary.total} postings
-                </span>
-                <span className="font-mono tabular-nums">
-                  {summary.reachable} open to you
-                </span>
-              </div>
+          <div className="relative flex flex-col items-center gap-10 text-center">
+            <h1 className="max-w-3xl text-balance text-4xl font-semibold leading-[1.02] tracking-tight sm:text-5xl">
+              Will this employer take an international applicant?
+            </h1>
+            <p className="max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+              A board of tech internships, contracts and junior roles from{" "}
+              {feeds} hiring feeds, each one read for that question — and for
+              what you would still be missing if you applied.
+            </p>
+            <div className="flex items-center gap-6 text-xs text-muted-foreground">
+              <span className="font-mono tabular-nums">
+                {summary.total} postings
+              </span>
+              <span className="font-mono tabular-nums">
+                {summary.reachable} open to you
+              </span>
             </div>
-
-            <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 border border-border bg-card p-4 sm:p-6 motion-reduce:animate-none">
+            <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 w-full max-w-2xl border border-border bg-card p-4 sm:p-6 motion-reduce:animate-none">
               <p className="mb-3 text-xs text-muted-foreground">
                 Paste any posting. The read appears here.
               </p>
