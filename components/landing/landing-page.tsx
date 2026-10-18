@@ -5,26 +5,25 @@ import {
   VerdictInspector,
   type LandingSample,
 } from "@/components/landing/verdict-inspector";
-import { VerdictTool } from "@/components/landing/verdict-tool";
 import { ThemeToggle } from "@/components/theme-toggle";
 import type { JobsSummary } from "@/lib/summary";
 
 const STEPS = [
   {
     title: "Can they take you?",
-    body: "Feed fields, the location string and the posting body read together, and the verdict keeps the evidence it used.",
+    body: "We read the location rules and visa notes in the posting and give a plain answer, with the exact words that caused it.",
   },
   {
     title: "Would you pass?",
-    body: "Your skills and level scored against what the posting asks for, into a priority the board sorts by.",
+    body: "Your skills and level are scored against what the posting asks for, so you know where you stand before applying.",
   },
   {
     title: "What are you missing?",
-    body: "The required skills you lack, named before you apply rather than after.",
+    body: "The skills you do not have yet are named up front, so you know what to learn next.",
   },
   {
     title: "By when?",
-    body: "Deadlines read out of the posting text, so applications land before the cutoff.",
+    body: "Deadlines are pulled from the posting text, so you do not miss a cutoff.",
   },
 ] as const;
 
@@ -61,15 +60,15 @@ export function LandingPage({
           <AsciiMap
             className="absolute inset-x-0 top-0 h-72 [mask-image:linear-gradient(to_bottom,black_50%,transparent)] text-[10px] sm:h-[26rem] sm:text-[13px] lg:h-[34rem] lg:text-[16px]"
           />
-          <div className="relative grid gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:items-start lg:gap-16">
+          <div className="relative max-w-2xl">
             <div className="flex flex-col gap-8">
               <h1 className="max-w-xl font-serif text-4xl font-normal leading-[1.0] tracking-tight sm:text-5xl">
                 Will this employer take an <em className="italic">international</em> applicant?
               </h1>
               <p className="max-w-md text-base leading-relaxed text-muted-foreground">
-                A board of tech internships, contracts and junior roles from{" "}
-                {feeds} hiring feeds, each one read for that question and for
-                what you would still be missing if you applied.
+                Tech internships, contracts and junior roles from {feeds} hiring
+                feeds. Each one checked for two things: whether they would take
+                an international applicant, and what you would still be missing.
               </p>
               <div className="flex items-center gap-6 text-xs text-muted-foreground">
                 <span className="font-mono tabular-nums">
@@ -81,22 +80,16 @@ export function LandingPage({
               </div>
             </div>
 
-            <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 border border-border bg-card p-5 sm:p-6 motion-reduce:animate-none">
-              <p className="mb-3 text-xs text-muted-foreground">
-                Paste any posting. The read appears here.
-              </p>
-              <VerdictTool />
-            </div>
           </div>
         </section>
 
         <section className="border-t border-border">
           <div className="mx-auto w-full max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
             <h2 className="text-balance font-serif text-2xl font-normal tracking-tight">
-              Or try three from the current snapshot
+              Try three real postings
             </h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              Pick one to see the read the board gives it.
+              Pick one to see how the board reads it.
             </p>
             <div className="mt-8">
               <VerdictInspector samples={samples} />
