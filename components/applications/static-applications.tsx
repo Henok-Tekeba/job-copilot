@@ -161,6 +161,7 @@ export function StaticApplications() {
                   <Label htmlFor="title">Role title</Label>
                   <Input
                     id="title"
+                    autoComplete="off"
                     value={form.title}
                     onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))}
                     placeholder="e.g. Frontend Engineer"
@@ -171,6 +172,7 @@ export function StaticApplications() {
                   <Label htmlFor="company">Company</Label>
                   <Input
                     id="company"
+                    autoComplete="organization"
                     value={form.company}
                     onChange={(e) => setForm((f) => ({ ...f, company: e.target.value }))}
                     placeholder="e.g. Bloomberg"
@@ -182,6 +184,7 @@ export function StaticApplications() {
                   <Input
                     id="url"
                     type="url"
+                    autoComplete="url"
                     value={form.url}
                     onChange={(e) => setForm((f) => ({ ...f, url: e.target.value }))}
                     placeholder="https://…"
@@ -192,6 +195,7 @@ export function StaticApplications() {
                   <Input
                     id="appliedAt"
                     type="date"
+                    autoComplete="off"
                     value={form.appliedAt}
                     onChange={(e) => setForm((f) => ({ ...f, appliedAt: e.target.value }))}
                   />
@@ -200,6 +204,7 @@ export function StaticApplications() {
                   <Label htmlFor="notes">Notes</Label>
                   <Textarea
                     id="notes"
+                    autoComplete="off"
                     value={form.notes}
                     onChange={(e) => setForm((f) => ({ ...f, notes: e.target.value }))}
                     placeholder="Optional notes…"
@@ -304,7 +309,7 @@ export function StaticApplications() {
                       <TableCell>
                         <DropdownMenu>
                           <DropdownMenuTrigger>
-                            <Button variant="ghost" size="icon-sm" className="h-7 w-7">
+                            <Button variant="ghost" size="icon-sm" className="h-7 w-7" aria-label="Open application">
                               <ExternalLinkIcon className="h-4 w-4" />
                             </Button>
                           </DropdownMenuTrigger>

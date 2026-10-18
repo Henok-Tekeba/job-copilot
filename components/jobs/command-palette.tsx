@@ -28,7 +28,7 @@ export function CommandPalette({ jobs, open, onOpenChange, onSelect }: CommandPa
       title="Search jobs"
       description="Find a job by title or company"
     >
-      <CommandInput placeholder="Search title or company..." />
+      <CommandInput placeholder="Search title or company…" />
       <CommandList>
         <CommandEmpty>No jobs found.</CommandEmpty>
         <CommandGroup heading="Jobs">

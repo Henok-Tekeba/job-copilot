@@ -182,7 +182,8 @@ export function JobsToolbar({
             <SearchIcon />
           </InputGroupAddon>
           <InputGroupInput
-            placeholder="Search title or company..."
+            placeholder="Search title or company…"
+            aria-label="Search jobs"
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
           />

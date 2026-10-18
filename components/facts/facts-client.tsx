@@ -73,9 +73,9 @@ function Field({ label, value, onChange, multiline }: {
       <Label className="text-sm">{label}</Label>
       <div className="flex items-start gap-1">
         {multiline ? (
-          <Textarea value={value} onChange={(e) => onChange(e.target.value)} rows={3} />
+          <Textarea value={value} onChange={(e) => onChange(e.target.value)} autoComplete="off" rows={3} />
         ) : (
-          <Input value={value} onChange={(e) => onChange(e.target.value)} />
+          <Input value={value} onChange={(e) => onChange(e.target.value)} autoComplete="off" />
         )}
         <CopyButton value={value} />
       </div>
@@ -122,7 +122,7 @@ function ProfileTab({ profile, setProfile }: {
       <Field label="Short summary" value={profile.summaries.short} onChange={(v) => setSummaries({ short: v })} multiline />
       <Field label="Long summary" value={profile.summaries.long} onChange={(v) => setSummaries({ long: v })} multiline />
       <Button className="w-fit" onClick={onSave} disabled={saving}>
-        {saving ? "Saving..." : "Save"}
+        {saving ? "Saving…" : "Save"}
       </Button>
     </div>
   );
@@ -153,7 +153,7 @@ function SkillsTab({ facts, setFacts }: { facts: Facts; setFacts: (f: Facts) => 
   return (
     <div className="flex flex-col gap-4">
       <div className="flex gap-2">
-        <Input placeholder="Add a skill..." value={newSkill} onChange={(e) => setNewSkill(e.target.value)} onKeyDown={(e) => e.key === "Enter" && addSkill()} />
+        <Input placeholder="Add a skill…" value={newSkill} onChange={(e) => setNewSkill(e.target.value)} onKeyDown={(e) => e.key === "Enter" && addSkill()} />
         <Button onClick={addSkill}>Add</Button>
       </div>
       {facts.skills.length === 0 ? (
@@ -231,7 +231,7 @@ function ProjectsTab({ facts, setFacts }: { facts: Facts; setFacts: (f: Facts) =
             </div>
             <div className="flex flex-col gap-1.5">
               <Label className="text-sm">Link</Label>
-              <Input value={editing.link} onChange={(e) => setEditing({ ...editing, link: e.target.value })} placeholder="https://..." />
+              <Input value={editing.link} onChange={(e) => setEditing({ ...editing, link: e.target.value })} placeholder="https://…" />
             </div>
           </div>
           <div className="flex flex-col gap-1.5">
@@ -340,7 +340,7 @@ function AnswersTab({ profile, setProfile }: {
         ))}
       </div>
       <div className="flex gap-2">
-        <Input placeholder="Custom question..." value={newQ} onChange={(e) => setNewQ(e.target.value)} onKeyDown={(e) => e.key === "Enter" && addCustom()} />
+        <Input placeholder="Custom question…" value={newQ} onChange={(e) => setNewQ(e.target.value)} onKeyDown={(e) => e.key === "Enter" && addCustom()} />
         <Button onClick={addCustom}>Add</Button>
       </div>
       {profile.answers.length === 0 ? (

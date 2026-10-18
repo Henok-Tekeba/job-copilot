@@ -140,8 +140,8 @@ export function DigestView() {
                     className="flex items-baseline justify-between gap-3 border-b border-border py-2"
                   >
                     <div className="min-w-0">
-                      <span className="text-sm font-medium">{job.title}</span>
-                      <span className="ml-2 text-xs text-muted-foreground">
+                      <span className="truncate text-sm font-medium">{job.title}</span>
+                      <span className="ml-2 truncate text-xs text-muted-foreground">
                         {job.company}
                       </span>
                     </div>
@@ -168,8 +168,8 @@ export function DigestView() {
                     className="flex items-baseline justify-between gap-3 border-b border-border py-2"
                   >
                     <div className="min-w-0">
-                      <span className="text-sm font-medium">{job.title}</span>
-                      <span className="ml-2 text-xs text-muted-foreground">
+                      <span className="truncate text-sm font-medium">{job.title}</span>
+                      <span className="ml-2 truncate text-xs text-muted-foreground">
                         {job.company}
                       </span>
                     </div>

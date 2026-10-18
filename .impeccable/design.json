@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-18T00:00:00Z",
+  "title": "Design System: Job Copilot",
+  "extensions": {
+    "colorMeta": {
+      "background": { "role": "neutral", "displayName": "Void", "canonical": "oklch(0 0 0)", "tonalRamp": ["oklch(0.05 0 0)", "oklch(0.1 0 0)", "oklch(0.15 0 0)", "oklch(0.2 0 0)", "oklch(0.25 0 0)", "oklch(0.3 0 0)", "oklch(0.35 0 0)", "oklch(0.4 0 0)"] },
+      "foreground": { "role": "neutral", "displayName": "Ink", "canonical": "oklch(0.985 0 0)", "tonalRamp": ["oklch(0.6 0 0)", "oklch(0.65 0 0)", "oklch(0.7 0 0)", "oklch(0.75 0 0)", "oklch(0.8 0 0)", "oklch(0.85 0 0)", "oklch(0.9 0 0)", "oklch(0.95 0 0)"] },
+      "card": { "role": "neutral", "displayName": "Surface", "canonical": "oklch(0.145 0 0)", "tonalRamp": ["oklch(0.08 0 0)", "oklch(0.1 0 0)", "oklch(0.12 0 0)", "oklch(0.145 0 0)", "oklch(0.18 0 0)", "oklch(0.22 0 0)", "oklch(0.26 0 0)", "oklch(0.3 0 0)"] },
+      "muted": { "role": "neutral", "displayName": "Muted Surface", "canonical": "oklch(0.269 0 0)", "tonalRamp": ["oklch(0.18 0 0)", "oklch(0.2 0 0)", "oklch(0.22 0 0)", "oklch(0.24 0 0)", "oklch(0.269 0 0)", "oklch(0.3 0 0)", "oklch(0.34 0 0)", "oklch(0.38 0 0)"] },
+      "border": { "role": "neutral", "displayName": "Hairline", "canonical": "oklch(1 0 0 / 10%)", "tonalRamp": ["oklch(1 0 0 / 4%)", "oklch(1 0 0 / 6%)", "oklch(1 0 0 / 8%)", "oklch(1 0 0 / 10%)", "oklch(1 0 0 / 14%)", "oklch(1 0 0 / 18%)", "oklch(1 0 0 / 22%)", "oklch(1 0 0 / 28%)"] },
+      "primary": { "role": "primary", "displayName": "Ink", "canonical": "oklch(0.922 0 0)", "tonalRamp": ["oklch(0.5 0 0)", "oklch(0.55 0 0)", "oklch(0.6 0 0)", "oklch(0.65 0 0)", "oklch(0.7 0 0)", "oklch(0.75 0 0)", "oklch(0.8 0 0)", "oklch(0.85 0 0)"] },
+      "signal-green": { "role": "status", "displayName": "Signal Green", "canonical": "oklch(0.76 0.17 155)", "tonalRamp": ["oklch(0.3 0.1 155)", "oklch(0.4 0.13 155)", "oklch(0.5 0.15 155)", "oklch(0.6 0.16 155)", "oklch(0.7 0.17 155)", "oklch(0.76 0.17 155)", "oklch(0.82 0.15 155)", "oklch(0.88 0.12 155)"] },
+      "sky": { "role": "status", "displayName": "Sky", "canonical": "oklch(0.75 0.14 230)", "tonalRamp": ["oklch(0.3 0.09 230)", "oklch(0.4 0.11 230)", "oklch(0.5 0.12 230)", "oklch(0.6 0.13 230)", "oklch(0.7 0.14 230)", "oklch(0.75 0.14 230)", "oklch(0.8 0.12 230)", "oklch(0.86 0.1 230)"] },
+      "amber": { "role": "status", "displayName": "Amber", "canonical": "oklch(0.8 0.16 85)", "tonalRamp": ["oklch(0.35 0.1 85)", "oklch(0.45 0.12 85)", "oklch(0.55 0.14 85)", "oklch(0.65 0.15 85)", "oklch(0.72 0.16 85)", "oklch(0.8 0.16 85)", "oklch(0.85 0.14 85)", "oklch(0.9 0.12 85)"] },
+      "red": { "role": "status", "displayName": "Red", "canonical": "oklch(0.7 0.2 25)", "tonalRamp": ["oklch(0.3 0.12 25)", "oklch(0.4 0.15 25)", "oklch(0.5 0.17 25)", "oklch(0.6 0.19 25)", "oklch(0.7 0.2 25)", "oklch(0.76 0.18 25)", "oklch(0.82 0.15 25)", "oklch(0.88 0.12 25)"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero headlines only." },
+      "headline": { "displayName": "Headline", "purpose": "Section headings." },
+      "title": { "displayName": "Title", "purpose": "Card titles, row labels." },
+      "body": { "displayName": "Body", "purpose": "Prose and descriptions." },
+      "label": { "displayName": "Label", "purpose": "Captions and metadata." },
+      "mono": { "displayName": "Mono", "purpose": "Numbers, dates, deadlines, scores." }
+    },
+    "shadows": [
+      { "name": "ambient-low", "value": "0 4px 24px oklch(0 0 0 / 40%)", "purpose": "Floating overlays (popovers, dialogs, sheets) in dark mode." }
+    ],
+    "motion": [
+      { "name": "ease-standard", "value": "cubic-bezier(0.4, 0, 0.2, 1)", "purpose": "Default easing for state transitions." },
+      { "name": "duration-fast", "value": "150ms", "purpose": "Hover/focus micro-interactions." },
+      { "name": "duration-base", "value": "200ms", "purpose": "Panel and dialog transitions." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Primary action on the dark ground.",
+      "html": "<button class=\"ds-btn-primary\">Continue</button>",
+      "css": ".ds-btn-primary { background: oklch(0.922 0 0); color: oklch(0.205 0 0); border: none; border-radius: 0.4375rem; padding: 0.5rem 1rem; font-family: Geist, system-ui, sans-serif; font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: background 150ms cubic-bezier(0.4, 0, 0.2, 1); } .ds-btn-primary:hover { background: oklch(0.85 0 0); } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 3px oklch(0.556 0 0); }"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Resting surface on the void ground; flat, hairline border.",
+      "html": "<div class=\"ds-card\"><div class=\"ds-card-title\">Title</div><div class=\"ds-card-body\">Body text.</div></div>",
+      "css": ".ds-card { background: oklch(0.145 0 0); color: oklch(0.985 0 0); border: 1px solid oklch(1 0 0 / 10%); border-radius: 0.4375rem; padding: 1rem; } .ds-card-title { font-family: Geist, system-ui, sans-serif; font-size: 0.875rem; font-weight: 500; margin-bottom: 0.25rem; } .ds-card-body { font-family: Geist, system-ui, sans-serif; font-size: 0.875rem; line-height: 1.5; color: oklch(0.708 0 0); }"
+    },
+    {
+      "name": "Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Text field on the dark ground.",
+      "html": "<input class=\"ds-input\" type=\"text\" placeholder=\"Search…\" />",
+      "css": ".ds-input { background: oklch(0.145 0 0); color: oklch(0.985 0 0); border: 1px solid oklch(1 0 0 / 10%); border-radius: 0.4375rem; padding: 0.5rem 0.75rem; font-family: Geist, system-ui, sans-serif; font-size: 0.875rem; width: 100%; } .ds-input::placeholder { color: oklch(0.708 0 0); } .ds-input:focus-visible { outline: none; border-color: oklch(0.556 0 0); box-shadow: 0 0 0 3px oklch(0.556 0 0 / 40%); }"
+    },
+    {
+      "name": "Status Badge",
+      "kind": "chip",
+      "refersTo": "badge-status",
+      "description": "Eligibility/state signal; colour is the only decoration.",
+      "html": "<span class=\"ds-badge ds-badge--ok\">Open</span>",
+      "css": ".ds-badge { display: inline-flex; align-items: center; gap: 0.25rem; background: oklch(0.269 0 0); color: oklch(0.985 0 0); border-radius: 0.7875rem; padding: 0.125rem 0.5rem; font-family: Geist, system-ui, sans-serif; font-size: 0.75rem; font-weight: 500; } .ds-badge--ok { color: oklch(0.76 0.17 155); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Console",
+    "overview": "A dark, dense, instrument-like surface — neutral greys, monospace numerals, tight radii. It reads like a Bloomberg terminal for job hunting: every pixel earns its place, and decoration is absent. The aesthetic is precise, quiet, and utilitarian; the ground is pure black and the only colour is the status palette signalling eligibility.",
+    "keyCharacteristics": ["Pure black ground with stepped neutral surfaces for depth.", "Geist Sans for text, Geist Mono for numbers, dates, deadlines and scores.", "Tight radii (base 0.4375rem) and neutral greys; no accent colour.", "Status colours (emerald/sky/amber/red) are the only colour and only signal state.", "No shadows in dark mode; depth via tonal layering."],
+    "rules": [
+      { "name": "The One Voice Rule", "body": "Status colours are the only colour in the UI; they appear only to signal state, never as decoration or brand.", "section": "colors" },
+      { "name": "The Numerals Rule", "body": "All counts, scores, dates and deadlines use Geist Mono with tabular-nums; never proportionally spaced numerals.", "section": "typography" },
+      { "name": "The Flat-By-Default Rule", "body": "Surfaces are flat at rest; shadows appear only as a response to state (hover, elevation, focus) or on floating overlays.", "section": "elevation" }
+    ],
+    "dos": ["Do use Geist Sans for text and Geist Mono for numbers, dates, deadlines and scores.", "Do keep the ground pure black and surfaces stepped in neutral OKLCH.", "Do use status colours only to signal eligibility/state.", "Do use focus-visible rings instead of outlines.", "Do use tabular-nums on every numeric readout."],
+    "donts": ["Don't introduce an accent colour, tinted ground, or custom palette.", "Don't change typefaces, colour token values, or radii.", "Don't use glassmorphism/backdrop-blur as a default surface treatment.", "Don't use transition: all; list properties explicitly.", "Don't treat a region restriction as a hard no."]
+  }
+}

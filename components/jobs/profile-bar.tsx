@@ -100,7 +100,7 @@ export function ProfileBar({
               <button
                 type="button"
                 onClick={() => onToggleSkill(skill)}
-                className="rounded-sm p-0.5 text-muted-foreground hover:text-foreground"
+                className="rounded-sm p-0.5 text-muted-foreground hover:text-foreground focus-visible:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
                 aria-label={`Remove ${skill}`}
               >
                 <XIcon className="size-3" />
@@ -131,6 +131,7 @@ export function ProfileBar({
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Search skills…"
+                  aria-label="Search skills"
                   className="pl-8"
                 />
               </div>

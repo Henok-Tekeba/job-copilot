@@ -163,11 +163,19 @@ export function JobsTable({
           return (
             <TableRow
               key={job.id}
+              role="button"
+              tabIndex={0}
               className={cn(
                 "group cursor-pointer border-b-border/70 border-l-2",
                 VERDICT_STYLE[verdict].rail
               )}
               onClick={() => onRowClick(job)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  onRowClick(job);
+                }
+              }}
             >
               <TableCell className="py-2 pl-4 align-top sm:pl-6">
                 <VerdictCell job={job} />
@@ -254,7 +262,7 @@ export function JobsTable({
                 >
                   <DropdownMenu>
                     <DropdownMenuTrigger>
-                      <Button variant="ghost" size="icon-sm">
+                      <Button variant="ghost" size="icon-sm" aria-label="More actions">
                         <MoreHorizontal />
                       </Button>
                     </DropdownMenuTrigger>

@@ -268,6 +268,7 @@ export default function JobsPage({
           variant="secondary"
           size="sm"
           className="ml-auto"
+          aria-label="Search jobs"
           onClick={() => setPaletteOpen(true)}
         >
           <SearchIcon />

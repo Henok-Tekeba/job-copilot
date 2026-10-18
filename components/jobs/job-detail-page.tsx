@@ -254,7 +254,7 @@ export function JobDetailPage({ job }: { job: Job }) {
             href={job.sourceUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs text-muted-foreground hover:underline"
+            className="text-xs text-muted-foreground hover:underline focus-visible:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             {job.attribution}
           </a>

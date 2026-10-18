@@ -41,7 +41,7 @@ export default function AboutPage() {
           <span className="text-xs font-medium text-muted-foreground">Contact</span>
           <a
             href="mailto:tekebahenok6@gmail.com"
-            className="text-sm hover:underline"
+            className="text-sm hover:underline focus-visible:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             tekebahenok6@gmail.com
           </a>

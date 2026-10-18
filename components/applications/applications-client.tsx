@@ -226,6 +226,7 @@ export function ApplicationsClient({
                   <Label htmlFor="title">Role title</Label>
                   <Input
                     id="title"
+                    autoComplete="off"
                     value={formData.title}
                     onChange={(e) => setFormData((prev) => ({ ...prev, title: e.target.value }))}
                     placeholder="e.g. Frontend Engineer"
@@ -236,6 +237,7 @@ export function ApplicationsClient({
                   <Label htmlFor="company">Company</Label>
                   <Input
                     id="company"
+                    autoComplete="organization"
                     value={formData.company}
                     onChange={(e) => setFormData((prev) => ({ ...prev, company: e.target.value }))}
                     placeholder="e.g. Acme Corp"
@@ -247,9 +249,10 @@ export function ApplicationsClient({
                   <Input
                     id="url"
                     type="url"
+                    autoComplete="url"
                     value={formData.url}
                     onChange={(e) => setFormData((prev) => ({ ...prev, url: e.target.value }))}
-                    placeholder="https://..."
+                    placeholder="https://…"
                     required
                   />
                 </div>
@@ -258,6 +261,7 @@ export function ApplicationsClient({
                   <Input
                     id="appliedAt"
                     type="date"
+                    autoComplete="off"
                     value={formData.appliedAt}
                     onChange={(e) => setFormData((prev) => ({ ...prev, appliedAt: e.target.value }))}
                     required
@@ -267,9 +271,10 @@ export function ApplicationsClient({
                   <Label htmlFor="notes">Notes</Label>
                   <Textarea
                     id="notes"
+                    autoComplete="off"
                     value={formData.notes}
                     onChange={(e) => setFormData((prev) => ({ ...prev, notes: e.target.value }))}
-                    placeholder="Optional notes..."
+                    placeholder="Optional notes…"
                     rows={3}
                   />
                 </div>
@@ -279,7 +284,7 @@ export function ApplicationsClient({
                   Cancel
                 </Button>
                 <Button type="submit" disabled={isSubmitting}>
-                  {isSubmitting ? "Adding..." : "Add"}
+                  {isSubmitting ? "Adding…" : "Add"}
                 </Button>
               </DialogFooter>
             </form>
@@ -350,7 +355,7 @@ export function ApplicationsClient({
                     <TableCell>
                       <DropdownMenu>
                         <DropdownMenuTrigger>
-                          <Button variant="ghost" size="icon-sm" className="h-7 w-7">
+                          <Button variant="ghost" size="icon-sm" className="h-7 w-7" aria-label="Open application">
                             <ExternalLinkIcon className="h-4 w-4" />
                           </Button>
                         </DropdownMenuTrigger>
@@ -404,8 +409,8 @@ export function ApplicationsClient({
                       value={selectedApp.notes}
                       onChange={(e) => handleNotesChange(selectedApp.id, e.target.value)}
                       rows={4}
-                      placeholder="Add notes..."
-                    />
+                      placeholder="Add notes…"
+                      />
                   </div>
                   <Separator />
                   <div>

@@ -57,7 +57,7 @@ export function LandingPage({
           <div className="flex items-center gap-4">
             <Link
               href="/jobs"
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+              className="text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:text-foreground focus-visible:underline"
             >
               Browse the board
             </Link>
@@ -91,7 +91,7 @@ export function LandingPage({
               </div>
             </div>
 
-            <div className="border border-border bg-background/60 p-4 backdrop-blur-sm sm:p-6">
+            <div className="border border-border bg-card p-4 sm:p-6">
               <p className="mb-3 text-xs text-muted-foreground">
                 Paste any posting. The read appears here.
               </p>
@@ -102,7 +102,7 @@ export function LandingPage({
 
         <section className="border-t border-border">
           <div className="mx-auto w-full max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
-            <h2 className="text-lg font-semibold tracking-tight">
+            <h2 className="text-balance text-lg font-semibold tracking-tight">
               Or try three from the current snapshot
             </h2>
             <p className="mt-2 text-sm text-muted-foreground">
@@ -116,7 +116,7 @@ export function LandingPage({
 
         <section className="border-t border-border">
           <div className="mx-auto w-full max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
-            <h2 className="text-lg font-semibold tracking-tight">
+            <h2 className="text-balance text-lg font-semibold tracking-tight">
               How a posting is read
             </h2>
             <ol className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">

@@ -121,6 +121,18 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    color-scheme: dark;
+    touch-action: manipulation;
+  }
+  @media (pointer: fine) {
+    html {
+      overscroll-behavior: none;
+    }
+  }
+  html:not(.dark) {
+    color-scheme: light;
+  }
   body {
     @apply bg-background text-foreground font-sans;
   }
