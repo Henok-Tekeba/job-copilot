@@ -1,16 +1,16 @@
 {
-  "engineVersion": "0.1.0",
-  "recordedAt": "2026-10-19T06:30:17.932Z",
-  "labelHash": "9f4437bb707f9257",
-  "note": "CI fails if a PR's dev eval drops below any of these on the same dev set. Update only with an intentional commit.",
+  "engineVersion": "0.2.0",
+  "recordedAt": "2026-10-19T08:18:53.191Z",
+  "labelHash": "0a8e379ed93ff1ac",
+  "note": "CI fails if a PR's dev eval drops below any of these on the same dev set. Recorded after the label audit (eval/results/label_audit.json); updating requires an intentional commit.",
   "naturalDev": {
-    "statementPrecision": 0.875,
-    "statementRecall": 0.6666666666666666,
-    "blockedPrecision": 0.8333333333333334,
-    "blockedRecall": 0.7692307692307693,
+    "statementPrecision": 0.9375,
+    "statementRecall": 0.8333333333333334,
+    "blockedPrecision": 0.9166666666666666,
+    "blockedRecall": 0.8461538461538461,
     "sponsorsPrecision": 1,
-    "stanceAccuracyAmongDetected": 0.9285714285714286,
-    "overallAccuracy": 0.95
+    "stanceAccuracyAmongDetected": 0.9333333333333333,
+    "overallAccuracy": 0.975
   },
   "stratifiedDev": {
     "blockedPrecision": 1,

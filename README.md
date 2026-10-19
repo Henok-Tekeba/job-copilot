@@ -203,12 +203,12 @@ before building.
 <!-- BENCHMARK:START -->
 ## Benchmark
 
-Engine v0.1.0, run 2026-10-19, label hashes 9f4437bb707f9257/bca6f0d2c8cf2b53. **labels unaudited**
+Engine v0.2.0, run 2026-10-19, label hashes 0a8e379ed93ff1ac/bca6f0d2c8cf2b53.
 
 | set | n | statement P / R | stance acc. | blocked P / R | verdict acc. |
 |---|---|---|---|---|---|
-| natural-dev | 200 | 87.5% (n=16) / 66.7% (n=21) | 95.0% (n=200) | 83.3% (n=12) / 76.9% (n=13) | 81.5% (n=200) |
-| natural-test | 100 | 100.0% (n=8) / 53.3% (n=15) | 91.0% (n=100) | 85.7% (n=7) / 66.7% (n=9) | 78.0% (n=100) |
+| natural-dev | 200 | 93.8% (n=16) / 83.3% (n=18) | 97.5% (n=200) | 91.7% (n=12) / 84.6% (n=13) | 87.0% (n=200) |
+| natural-test | 100 | 87.5% (n=8) / 70.0% (n=10) | 95.0% (n=100) | 71.4% (n=7) / 83.3% (n=6) | 82.0% (n=100) |
 | stratified-dev | 21 | 100.0% (n=20) / 95.2% (n=21) | 85.7% (n=21) | 100.0% (n=20) / 95.2% (n=21) | 95.2% (n=21) |
 | stratified-test | 11 | 100.0% (n=10) / 90.9% (n=11) | 90.9% (n=11) | 100.0% (n=10) / 90.9% (n=11) | 90.9% (n=11) |
 

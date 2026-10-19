@@ -1,9 +1,9 @@
 {
-  "engineVersion": "0.1.0",
-  "runAt": "2026-10-19T06:40:53.374Z",
+  "engineVersion": "0.2.0",
+  "runAt": "2026-10-19T08:18:35.185Z",
   "mode": "dev",
   "labelHashes": {
-    "natural": "9f4437bb707f9257",
+    "natural": "0a8e379ed93ff1ac",
     "stratified": "bca6f0d2c8cf2b53"
   },
   "trickyCases": {
@@ -16,35 +16,35 @@
     "n": 200,
     "statementDetection": {
       "precision": {
-        "p": 0.875,
-        "low": 0.6397666856325173,
-        "high": 0.9650232506629428,
+        "p": 0.9375,
+        "low": 0.7167073163197013,
+        "high": 0.9888809426916687,
         "n": 16
       },
       "recall": {
-        "p": 0.6666666666666666,
-        "low": 0.45373075657210293,
-        "high": 0.8280546356731631,
-        "n": 21
+        "p": 0.8333333333333334,
+        "low": 0.6077750036164076,
+        "high": 0.9416352959953425,
+        "n": 18
       }
     },
     "stanceAccuracyAmongDetected": {
-      "p": 0.9285714285714286,
-      "low": 0.6853073044604219,
-      "high": 0.9872781138877085,
-      "n": 14
+      "p": 0.9333333333333333,
+      "low": 0.7018292244757601,
+      "high": 0.9881334113938051,
+      "n": 15
     },
     "blocked": {
       "precision": {
-        "p": 0.8333333333333334,
-        "low": 0.5519636426153274,
-        "high": 0.9530358523851776,
+        "p": 0.9166666666666666,
+        "low": 0.6461140782014047,
+        "high": 0.9851352905492264,
         "n": 12
       },
       "recall": {
-        "p": 0.7692307692307693,
-        "low": 0.49743126004873084,
-        "high": 0.918206209075343,
+        "p": 0.8461538461538461,
+        "low": 0.5776482949136899,
+        "high": 0.9567427368172621,
         "n": 13
       }
     },
@@ -56,10 +56,10 @@
         "n": 4
       },
       "recall": {
-        "p": 0.5,
-        "low": 0.21521252682444186,
-        "high": 0.7847874731755582,
-        "n": 8
+        "p": 0.8,
+        "low": 0.3755282641185388,
+        "high": 0.9637768390302125,
+        "n": 5
       }
     },
     "perClass": {
@@ -71,12 +71,12 @@
           "n": 4
         },
         "recall": {
-          "p": 0.5,
-          "low": 0.21521252682444186,
-          "high": 0.7847874731755582,
-          "n": 8
+          "p": 0.8,
+          "low": 0.3755282641185388,
+          "high": 0.9637768390302125,
+          "n": 5
         },
-        "note": "small-n: 8 true sponsors in this set"
+        "note": "small-n: 5 true sponsors in this set"
       },
       "no_sponsorship": {
         "precision": {
@@ -95,18 +95,18 @@
       },
       "requires_authorization": {
         "precision": {
-          "p": 0.75,
-          "low": 0.40926987910258916,
-          "high": 0.9285223111419724,
+          "p": 0.875,
+          "low": 0.5291051942301386,
+          "high": 0.9775830911367038,
           "n": 8
         },
         "recall": {
-          "p": 0.8571428571428571,
-          "low": 0.48686549668097007,
-          "high": 0.9743210440510253,
-          "n": 7
+          "p": 0.875,
+          "low": 0.5291051942301386,
+          "high": 0.9775830911367038,
+          "n": 8
         },
-        "note": "small-n: 7 true requires_authorization in this set"
+        "note": "small-n: 8 true requires_authorization in this set"
       },
       "citizenship_or_clearance": {
         "precision": {
@@ -116,40 +116,39 @@
           "n": 2
         },
         "recall": {
-          "p": 0.3333333333333333,
-          "low": 0.0614903152761605,
-          "high": 0.7923450448735121,
-          "n": 3
+          "p": 0.5,
+          "low": 0.09452865480086614,
+          "high": 0.9054713451991339,
+          "n": 2
         },
-        "note": "small-n: 3 true citizenship_or_clearance in this set"
+        "note": "small-n: 2 true citizenship_or_clearance in this set"
       }
     },
     "accuracy": {
-      "p": 0.95,
-      "low": 0.9104209437021562,
-      "high": 0.9726176509713551,
+      "p": 0.975,
+      "low": 0.9428208558483829,
+      "high": 0.9892754385292123,
       "n": 200
     },
     "confusion": {
       "silent": {
-        "silent": 177,
-        "citizenship_or_clearance": 1,
-        "requires_authorization": 1
+        "silent": 181,
+        "citizenship_or_clearance": 1
       },
       "no_sponsorship": {
         "requires_authorization": 1,
         "no_sponsorship": 2
       },
       "requires_authorization": {
-        "requires_authorization": 6,
+        "requires_authorization": 7,
         "silent": 1
       },
       "citizenship_or_clearance": {
         "citizenship_or_clearance": 1,
-        "silent": 2
+        "silent": 1
       },
       "sponsors": {
-        "silent": 4,
+        "silent": 1,
         "sponsors": 4
       }
     },
@@ -174,19 +173,10 @@
         "trueQuote": "We do not provide visa assistance, and our cooperation model does not include the benefits typically offered with direct hire."
       },
       {
-        "id": "greenhouse:doctolib:7989159003",
-        "company": "Doctolib",
-        "title": "Platform Security Engineer (x/f/m)",
-        "trueStance": "sponsors",
-        "predictedStance": "silent",
-        "confidence": 0.85,
-        "quote": "(silent)"
-      },
-      {
-        "id": "greenhouse:doctolib:7832298003",
-        "company": "Doctolib",
-        "title": "Research Scientist (x/f/m)",
-        "trueStance": "sponsors",
+        "id": "remoteok:1136796",
+        "company": "Delinea",
+        "title": "Staff Software Development Engineer SDM",
+        "trueStance": "requires_authorization",
         "predictedStance": "silent",
         "confidence": 0.85,
         "quote": "(silent)"
@@ -205,69 +195,31 @@
         "id": "remoteok:1137431",
         "company": "Mercier Consultancy Group",
         "title": "Danish Speaking Solutions Consultant Work Sofia Bulgaria",
-        "trueStance": "sponsors",
-        "predictedStance": "silent",
-        "confidence": 0.85,
-        "quote": "(silent)"
-      },
-      {
-        "id": "greenhouse:datadog:8052118",
-        "company": "Datadog",
-        "title": "Software Engineering Intern (Summer)",
         "trueStance": "citizenship_or_clearance",
         "predictedStance": "silent",
         "confidence": 0.85,
-        "quote": "(silent)",
-        "trueQuote": "to conform to US export control regulations, some of these roles may require candidates to be eligible for any required authorizations from the US government"
-      },
-      {
-        "id": "greenhouse:cloudflare:8099671",
-        "company": "Cloudflare",
-        "title": "Network Deployment Engineer",
-        "trueStance": "requires_authorization",
-        "predictedStance": "silent",
-        "confidence": 0.85,
         "quote": "(silent)"
-      },
-      {
-        "id": "greenhouse:contentful:8233486",
-        "company": "Contentful",
-        "title": "Software Engineer, Applied AI Solutions",
-        "trueStance": "silent",
-        "predictedStance": "requires_authorization",
-        "confidence": 0.7,
-        "quote": "Applicants must be authorized to work without the need for visa sponsorship by the start date of employment."
-      },
-      {
-        "id": "hackernews:49923454",
-        "company": "Shield AI",
-        "title": "Hiring (see posting)",
-        "trueStance": "citizenship_or_clearance",
-        "predictedStance": "silent",
-        "confidence": 0.65,
-        "quote": "(silent)",
-        "trueQuote": "Working with AI Agents alongside export controlled data is really difficult"
       }
     ],
     "baselines": {
       "alwaysSilent": {
-        "p": 0.895,
-        "low": 0.8448186177864638,
-        "high": 0.9302930375380627,
+        "p": 0.91,
+        "low": 0.8622332538615105,
+        "high": 0.9423130212854665,
         "n": 200
       },
       "alwaysUnclear": {
-        "p": 0.795,
-        "low": 0.7337418048192546,
-        "high": 0.8451390516889363,
+        "p": 0.85,
+        "low": 0.7939430617334484,
+        "high": 0.892864734123727,
         "n": 200
       }
     },
     "verdict": {
       "accuracy": {
-        "p": 0.815,
-        "low": 0.7554281794988185,
-        "high": 0.8626988367726394,
+        "p": 0.87,
+        "low": 0.8163353692726989,
+        "high": 0.9097185863477437,
         "n": 200
       },
       "perStatus": {
@@ -279,10 +231,10 @@
             "n": 22
           },
           "recall": {
-            "p": 0.6086956521739131,
-            "low": 0.4078517960374599,
-            "high": 0.7784262201761787,
-            "n": 23
+            "p": 0.8235294117647058,
+            "low": 0.5897007098262422,
+            "high": 0.9380898628745101,
+            "n": 17
           }
         },
         "likely": {
@@ -293,60 +245,55 @@
             "n": 12
           },
           "recall": {
-            "p": 0,
-            "low": 0,
-            "high": 0.43449149475208104,
-            "n": 5
+            "p": null,
+            "low": null,
+            "high": null,
+            "n": 0
           }
         },
         "unclear": {
           "precision": {
-            "p": 0.9025974025974026,
-            "low": 0.8455154205321458,
-            "high": 0.940082292618253,
+            "p": 0.9675324675324676,
+            "low": 0.9262531770462376,
+            "high": 0.9860538446768062,
             "n": 154
           },
           "recall": {
-            "p": 0.8742138364779874,
-            "low": 0.81369340406447,
-            "high": 0.9170780941276383,
-            "n": 159
+            "p": 0.8764705882352941,
+            "low": 0.818534809056978,
+            "high": 0.9177676639989534,
+            "n": 170
           }
         },
         "unlikely": {
           "precision": {
-            "p": 0.8333333333333334,
-            "low": 0.5519636426153274,
-            "high": 0.9530358523851776,
+            "p": 0.9166666666666666,
+            "low": 0.6461140782014047,
+            "high": 0.9851352905492264,
             "n": 12
           },
           "recall": {
-            "p": 0.7692307692307693,
-            "low": 0.49743126004873084,
-            "high": 0.918206209075343,
+            "p": 0.8461538461538461,
+            "low": 0.5776482949136899,
+            "high": 0.9567427368172621,
             "n": 13
           }
         }
       },
       "confusion": {
         "unclear": {
-          "unclear": 139,
-          "open": 7,
-          "likely": 11,
-          "unlikely": 2
+          "unclear": 149,
+          "open": 8,
+          "likely": 12,
+          "unlikely": 1
         },
         "unlikely": {
-          "unlikely": 10,
-          "unclear": 2,
-          "likely": 1
+          "unlikely": 11,
+          "unclear": 2
         },
         "open": {
           "open": 14,
-          "unclear": 9
-        },
-        "likely": {
-          "open": 1,
-          "unclear": 4
+          "unclear": 3
         }
       }
     }

@@ -137,3 +137,34 @@ test-set information fed back into tuning — but the log records both, and a
 mechanical guard now refuses a second `--final` for the same engine version
 (pass `--repeat-final` to reprint deliberately). The once-per-version rule is
 enforced from that commit on.
+
+## Post-audit final run (engine 0.2.0, labels audited)
+
+The audit (185 items, results in eval/results/label_audit.json) settled the
+Phase-2 label conflicts: relocation-only and export-control postings were
+rejected or corrected per the evidence rule. Dev metrics moved accordingly:
+statement recall 66.7 → 83.3%, stance accuracy 95.0 → 97.5%, verdict accuracy
+81.5 → 87.0%. Baselines recomputed: always-silent 91.0%, always-unclear
+85.0% (dev). The engine rules did not change between 0.1.0 and 0.2.0 — the
+labels did.
+
+### Leakage investigation (required for metrics above 95%)
+
+Three metrics crossed the 95% alarm line. Each was investigated:
+
+1. **dev overall accuracy 97.5% (n=200).** Not leakage: the dev set is 91%
+   "silent" and the engine is conservative, so high overall accuracy on a
+   majority-silent set is expected — the honest comparison is the 91.0%
+   baseline (+6.5) and the detection metrics, not overall accuracy.
+2. **stratified statement precision 100% (n=20)** and **recall 95.2%
+   (n=21).** Not leakage: the stratified set exists precisely because it is
+   dense with statements — finding one there is easy by construction. The CI
+   on n=20 is wide (69.9–100%).
+3. **stratified-test statement precision 100% (n=10).** Same reason, smaller
+   n.
+
+Checked the mechanical paths anyway: the engine reads only the posting text
+field (no label fields, no ids, no company names, no source); the classifier
+is a pure function of text; dev and test postings are disjoint; the same
+code path runs for dev and test. No leakage found. Nothing was tuned on any
+test set at any point.

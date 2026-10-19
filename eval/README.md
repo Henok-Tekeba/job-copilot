@@ -93,18 +93,15 @@ label here.
 
 ## Baselines (majority class) — natural set only, never pooled with stratified
 
-Any classifier must beat these to be worth anything. From `labels.jsonl`:
+Any classifier must beat these to be worth anything. Recomputed from
+`labels.jsonl` after the audit (eval/results/label_audit.json). Before the
+audit they were 88.0/89.5/85.0 (silent) and 75.3/79.5/67.0 (unclear) — the
+audit's rejections moved 23 postings to "unclear", raising the bar:
 
 | baseline | full natural (300) | dev (200) | test (100) |
 |---|---|---|---|
-| always answer `silent` (text_stance) | **88.0%** (264/300) | 89.5% (179/200) | 85.0% (85/100) |
-| always answer `unclear` (overall_verdict) | **75.3%** (226/300) | 79.5% (159/200) | 67.0% (67/100) |
-
-The `always unclear` number holds only because exactly **38** postings say
-nothing about visas yet carry a verdict other than `unclear` (27 `open`,
-11 `likely`). All 38 carry a verbatim posting quote behind the verdict and all
-38 are in the audit queue. Any one the audit rejects loses its quote and
-becomes `unclear` + `verdict_ai_prior`, which raises the baseline.
+| always answer `silent` (text_stance) | **90.7%** (272/300) | 91.0% (182/200) | 90.0% (90/100) |
+| always answer `unclear` (overall_verdict) | **83.0%** (249/300) | 85.0% (170/200) | 79.0% (79/100) |
 
 ## Metrics (what the runner reports, per set)
 
