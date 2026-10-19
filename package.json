@@ -15,7 +15,9 @@
     "selfcheck": "tsx scripts/selfcheck.ts",
     "sync-data": "bash scripts/sync-data.sh",
     "publish-data": "bash scripts/publish-data.sh",
-    "emit-data": "tsx scripts/emit-public-data.ts"
+    "emit-data": "tsx scripts/emit-public-data.ts",
+    "label": "tsx eval/labeler/serve.ts",
+    "sample": "tsx eval/sample.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",

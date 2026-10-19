@@ -13,7 +13,6 @@ import type { Company } from "../companies";
 import type { NormalizedJob } from "../types";
 
 const USER_AGENT = "job-copilot-collector/1.0";
-const DESCRIPTION_LIMIT = 8_000;
 
 function decodeEntities(text: string): string {
   return text
@@ -29,11 +28,13 @@ function decodeEntities(text: string): string {
     .replace(/&amp;/g, "&");
 }
 
+/**
+ * No length cap: the eligibility engine reads the whole posting, and the board
+ * snapshot is excerpted later (in evaluate.ts), so storing the full body here
+ * costs nothing on the served site.
+ */
 function clamp(text: string | undefined | null): string {
-  if (!text) return "";
-  return text.length > DESCRIPTION_LIMIT
-    ? `${text.slice(0, DESCRIPTION_LIMIT)}\n[truncated]`
-    : text;
+  return text ?? "";
 }
 
 async function getJson<T>(url: string): Promise<T | null> {

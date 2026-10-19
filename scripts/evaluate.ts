@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import * as crypto from "crypto";
 import * as path from "path";
 import { detectOpportunity } from "../lib/opportunity";
 import { assessEligibility, verdictToEligible } from "../lib/eligibility";
@@ -17,6 +18,12 @@ const CORE_SKILL_SET = new Set(CORE_ENGINEERING_SKILLS);
 
 const JOBS_FILE = path.join(process.cwd(), "data", "jobs.json");
 const FACTS_FILE = path.join(process.cwd(), "data", "facts.json");
+/**
+ * The board snapshot keeps only an excerpt so the served site stays light.
+ * The full posting bodies land here instead, one JSON object per line, and
+ * this is the file the eligibility eval and the labeling sample read from.
+ */
+const FULLTEXT_FILE = path.join(process.cwd(), "data", "fulltext.jsonl");
 
 /**
  * How much of a posting body to persist.
@@ -34,6 +41,19 @@ function toExcerpt(text: string): string {
 }
 
 const EXCERPT_MARKER = "…";
+
+/**
+ * A posting whose text is not the real, complete body. Simplify entries are
+ * synthesized from structured fields (term/degree/location) and never carried
+ * a posting body; the other marker is left by a source-side length cap.
+ */
+function isTruncatedText(source: string, text: string): boolean {
+  return (
+    source === "simplify" ||
+    text.trimEnd().endsWith("[truncated]") ||
+    text.trimEnd().endsWith(EXCERPT_MARKER)
+  );
+}
 
 function isStoredExcerpt(description: string | undefined): boolean {
   return (description ?? "").trimEnd().endsWith(EXCERPT_MARKER);
@@ -230,6 +250,12 @@ function main() {
 
   let deadlineCount = 0;
   let skippedExcerpts = 0;
+  const fulltextRecords: Array<{
+    id: string;
+    hash: string;
+    truncated: boolean;
+    text: string;
+  }> = [];
 
   for (const job of jobs) {
     if (job.source === "manual") continue;
@@ -244,6 +270,12 @@ function main() {
 
     // Evaluate against the full body, then keep only an excerpt on disk.
     const plainDesc = stripHtml(job.description ?? "");
+    fulltextRecords.push({
+      id: job.id,
+      hash: crypto.createHash("sha256").update(plainDesc).digest("hex").slice(0, 16),
+      truncated: isTruncatedText(job.source, plainDesc),
+      text: plainDesc,
+    });
     job.description = plainDesc;
     job.evaluation = evaluateJob(job, knownSkills);
     job.relevance = detectRelevance(job.title, [
@@ -264,6 +296,14 @@ function main() {
         `Run "npm run collect" to re-score them against full text, or pass --force.`
     );
   }
+
+  fs.writeFileSync(
+    FULLTEXT_FILE,
+    fulltextRecords.map((r) => JSON.stringify(r)).join("\n") + "\n"
+  );
+  console.log(
+    `Stored ${fulltextRecords.length} full posting bodies in data/fulltext.jsonl`
+  );
 
   fs.writeFileSync(JOBS_FILE, JSON.stringify(jobs, null, 2));
 
