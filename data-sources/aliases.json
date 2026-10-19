@@ -1,0 +1,16 @@
+{
+  "_comment": "Manual parent/subsidiary overrides for the company matcher. Keys are normalised alias names; values are normalised record keys in the lookup. Add an entry only when the alias and the canonical record are the same employer — a wrong alias creates a wrong match, which is worse than no match. Verified against the 2026-10-16 UK register.",
+  "meta": {
+    "note": "Alias -> canonical normalised company name. Edit with care.",
+    "lastVerified": "2026-10-19"
+  },
+  "aliases": {
+    "deepmind": "google uk",
+    "google deepmind": "google uk",
+    "meta": "meta data",
+    "meta uk": "meta data",
+    "facebook": "facebook uk",
+    "instagram": "facebook uk",
+    "whatsapp": "facebook uk"
+  }
+}

@@ -79,3 +79,22 @@ dev (87.5% / 66.7%), so no leakage investigation was triggered. Re-checked by
 hand anyway: the engine reads only the posting text — no label fields, no ids,
 no company records, no source field — and every tricky-case snippet is
 classified by rule, not by memorized posting.
+
+## Phase 3 — company records and matcher
+
+Sources verified live (not from memory):
+- UK Home Office register of licensed sponsors (2026-10-16 CSV, 10.5 MB,
+  126,482 unique organisations, OGL v3.0). Downloaded, parsed, lookup built.
+- US DOL OFLC LCA disclosure data exists (verified file list:
+  LCA_Appendix_A_FY2025_Q4.xlsx, public domain) but dol.gov's Akamai edge
+  returns 403 to every programmatic client tried (curl, python urllib).
+  Documented in docs/NEEDS_HUMAN.md; schema has a slot for it.
+
+Matcher tuning (tune for precision — a wrong match is worse than a miss):
+- e3a: token-subset fuzzy allowed a 2-token query to match a 4-token record
+  ("Wise Consulting Limited" → a sole trader "food joy wise consulting";
+  "Salad Bar Group" → a person's name). Precision 85.7% (n=21). FIXED by
+  requiring token counts within 1 of each other.
+- e3b: precision 100% (n=18), all 30 near-misses rejected. Recall 100% on the
+  18 of 30 true pairs whose record actually exists in the register (the other
+  12 were invented test names, correctly absent — a miss there is correct).
