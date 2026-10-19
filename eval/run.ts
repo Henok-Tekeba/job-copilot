@@ -299,6 +299,19 @@ function main() {
       );
       process.exit(1);
     }
+    // One test run per engine version, enforced: a repeat run is only a
+    // display convenience and must be explicit.
+    if (fs.existsSync(TEST_RUNS_LOG) && !process.argv.includes("--repeat-final")) {
+      const previous = fs.readFileSync(TEST_RUNS_LOG, "utf-8");
+      if (previous.includes(`engine=${ENGINE_VERSION} `)) {
+        console.error(
+          `eval:final refused: engine ${ENGINE_VERSION} already has a final test run.\n` +
+            "The test set is scored once per engine version. To print the existing\n" +
+            "numbers again, read eval/results/. Bump engine/version.ts to re-run."
+        );
+        process.exit(1);
+      }
+    }
     // Log every test-set run: timestamp, commit, label hashes, engine version.
     let commit = "unknown";
     try {

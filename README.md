@@ -199,3 +199,19 @@ Static export to GitHub Pages on push to `main`
 (`.github/workflows/collect.yml`), publishes a fresh snapshot to the `data`
 branch, and triggers a redeploy. Both workflows sync and verify the snapshot
 before building.
+
+<!-- BENCHMARK:START -->
+## Benchmark
+
+Engine v0.1.0, run 2026-10-19, label hashes 9f4437bb707f9257/bca6f0d2c8cf2b53. **labels unaudited**
+
+| set | n | statement P / R | stance acc. | blocked P / R | verdict acc. |
+|---|---|---|---|---|---|
+| natural-dev | 200 | 87.5% (n=16) / 66.7% (n=21) | 95.0% (n=200) | 83.3% (n=12) / 76.9% (n=13) | 81.5% (n=200) |
+| natural-test | 100 | 100.0% (n=8) / 53.3% (n=15) | 91.0% (n=100) | 85.7% (n=7) / 66.7% (n=9) | 78.0% (n=100) |
+| stratified-dev | 21 | 100.0% (n=20) / 95.2% (n=21) | 85.7% (n=21) | 100.0% (n=20) / 95.2% (n=21) | 95.2% (n=21) |
+| stratified-test | 11 | 100.0% (n=10) / 90.9% (n=11) | 90.9% (n=11) | 100.0% (n=10) / 90.9% (n=11) | 90.9% (n=11) |
+
+Tricky negative cases: 7/7. Baselines to beat: "always silent" and "always unclear" are in eval/README.md.
+
+<!-- BENCHMARK:END -->

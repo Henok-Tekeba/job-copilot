@@ -128,3 +128,12 @@ likely; silent + nothing → unclear. Every reason cites its quote or record.
 Verdict accuracy is NOT in the CI gate (baseline.json) while labels are
 unaudited — a gate on a metric this noisy would block honest work. It enters
 the gate after label_audit.json exists.
+
+## Process note, recorded because it happened
+
+The final test run for engine 0.1.0 executed twice (the second time only to
+print the numbers). No code or label changed between the two runs, and no
+test-set information fed back into tuning — but the log records both, and a
+mechanical guard now refuses a second `--final` for the same engine version
+(pass `--repeat-final` to reprint deliberately). The once-per-version rule is
+enforced from that commit on.

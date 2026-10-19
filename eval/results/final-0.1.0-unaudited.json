@@ -1,0 +1,1173 @@
+{
+  "engineVersion": "0.1.0",
+  "runAt": "2026-10-19T08:07:14.408Z",
+  "mode": "final-unaudited",
+  "labelHashes": {
+    "natural": "9f4437bb707f9257",
+    "stratified": "bca6f0d2c8cf2b53"
+  },
+  "trickyCases": {
+    "total": 7,
+    "passed": 7,
+    "failures": []
+  },
+  "dev": {
+    "setName": "natural-dev",
+    "n": 200,
+    "statementDetection": {
+      "precision": {
+        "p": 0.875,
+        "low": 0.6397666856325173,
+        "high": 0.9650232506629428,
+        "n": 16
+      },
+      "recall": {
+        "p": 0.6666666666666666,
+        "low": 0.45373075657210293,
+        "high": 0.8280546356731631,
+        "n": 21
+      }
+    },
+    "stanceAccuracyAmongDetected": {
+      "p": 0.9285714285714286,
+      "low": 0.6853073044604219,
+      "high": 0.9872781138877085,
+      "n": 14
+    },
+    "blocked": {
+      "precision": {
+        "p": 0.8333333333333334,
+        "low": 0.5519636426153274,
+        "high": 0.9530358523851776,
+        "n": 12
+      },
+      "recall": {
+        "p": 0.7692307692307693,
+        "low": 0.49743126004873084,
+        "high": 0.918206209075343,
+        "n": 13
+      }
+    },
+    "sponsors": {
+      "precision": {
+        "p": 1,
+        "low": 0.5100999795960008,
+        "high": 1,
+        "n": 4
+      },
+      "recall": {
+        "p": 0.5,
+        "low": 0.21521252682444186,
+        "high": 0.7847874731755582,
+        "n": 8
+      }
+    },
+    "perClass": {
+      "sponsors": {
+        "precision": {
+          "p": 1,
+          "low": 0.5100999795960008,
+          "high": 1,
+          "n": 4
+        },
+        "recall": {
+          "p": 0.5,
+          "low": 0.21521252682444186,
+          "high": 0.7847874731755582,
+          "n": 8
+        },
+        "note": "small-n: 8 true sponsors in this set"
+      },
+      "no_sponsorship": {
+        "precision": {
+          "p": 1,
+          "low": 0.34237195288961925,
+          "high": 1,
+          "n": 2
+        },
+        "recall": {
+          "p": 0.6666666666666666,
+          "low": 0.2076549551264879,
+          "high": 0.9385096847238394,
+          "n": 3
+        },
+        "note": "small-n: 3 true no_sponsorship in this set"
+      },
+      "requires_authorization": {
+        "precision": {
+          "p": 0.75,
+          "low": 0.40926987910258916,
+          "high": 0.9285223111419724,
+          "n": 8
+        },
+        "recall": {
+          "p": 0.8571428571428571,
+          "low": 0.48686549668097007,
+          "high": 0.9743210440510253,
+          "n": 7
+        },
+        "note": "small-n: 7 true requires_authorization in this set"
+      },
+      "citizenship_or_clearance": {
+        "precision": {
+          "p": 0.5,
+          "low": 0.09452865480086614,
+          "high": 0.9054713451991339,
+          "n": 2
+        },
+        "recall": {
+          "p": 0.3333333333333333,
+          "low": 0.0614903152761605,
+          "high": 0.7923450448735121,
+          "n": 3
+        },
+        "note": "small-n: 3 true citizenship_or_clearance in this set"
+      }
+    },
+    "accuracy": {
+      "p": 0.95,
+      "low": 0.9104209437021562,
+      "high": 0.9726176509713551,
+      "n": 200
+    },
+    "confusion": {
+      "silent": {
+        "silent": 177,
+        "citizenship_or_clearance": 1,
+        "requires_authorization": 1
+      },
+      "no_sponsorship": {
+        "requires_authorization": 1,
+        "no_sponsorship": 2
+      },
+      "requires_authorization": {
+        "requires_authorization": 6,
+        "silent": 1
+      },
+      "citizenship_or_clearance": {
+        "citizenship_or_clearance": 1,
+        "silent": 2
+      },
+      "sponsors": {
+        "silent": 4,
+        "sponsors": 4
+      }
+    },
+    "worstMistakes": [
+      {
+        "id": "remoteok:1137463",
+        "company": "Fortanix",
+        "title": "Federal Business Development Director",
+        "trueStance": "silent",
+        "predictedStance": "citizenship_or_clearance",
+        "confidence": 0.9,
+        "quote": "Location in the Washington DC area and an active security clearance are highly desired.Â"
+      },
+      {
+        "id": "remotive:2091133",
+        "company": "Lemon.io",
+        "title": "Senior React Full-stack Developer",
+        "trueStance": "no_sponsorship",
+        "predictedStance": "requires_authorization",
+        "confidence": 0.85,
+        "quote": "We do not provide visa assistance, and our cooperation model does not include the benefits typically offered with direct hire.",
+        "trueQuote": "We do not provide visa assistance, and our cooperation model does not include the benefits typically offered with direct hire."
+      },
+      {
+        "id": "greenhouse:doctolib:7989159003",
+        "company": "Doctolib",
+        "title": "Platform Security Engineer (x/f/m)",
+        "trueStance": "sponsors",
+        "predictedStance": "silent",
+        "confidence": 0.85,
+        "quote": "(silent)"
+      },
+      {
+        "id": "greenhouse:doctolib:7832298003",
+        "company": "Doctolib",
+        "title": "Research Scientist (x/f/m)",
+        "trueStance": "sponsors",
+        "predictedStance": "silent",
+        "confidence": 0.85,
+        "quote": "(silent)"
+      },
+      {
+        "id": "ashby:openai:05223b5a-5ff1-4fe7-9f97-4ef7fc68b8ef",
+        "company": "OpenAI",
+        "title": "Forward Deployed Engineer - Munich",
+        "trueStance": "sponsors",
+        "predictedStance": "silent",
+        "confidence": 0.85,
+        "quote": "(silent)",
+        "trueQuote": "We offer relocation assistance."
+      },
+      {
+        "id": "remoteok:1137431",
+        "company": "Mercier Consultancy Group",
+        "title": "Danish Speaking Solutions Consultant Work Sofia Bulgaria",
+        "trueStance": "sponsors",
+        "predictedStance": "silent",
+        "confidence": 0.85,
+        "quote": "(silent)"
+      },
+      {
+        "id": "greenhouse:datadog:8052118",
+        "company": "Datadog",
+        "title": "Software Engineering Intern (Summer)",
+        "trueStance": "citizenship_or_clearance",
+        "predictedStance": "silent",
+        "confidence": 0.85,
+        "quote": "(silent)",
+        "trueQuote": "to conform to US export control regulations, some of these roles may require candidates to be eligible for any required authorizations from the US government"
+      },
+      {
+        "id": "greenhouse:cloudflare:8099671",
+        "company": "Cloudflare",
+        "title": "Network Deployment Engineer",
+        "trueStance": "requires_authorization",
+        "predictedStance": "silent",
+        "confidence": 0.85,
+        "quote": "(silent)"
+      },
+      {
+        "id": "greenhouse:contentful:8233486",
+        "company": "Contentful",
+        "title": "Software Engineer, Applied AI Solutions",
+        "trueStance": "silent",
+        "predictedStance": "requires_authorization",
+        "confidence": 0.7,
+        "quote": "Applicants must be authorized to work without the need for visa sponsorship by the start date of employment."
+      },
+      {
+        "id": "hackernews:49923454",
+        "company": "Shield AI",
+        "title": "Hiring (see posting)",
+        "trueStance": "citizenship_or_clearance",
+        "predictedStance": "silent",
+        "confidence": 0.65,
+        "quote": "(silent)",
+        "trueQuote": "Working with AI Agents alongside export controlled data is really difficult"
+      }
+    ],
+    "baselines": {
+      "alwaysSilent": {
+        "p": 0.895,
+        "low": 0.8448186177864638,
+        "high": 0.9302930375380627,
+        "n": 200
+      },
+      "alwaysUnclear": {
+        "p": 0.795,
+        "low": 0.7337418048192546,
+        "high": 0.8451390516889363,
+        "n": 200
+      }
+    },
+    "verdict": {
+      "accuracy": {
+        "p": 0.815,
+        "low": 0.7554281794988185,
+        "high": 0.8626988367726394,
+        "n": 200
+      },
+      "perStatus": {
+        "open": {
+          "precision": {
+            "p": 0.6363636363636364,
+            "low": 0.4295134934371804,
+            "high": 0.802670272273921,
+            "n": 22
+          },
+          "recall": {
+            "p": 0.6086956521739131,
+            "low": 0.4078517960374599,
+            "high": 0.7784262201761787,
+            "n": 23
+          }
+        },
+        "likely": {
+          "precision": {
+            "p": 0,
+            "low": 0,
+            "high": 0.2425007574992425,
+            "n": 12
+          },
+          "recall": {
+            "p": 0,
+            "low": 0,
+            "high": 0.43449149475208104,
+            "n": 5
+          }
+        },
+        "unclear": {
+          "precision": {
+            "p": 0.9025974025974026,
+            "low": 0.8455154205321458,
+            "high": 0.940082292618253,
+            "n": 154
+          },
+          "recall": {
+            "p": 0.8742138364779874,
+            "low": 0.81369340406447,
+            "high": 0.9170780941276383,
+            "n": 159
+          }
+        },
+        "unlikely": {
+          "precision": {
+            "p": 0.8333333333333334,
+            "low": 0.5519636426153274,
+            "high": 0.9530358523851776,
+            "n": 12
+          },
+          "recall": {
+            "p": 0.7692307692307693,
+            "low": 0.49743126004873084,
+            "high": 0.918206209075343,
+            "n": 13
+          }
+        }
+      },
+      "confusion": {
+        "unclear": {
+          "unclear": 139,
+          "open": 7,
+          "likely": 11,
+          "unlikely": 2
+        },
+        "unlikely": {
+          "unlikely": 10,
+          "unclear": 2,
+          "likely": 1
+        },
+        "open": {
+          "open": 14,
+          "unclear": 9
+        },
+        "likely": {
+          "open": 1,
+          "unclear": 4
+        }
+      }
+    }
+  },
+  "test": {
+    "setName": "natural-test",
+    "n": 100,
+    "statementDetection": {
+      "precision": {
+        "p": 1,
+        "low": 0.6755843804891231,
+        "high": 1,
+        "n": 8
+      },
+      "recall": {
+        "p": 0.5333333333333333,
+        "low": 0.3011663015105079,
+        "high": 0.7519077474025355,
+        "n": 15
+      }
+    },
+    "stanceAccuracyAmongDetected": {
+      "p": 0.75,
+      "low": 0.40926987910258916,
+      "high": 0.9285223111419724,
+      "n": 8
+    },
+    "blocked": {
+      "precision": {
+        "p": 0.8571428571428571,
+        "low": 0.48686549668097007,
+        "high": 0.9743210440510253,
+        "n": 7
+      },
+      "recall": {
+        "p": 0.6666666666666666,
+        "low": 0.35419734749908977,
+        "high": 0.879418401317257,
+        "n": 9
+      }
+    },
+    "sponsors": {
+      "precision": {
+        "p": 1,
+        "low": 0.20654329147389294,
+        "high": 1,
+        "n": 1
+      },
+      "recall": {
+        "p": 0.16666666666666666,
+        "low": 0.03005258587173032,
+        "high": 0.563509436563646,
+        "n": 6
+      }
+    },
+    "perClass": {
+      "sponsors": {
+        "precision": {
+          "p": 1,
+          "low": 0.20654329147389294,
+          "high": 1,
+          "n": 1
+        },
+        "recall": {
+          "p": 0.16666666666666666,
+          "low": 0.03005258587173032,
+          "high": 0.563509436563646,
+          "n": 6
+        },
+        "note": "small-n: 6 true sponsors in this set"
+      },
+      "no_sponsorship": {
+        "precision": {
+          "p": 0.6666666666666666,
+          "low": 0.2076549551264879,
+          "high": 0.9385096847238394,
+          "n": 3
+        },
+        "recall": {
+          "p": 1,
+          "low": 0.34237195288961925,
+          "high": 1,
+          "n": 2
+        },
+        "note": "small-n: 2 true no_sponsorship in this set"
+      },
+      "requires_authorization": {
+        "precision": {
+          "p": 0.5,
+          "low": 0.09452865480086614,
+          "high": 0.9054713451991339,
+          "n": 2
+        },
+        "recall": {
+          "p": 0.3333333333333333,
+          "low": 0.0614903152761605,
+          "high": 0.7923450448735121,
+          "n": 3
+        },
+        "note": "small-n: 3 true requires_authorization in this set"
+      },
+      "citizenship_or_clearance": {
+        "precision": {
+          "p": 1,
+          "low": 0.34237195288961925,
+          "high": 1,
+          "n": 2
+        },
+        "recall": {
+          "p": 0.5,
+          "low": 0.15003570882017148,
+          "high": 0.8499642911798285,
+          "n": 4
+        },
+        "note": "small-n: 4 true citizenship_or_clearance in this set"
+      }
+    },
+    "accuracy": {
+      "p": 0.91,
+      "low": 0.8377362530335634,
+      "high": 0.9519280048361151,
+      "n": 100
+    },
+    "confusion": {
+      "silent": {
+        "silent": 85
+      },
+      "sponsors": {
+        "silent": 4,
+        "no_sponsorship": 1,
+        "sponsors": 1
+      },
+      "requires_authorization": {
+        "silent": 2,
+        "requires_authorization": 1
+      },
+      "no_sponsorship": {
+        "no_sponsorship": 2
+      },
+      "citizenship_or_clearance": {
+        "citizenship_or_clearance": 2,
+        "silent": 1,
+        "requires_authorization": 1
+      }
+    },
+    "worstMistakes": [
+      {
+        "id": "ashby:clickup:920fb54c-ba58-4eac-919d-e85da9080802",
+        "company": "ClickUp",
+        "title": "Machine Learning Engineer, Ranking & Retrieval",
+        "trueStance": "sponsors",
+        "predictedStance": "no_sponsorship",
+        "confidence": 0.9,
+        "quote": "Please note we are unable to sponsor or take over sponsorship of an employment visa for roles outside of engineering and product at this time.",
+        "trueQuote": "Sponsorship for engineering and product roles is not guaranteed, but is instead based on the business needs for that specific role at that time."
+      },
+      {
+        "id": "ashby:openai:067788c8-505b-4296-bc05-d5699cb87a1f",
+        "company": "OpenAI",
+        "title": "Forward Deployed Engineer - Zurich",
+        "trueStance": "sponsors",
+        "predictedStance": "silent",
+        "confidence": 0.85,
+        "quote": "(silent)",
+        "trueQuote": "We offer relocation assistance."
+      },
+      {
+        "id": "ashby:openai:082f4d82-499f-4150-892f-0b0d1105fffe",
+        "company": "OpenAI",
+        "title": "Data Scientist, FinEng",
+        "trueStance": "sponsors",
+        "predictedStance": "silent",
+        "confidence": 0.85,
+        "quote": "(silent)",
+        "trueQuote": "We use a hybrid model of three days per week in the office and offer relocation support."
+      },
+      {
+        "id": "remotive:2091144",
+        "company": "TELUS Digital",
+        "title": "Content Reviewer - United States",
+        "trueStance": "requires_authorization",
+        "predictedStance": "silent",
+        "confidence": 0.85,
+        "quote": "(silent)",
+        "trueQuote": "Must have resided in the United States for the past three consecutive years"
+      },
+      {
+        "id": "greenhouse:cloudflare:8097321",
+        "company": "Cloudflare",
+        "title": "AI Security Research & Red Team Engineer",
+        "trueStance": "citizenship_or_clearance",
+        "predictedStance": "silent",
+        "confidence": 0.85,
+        "quote": "(silent)",
+        "trueQuote": "any offer of employment may be conditioned on your authorization to receive software or technology controlled under these U.S. export laws without sponsorship for an export license"
+      },
+      {
+        "id": "remoteok:1136949",
+        "company": "Chaos",
+        "title": "Team Lead Education",
+        "trueStance": "requires_authorization",
+        "predictedStance": "silent",
+        "confidence": 0.85,
+        "quote": "(silent)",
+        "trueQuote": "Applicants must hold a valid work/residence permit for the respective location."
+      },
+      {
+        "id": "hackernews:49925468",
+        "company": "etc.",
+        "title": "Vision Systems Engineer",
+        "trueStance": "citizenship_or_clearance",
+        "predictedStance": "requires_authorization",
+        "confidence": 0.7,
+        "quote": "We're hiring a hands-on Vision Systems Engineer to own the detection, tracking, and target discrimination software stack for a real-time space-based IR sensing program supporting US national security missions.",
+        "trueQuote": "work on hardware and software for US Department of Defense missions, NASA programs"
+      },
+      {
+        "id": "hackernews:49922803",
+        "company": "Flexibits",
+        "title": "Android Software Engineer",
+        "trueStance": "sponsors",
+        "predictedStance": "silent",
+        "confidence": 0.65,
+        "quote": "(silent)",
+        "trueQuote": "spread across the US and Europe, and welcome anyone from around the world"
+      },
+      {
+        "id": "hackernews:49922693",
+        "company": "Unknown",
+        "title": "Product Engineer (Design) & Platform Engineer",
+        "trueStance": "sponsors",
+        "predictedStance": "silent",
+        "confidence": 0.65,
+        "quote": "(silent)",
+        "trueQuote": "100k-160k GBP + 0.25-0.75% Equity | Visa sponsorship"
+      }
+    ],
+    "baselines": {
+      "alwaysSilent": {
+        "p": 0.85,
+        "low": 0.7671626666784216,
+        "high": 0.906940968088377,
+        "n": 100
+      },
+      "alwaysUnclear": {
+        "p": 0.67,
+        "low": 0.5730516033971139,
+        "high": 0.7543701620610456,
+        "n": 100
+      }
+    },
+    "verdict": {
+      "accuracy": {
+        "p": 0.78,
+        "low": 0.6892946528499969,
+        "high": 0.849988254963442,
+        "n": 100
+      },
+      "perStatus": {
+        "open": {
+          "precision": {
+            "p": 0.5833333333333334,
+            "low": 0.3195073356553728,
+            "high": 0.8067425380947535,
+            "n": 12
+          },
+          "recall": {
+            "p": 0.3888888888888889,
+            "low": 0.20304991926931162,
+            "high": 0.6138133141934384,
+            "n": 18
+          }
+        },
+        "likely": {
+          "precision": {
+            "p": 0.25,
+            "low": 0.045586062644636216,
+            "high": 0.6993639475573634,
+            "n": 4
+          },
+          "recall": {
+            "p": 0.16666666666666666,
+            "low": 0.03005258587173032,
+            "high": 0.563509436563646,
+            "n": 6
+          }
+        },
+        "unclear": {
+          "precision": {
+            "p": 0.8311688311688312,
+            "low": 0.7322690482024222,
+            "high": 0.8985942696933148,
+            "n": 77
+          },
+          "recall": {
+            "p": 0.9552238805970149,
+            "low": 0.8764196748946068,
+            "high": 0.9846563030618481,
+            "n": 67
+          }
+        },
+        "unlikely": {
+          "precision": {
+            "p": 0.8571428571428571,
+            "low": 0.48686549668097007,
+            "high": 0.9743210440510253,
+            "n": 7
+          },
+          "recall": {
+            "p": 0.6666666666666666,
+            "low": 0.35419734749908977,
+            "high": 0.879418401317257,
+            "n": 9
+          }
+        }
+      },
+      "confusion": {
+        "open": {
+          "open": 7,
+          "unclear": 10,
+          "unlikely": 1
+        },
+        "unclear": {
+          "unclear": 64,
+          "likely": 2,
+          "open": 1
+        },
+        "likely": {
+          "open": 4,
+          "likely": 1,
+          "unclear": 1
+        },
+        "unlikely": {
+          "unclear": 2,
+          "unlikely": 6,
+          "likely": 1
+        }
+      }
+    }
+  },
+  "stratifiedDev": {
+    "setName": "stratified-dev",
+    "n": 21,
+    "statementDetection": {
+      "precision": {
+        "p": 1,
+        "low": 0.8388698745050667,
+        "high": 1,
+        "n": 20
+      },
+      "recall": {
+        "p": 0.9523809523809523,
+        "low": 0.7733018341376452,
+        "high": 0.9915442305280766,
+        "n": 21
+      }
+    },
+    "stanceAccuracyAmongDetected": {
+      "p": 0.9,
+      "low": 0.6989617935882066,
+      "high": 0.9721341060158468,
+      "n": 20
+    },
+    "blocked": {
+      "precision": {
+        "p": 1,
+        "low": 0.8388698745050667,
+        "high": 1,
+        "n": 20
+      },
+      "recall": {
+        "p": 0.9523809523809523,
+        "low": 0.7733018341376452,
+        "high": 0.9915442305280766,
+        "n": 21
+      }
+    },
+    "sponsors": {
+      "precision": {
+        "p": null,
+        "low": null,
+        "high": null,
+        "n": 0
+      },
+      "recall": {
+        "p": null,
+        "low": null,
+        "high": null,
+        "n": 0
+      }
+    },
+    "perClass": {
+      "sponsors": {
+        "precision": {
+          "p": null,
+          "low": null,
+          "high": null,
+          "n": 0
+        },
+        "recall": {
+          "p": null,
+          "low": null,
+          "high": null,
+          "n": 0
+        },
+        "note": "small-n: 0 true sponsors in this set"
+      },
+      "no_sponsorship": {
+        "precision": {
+          "p": 1,
+          "low": 0.5100999795960008,
+          "high": 1,
+          "n": 4
+        },
+        "recall": {
+          "p": 1,
+          "low": 0.5100999795960008,
+          "high": 1,
+          "n": 4
+        },
+        "note": "small-n: 4 true no_sponsorship in this set"
+      },
+      "requires_authorization": {
+        "precision": {
+          "p": 0.75,
+          "low": 0.40926987910258916,
+          "high": 0.9285223111419724,
+          "n": 8
+        },
+        "recall": {
+          "p": 1,
+          "low": 0.6096569663469354,
+          "high": 0.9999999999999999,
+          "n": 6
+        },
+        "note": "small-n: 6 true requires_authorization in this set"
+      },
+      "citizenship_or_clearance": {
+        "precision": {
+          "p": 1,
+          "low": 0.6755843804891231,
+          "high": 1,
+          "n": 8
+        },
+        "recall": {
+          "p": 0.7272727272727273,
+          "low": 0.4343497069897537,
+          "high": 0.9025411942607853,
+          "n": 11
+        },
+        "note": "small-n: 11 true citizenship_or_clearance in this set"
+      }
+    },
+    "accuracy": {
+      "p": 0.8571428571428571,
+      "low": 0.6536350585077049,
+      "high": 0.950190782017865,
+      "n": 21
+    },
+    "confusion": {
+      "no_sponsorship": {
+        "no_sponsorship": 4
+      },
+      "requires_authorization": {
+        "requires_authorization": 6
+      },
+      "citizenship_or_clearance": {
+        "citizenship_or_clearance": 8,
+        "silent": 1,
+        "requires_authorization": 2
+      }
+    },
+    "worstMistakes": [
+      {
+        "id": "hackernews:50062997",
+        "company": "Indiana Microelectronics LLC",
+        "title": "RF Engineer",
+        "trueStance": "citizenship_or_clearance",
+        "predictedStance": "requires_authorization",
+        "confidence": 0.9,
+        "quote": "- US citizen",
+        "trueQuote": "- US citizen\n\n- 3+ years of hands-on RF engineering"
+      },
+      {
+        "id": "hackernews:50095249",
+        "company": "3Gimbals",
+        "title": "Hiring (see posting)",
+        "trueStance": "citizenship_or_clearance",
+        "predictedStance": "requires_authorization",
+        "confidence": 0.9,
+        "quote": "Requirement: US Citizenship, Ability to obtain government clearance",
+        "trueQuote": "Requirement: US Citizenship, Ability to obtain government clearance"
+      },
+      {
+        "id": "ashby:openai:48993416-b5f5-4c3f-b7c8-b8ca7c2395e0",
+        "company": "OpenAI",
+        "title": "AI Support Engineer, Government - San Francisco, CA",
+        "trueStance": "citizenship_or_clearance",
+        "predictedStance": "silent",
+        "confidence": 0.85,
+        "quote": "(silent)",
+        "trueQuote": "applicants for this position must be U.S. citizens"
+      }
+    ],
+    "baselines": {
+      "alwaysSilent": {
+        "p": 0,
+        "low": 0,
+        "high": 0.15464382326420195,
+        "n": 21
+      },
+      "alwaysUnclear": {
+        "p": 0,
+        "low": 0,
+        "high": 0.15464382326420195,
+        "n": 21
+      }
+    },
+    "verdict": {
+      "accuracy": {
+        "p": 0.9523809523809523,
+        "low": 0.7733018341376452,
+        "high": 0.9915442305280766,
+        "n": 21
+      },
+      "perStatus": {
+        "open": {
+          "precision": {
+            "p": null,
+            "low": null,
+            "high": null,
+            "n": 0
+          },
+          "recall": {
+            "p": null,
+            "low": null,
+            "high": null,
+            "n": 0
+          }
+        },
+        "likely": {
+          "precision": {
+            "p": null,
+            "low": null,
+            "high": null,
+            "n": 0
+          },
+          "recall": {
+            "p": null,
+            "low": null,
+            "high": null,
+            "n": 0
+          }
+        },
+        "unclear": {
+          "precision": {
+            "p": 0,
+            "low": 0,
+            "high": 0.7934567085261071,
+            "n": 1
+          },
+          "recall": {
+            "p": null,
+            "low": null,
+            "high": null,
+            "n": 0
+          }
+        },
+        "unlikely": {
+          "precision": {
+            "p": 1,
+            "low": 0.8388698745050667,
+            "high": 1,
+            "n": 20
+          },
+          "recall": {
+            "p": 0.9523809523809523,
+            "low": 0.7733018341376452,
+            "high": 0.9915442305280766,
+            "n": 21
+          }
+        }
+      },
+      "confusion": {
+        "unlikely": {
+          "unlikely": 20,
+          "unclear": 1
+        }
+      }
+    }
+  },
+  "stratifiedTest": {
+    "setName": "stratified-test",
+    "n": 11,
+    "statementDetection": {
+      "precision": {
+        "p": 1,
+        "low": 0.7224598312333834,
+        "high": 1,
+        "n": 10
+      },
+      "recall": {
+        "p": 0.9090909090909091,
+        "low": 0.6226353745137962,
+        "high": 0.9837682477371741,
+        "n": 11
+      }
+    },
+    "stanceAccuracyAmongDetected": {
+      "p": 1,
+      "low": 0.7224598312333834,
+      "high": 1,
+      "n": 10
+    },
+    "blocked": {
+      "precision": {
+        "p": 1,
+        "low": 0.7224598312333834,
+        "high": 1,
+        "n": 10
+      },
+      "recall": {
+        "p": 0.9090909090909091,
+        "low": 0.6226353745137962,
+        "high": 0.9837682477371741,
+        "n": 11
+      }
+    },
+    "sponsors": {
+      "precision": {
+        "p": null,
+        "low": null,
+        "high": null,
+        "n": 0
+      },
+      "recall": {
+        "p": null,
+        "low": null,
+        "high": null,
+        "n": 0
+      }
+    },
+    "perClass": {
+      "sponsors": {
+        "precision": {
+          "p": null,
+          "low": null,
+          "high": null,
+          "n": 0
+        },
+        "recall": {
+          "p": null,
+          "low": null,
+          "high": null,
+          "n": 0
+        },
+        "note": "small-n: 0 true sponsors in this set"
+      },
+      "no_sponsorship": {
+        "precision": {
+          "p": 1,
+          "low": 0.20654329147389294,
+          "high": 1,
+          "n": 1
+        },
+        "recall": {
+          "p": 1,
+          "low": 0.20654329147389294,
+          "high": 1,
+          "n": 1
+        },
+        "note": "small-n: 1 true no_sponsorship in this set"
+      },
+      "requires_authorization": {
+        "precision": {
+          "p": 1,
+          "low": 0.34237195288961925,
+          "high": 1,
+          "n": 2
+        },
+        "recall": {
+          "p": 1,
+          "low": 0.34237195288961925,
+          "high": 1,
+          "n": 2
+        },
+        "note": "small-n: 2 true requires_authorization in this set"
+      },
+      "citizenship_or_clearance": {
+        "precision": {
+          "p": 1,
+          "low": 0.6456611570247934,
+          "high": 1,
+          "n": 7
+        },
+        "recall": {
+          "p": 0.875,
+          "low": 0.5291051942301386,
+          "high": 0.9775830911367038,
+          "n": 8
+        },
+        "note": "small-n: 8 true citizenship_or_clearance in this set"
+      }
+    },
+    "accuracy": {
+      "p": 0.9090909090909091,
+      "low": 0.6226353745137962,
+      "high": 0.9837682477371741,
+      "n": 11
+    },
+    "confusion": {
+      "no_sponsorship": {
+        "no_sponsorship": 1
+      },
+      "requires_authorization": {
+        "requires_authorization": 2
+      },
+      "citizenship_or_clearance": {
+        "silent": 1,
+        "citizenship_or_clearance": 7
+      }
+    },
+    "worstMistakes": [
+      {
+        "id": "ashby:openai:6d1d835d-5882-4191-b78e-fd04a4c05f11",
+        "company": "OpenAI",
+        "title": "AI Support Engineer, Government - Washington, D.C.",
+        "trueStance": "citizenship_or_clearance",
+        "predictedStance": "silent",
+        "confidence": 0.85,
+        "quote": "(silent)",
+        "trueQuote": "applicants for this position must be U.S. citizens"
+      }
+    ],
+    "baselines": {
+      "alwaysSilent": {
+        "p": 0,
+        "low": 2.7755575615628914e-17,
+        "high": 0.2588400172488141,
+        "n": 11
+      },
+      "alwaysUnclear": {
+        "p": 0,
+        "low": 2.7755575615628914e-17,
+        "high": 0.2588400172488141,
+        "n": 11
+      }
+    },
+    "verdict": {
+      "accuracy": {
+        "p": 0.9090909090909091,
+        "low": 0.6226353745137962,
+        "high": 0.9837682477371741,
+        "n": 11
+      },
+      "perStatus": {
+        "open": {
+          "precision": {
+            "p": null,
+            "low": null,
+            "high": null,
+            "n": 0
+          },
+          "recall": {
+            "p": null,
+            "low": null,
+            "high": null,
+            "n": 0
+          }
+        },
+        "likely": {
+          "precision": {
+            "p": null,
+            "low": null,
+            "high": null,
+            "n": 0
+          },
+          "recall": {
+            "p": null,
+            "low": null,
+            "high": null,
+            "n": 0
+          }
+        },
+        "unclear": {
+          "precision": {
+            "p": 0,
+            "low": 0,
+            "high": 0.7934567085261071,
+            "n": 1
+          },
+          "recall": {
+            "p": null,
+            "low": null,
+            "high": null,
+            "n": 0
+          }
+        },
+        "unlikely": {
+          "precision": {
+            "p": 1,
+            "low": 0.7224598312333834,
+            "high": 1,
+            "n": 10
+          },
+          "recall": {
+            "p": 0.9090909090909091,
+            "low": 0.6226353745137962,
+            "high": 0.9837682477371741,
+            "n": 11
+          }
+        }
+      },
+      "confusion": {
+        "unlikely": {
+          "unlikely": 10,
+          "unclear": 1
+        }
+      }
+    }
+  },
+  "leakageChecks": [],
+  "labelsUnaudited": true
+}
