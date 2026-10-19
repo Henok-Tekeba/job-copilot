@@ -78,6 +78,14 @@ label what you actually believe.
 | `labels.jsonl` | One line per labeled posting: `{id, hash, text_stance, overall_verdict, revisit, labeledAt}`. `hash` is a SHA-256 prefix of the posting text, so a stale label (text changed since labeling) can be detected. |
 | `split.json` | The dev/test split and the seed that produced it. |
 
+## Label provenance
+
+The current 300 labels were authored by an AI agent (Claude) following this
+rubric, at the repo owner's request, not by the human directly. The accuracy
+numbers downstream must be read with that in mind. To review or override any
+label: remove its line from `labels.jsonl` (or all lines), run `npm run label`,
+and relabel by hand — the tool is the human path and it overwrites on save.
+
 ## Labeling tool
 
 ```bash
