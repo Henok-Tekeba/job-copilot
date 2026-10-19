@@ -1,0 +1,40 @@
+{
+  "seed": 20261018,
+  "note": "stratified rare-class set; disjoint from the natural 300",
+  "dev": [
+    "ashby:alan:f60e2e04-a0a0-4197-abe8-a80a1b69557d",
+    "ashby:openai:485cda77-5d8f-4aaa-bca5-916b011477e6",
+    "ashby:openai:48993416-b5f5-4c3f-b7c8-b8ca7c2395e0",
+    "ashby:openai:b60d3040-38e4-4abe-8af8-881286b10d50",
+    "ashby:trm-labs:2a784630-702d-4b49-a033-5cbd0d9c8a94",
+    "ashby:trm-labs:5b1c4862-550f-48fe-89bf-33a9181f9bdc",
+    "greenhouse:anthropic:5443900008",
+    "greenhouse:elastic:8153274",
+    "greenhouse:luminate:4737889005",
+    "greenhouse:monzo:8232726",
+    "greenhouse:newrelic:5416517008",
+    "greenhouse:newrelic:5453390008",
+    "greenhouse:okx:8004167003",
+    "greenhouse:okx:8005095003",
+    "greenhouse:okx:8026443003",
+    "greenhouse:planetscale:4389100009",
+    "greenhouse:thoughtworks:8200473",
+    "greenhouse:thoughtworks:8255609",
+    "hackernews:50059584",
+    "hackernews:50062997",
+    "hackernews:50095249"
+  ],
+  "test": [
+    "ashby:openai:6d1d835d-5882-4191-b78e-fd04a4c05f11",
+    "ashby:openai:be7b1bf5-37ab-40f7-9ec1-e9732244f12a",
+    "ashby:trm-labs:85d748d0-5377-486f-9209-c811704dbdaa",
+    "ashby:trm-labs:e8a7a3d5-938f-4d2b-b9d3-86765d8d1dd2",
+    "greenhouse:anthropic:5382518008",
+    "greenhouse:anthropic:5406367008",
+    "greenhouse:anthropic:5445410008",
+    "greenhouse:elastic:8138599",
+    "greenhouse:monzo:8156261",
+    "greenhouse:newrelic:5371209008",
+    "remoteok:1137474"
+  ]
+}

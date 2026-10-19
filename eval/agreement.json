@@ -1,0 +1,16 @@
+{
+  "note": "two independent AI passes; self-consistency, not human agreement",
+  "dev": {
+    "n": 200,
+    "stance": 94,
+    "verdict": 79
+  },
+  "test": {
+    "n": 100,
+    "stance": 99,
+    "verdict": 84
+  },
+  "disagreements": 60,
+  "passA": "eval/labels.jsonl",
+  "passB": "eval/labels-passB.jsonl"
+}

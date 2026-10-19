@@ -17,6 +17,7 @@
     "publish-data": "bash scripts/publish-data.sh",
     "emit-data": "tsx scripts/emit-public-data.ts",
     "label": "tsx eval/labeler/serve.ts",
+    "audit": "tsx eval/labeler/audit.ts",
     "sample": "tsx eval/sample.ts"
   },
   "dependencies": {

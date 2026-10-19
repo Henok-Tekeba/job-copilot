@@ -78,6 +78,27 @@ label what you actually believe.
 | `labels.jsonl` | One line per labeled posting: `{id, hash, text_stance, overall_verdict, revisit, labeledAt}`. `hash` is a SHA-256 prefix of the posting text, so a stale label (text changed since labeling) can be detected. |
 | `split.json` | The dev/test split and the seed that produced it. |
 
+## Baselines (majority class, from the cleaned natural-set labels)
+
+Any classifier must beat these to be worth anything. They come straight from
+`labels.jsonl`:
+
+| baseline | full 300 | dev 200 |
+|---|---|---|
+| always answer `silent` (text_stance) | 88.0% | 89.5% |
+| always answer `unclear` (overall_verdict) | 75.3% | 79.5% |
+
+A model that says "silent" to everything scores 88%. Every accuracy number we
+report must be read against that bar, and per-class precision/recall matter
+more than raw accuracy.
+
+## Two-pass consistency
+
+Labels were produced in two independent AI passes (`labels.jsonl`,
+`labels-passB.jsonl`; both passes blind to each other). Self-consistency, not
+human agreement — see `eval/agreement.json`. The 76 disagreements are all in
+the audit queue.
+
 ## Label provenance
 
 The current 300 labels were authored by an AI agent (Claude) following this
@@ -96,3 +117,29 @@ Blind by design: it shows the posting text with sponsorship keywords
 highlighted and nothing else. Keys: `1–5` text_stance, `q w e r`
 overall_verdict, both chosen auto-saves, `space` skip, `u` revisit flag,
 `z` undo. Labels are saved to disk after every one.
+
+## Audit queue
+
+```bash
+npm run audit      # serves http://localhost:4178
+```
+
+The queue (`eval/audit-queue.json`, seed 20261019) contains every posting
+where a human judgment is worth most: all non-silent labels, the
+revisit-flagged ones, every pass A / pass B disagreement, every silent posting
+that kept a non-unclear verdict, and 40 random silent postings. Three keys:
+`a` accept, `w` wrong (relabel inline), `s` unsure. Results go to
+`eval/audit-results.jsonl`.
+
+## Stratified rare-class set
+
+The natural 300-sample is almost all `silent` (the real distribution), which
+leaves the rare stances too thin to measure. `eval/stratified/` holds extra
+postings found by keyword search over the full snapshot (no engine output
+used), labeled through the same two blind passes with verbatim quotes.
+It is scored separately from the natural set, never mixed into its accuracy.
+Shortfall, honestly stated: the snapshot contains only 32 confirmable
+rare-class postings (5 `no_sponsorship`, 8 `requires_authorization`, 19
+`citizenship_or_clearance`), well under the 30-per-class target. Getting to 30
+per class needs more explicit-refusal postings than this snapshot has — that
+means new sources (Phase 3), not more keywords.
