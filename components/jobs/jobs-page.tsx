@@ -101,6 +101,7 @@ export default function JobsPage({
   // same slice so the page can be prerendered small: 4,000 postings rendered in
   // full produced a 17 MB index.html.
   const [pageIndex, setPageIndex] = React.useState(0);
+  const [selectedId, setSelectedId] = React.useState<string | null>(null);
 
   // Saved / applied / dismissed, persisted in the browser. The static site has
   // no server, so this is the application tracker.
@@ -242,6 +243,72 @@ export default function JobsPage({
     safePageIndex * PAGE_SIZE + PAGE_SIZE
   );
 
+  React.useEffect(() => {
+    const handler = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null;
+      const inInput =
+        !!target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA");
+      if (event.metaKey || event.ctrlKey) return;
+
+      if (event.key === "/") {
+        if (inInput) return;
+        event.preventDefault();
+        document
+          .querySelector<HTMLInputElement>("[data-search-input]")
+          ?.focus();
+        return;
+      }
+      if (inInput) return;
+
+      if (event.key === "j" || event.key === "k") {
+        event.preventDefault();
+        if (pagedJobs.length === 0) return;
+        const idx = pagedJobs.findIndex((j) => j.id === selectedId);
+        let next = idx;
+        if (event.key === "j") {
+          next = idx < 0 ? 0 : Math.min(pagedJobs.length - 1, idx + 1);
+        } else {
+          next = idx < 0 ? 0 : Math.max(0, idx - 1);
+        }
+        setSelectedId(pagedJobs[next].id);
+        return;
+      }
+      if (event.key === "Enter") {
+        const job = pagedJobs.find((j) => j.id === selectedId);
+        if (job) {
+          event.preventDefault();
+          openJob(job);
+        }
+        return;
+      }
+      if (event.key === "s") {
+        const job = pagedJobs.find((j) => j.id === selectedId);
+        if (job) {
+          event.preventDefault();
+          tracked.toggleSaved(job.id);
+        }
+        return;
+      }
+      if (event.key === "x") {
+        const job = pagedJobs.find((j) => j.id === selectedId);
+        if (job) {
+          event.preventDefault();
+          handleDismiss(job.id);
+        }
+        return;
+      }
+      if (event.key === "a") {
+        const job = pagedJobs.find((j) => j.id === selectedId);
+        if (job) {
+          event.preventDefault();
+          tracked.markApplied(job);
+        }
+        return;
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [pagedJobs, selectedId, tracked]);
 
 
   const handleDismiss = (id: string) => {
@@ -388,6 +455,8 @@ export default function JobsPage({
                 loading={false}
                 appliedIds={appliedIds}
                 savedIds={tracked.saved}
+                selectedId={selectedId}
+                onSelect={setSelectedId}
                 onToggleSaved={tracked.toggleSaved}
                 onToggleApplied={(job) =>
                   tracked.applied.has(job.id) || appliedIds.has(job.id)
@@ -430,6 +499,10 @@ export default function JobsPage({
               />
             </div>
           </div>
+
+          <p className="hidden px-1 pt-2 text-[11px] text-muted-foreground/70 md:block">
+            j/k move · Enter open · s save · x dismiss · a applied · / search · ? shortcuts
+          </p>
 
           {loaded && (
             <JobsPagination

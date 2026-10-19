@@ -97,6 +97,7 @@ export function GapsClient({
 
   const skillRows = React.useMemo(() => {
     const skillMap = new Map<string, Job[]>();
+    const requiredMap = new Map<string, number>();
 
     for (const job of initialJobs) {
       for (const skill of [...job.evaluation.matched, ...job.evaluation.missing]) {
@@ -104,6 +105,9 @@ export function GapsClient({
           skillMap.set(skill, []);
         }
         skillMap.get(skill)!.push(job);
+      }
+      for (const skill of job.evaluation.fit?.requiredMissing ?? []) {
+        requiredMap.set(skill, (requiredMap.get(skill) ?? 0) + 1);
       }
     }
 
@@ -113,6 +117,7 @@ export function GapsClient({
         count: jobs.length,
         jobs,
         hasSkill: knownSkillsSet.has(skill),
+        requiredCount: requiredMap.get(skill) ?? 0,
       }))
       .sort((a, b) => b.count - a.count);
   }, [initialJobs, knownSkillsSet]);
@@ -281,6 +286,9 @@ export function GapsClient({
                 <SheetTitle>{selectedRow.skill}</SheetTitle>
                 <SheetDescription>
                   Asked in {selectedRow.count} of these opportunities
+                  {selectedRow.requiredCount > 0
+                    ? ` · adding it moves ${selectedRow.requiredCount} postings to a better fit`
+                    : ""}
                 </SheetDescription>
               </SheetHeader>
               <div className="flex flex-col gap-3 px-4 pb-4">

@@ -35,6 +35,8 @@ type JobsTableProps = {
   loading: boolean;
   appliedIds: Set<string>;
   savedIds: Set<string>;
+  selectedId?: string | null;
+  onSelect?: (id: string) => void;
   onRowClick: (job: Job) => void;
   onToggleApplied: (job: Job) => void;
   onToggleSaved: (id: string) => void;
@@ -86,6 +88,8 @@ export function JobsTable({
   loading,
   appliedIds,
   savedIds,
+  selectedId,
+  onSelect,
   onRowClick,
   onToggleApplied,
   onToggleSaved,
@@ -167,9 +171,13 @@ export function JobsTable({
               tabIndex={0}
               className={cn(
                 "group cursor-pointer border-b-border/70 border-l-2",
-                VERDICT_STYLE[verdict].rail
+                VERDICT_STYLE[verdict].rail,
+                selectedId === job.id && "bg-muted/60"
               )}
-              onClick={() => onRowClick(job)}
+              onClick={() => {
+                onSelect?.(job.id);
+                onRowClick(job);
+              }}
               onKeyDown={(e) => {
                 if (e.key === "Enter" || e.key === " ") {
                   e.preventDefault();

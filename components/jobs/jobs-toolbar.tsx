@@ -184,6 +184,7 @@ export function JobsToolbar({
           <InputGroupInput
             placeholder="Search title or company…"
             aria-label="Search jobs"
+            data-search-input
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
           />

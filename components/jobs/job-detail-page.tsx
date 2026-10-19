@@ -27,6 +27,8 @@ import { useProfile } from "@/hooks/use-profile";
 import { applyProfile, isDefaultProfile } from "@/lib/profile";
 import { isUnstatedLocation } from "@/lib/regions";
 import { stripHtml } from "@/lib/jobs";
+import { VERDICT_STYLE, EVIDENCE_FIELD_LABELS } from "@/lib/verdict-style";
+import { EvidenceMarkedText, type EvidenceMark } from "@/components/jobs/evidence-marked-text";
 import type { Job } from "@/lib/types";
 
 /**
@@ -54,6 +56,46 @@ export function JobDetailPage({ job }: { job: Job }) {
 
   const fit = jobForView.evaluation.fit;
   const plainDescription = stripHtml(job.description);
+
+  const marks: EvidenceMark[] = React.useMemo(() => {
+    const out: EvidenceMark[] = [];
+    const eligibility = job.evaluation.eligibility;
+    if (eligibility) {
+      const colorClass = VERDICT_STYLE[eligibility.verdict].text;
+      const verdictLabel = VERDICT_STYLE[eligibility.verdict].label;
+      for (const item of eligibility.evidence) {
+        if (item.value && !isUnstatedLocation(item.value)) {
+          const label = EVIDENCE_FIELD_LABELS[item.field] ?? item.field;
+          out.push({
+            phrase: item.value,
+            colorClass,
+            note: `${label}: "${item.value}" → ${verdictLabel}`,
+          });
+        }
+      }
+      for (const signal of eligibility.sponsorship?.signals ?? []) {
+        const colorClass =
+          eligibility.sponsorship?.verdict === "offered"
+            ? "text-emerald-400"
+            : eligibility.sponsorship?.verdict === "not-offered"
+              ? "text-red-400"
+              : "text-amber-400";
+        out.push({
+          phrase: signal,
+          colorClass,
+          note: `Sponsorship signal: "${signal}"`,
+        });
+      }
+    }
+    if (job.evaluation.deadlineEvidence) {
+      out.push({
+        phrase: job.evaluation.deadlineEvidence,
+        colorClass: "text-amber-400",
+        note: `Deadline: ${job.evaluation.deadlineEvidence}`,
+      });
+    }
+    return out;
+  }, [job]);
   const locationLabel = isUnstatedLocation(job.location) ? "" : job.location;
 
   return (
@@ -228,9 +270,13 @@ export function JobDetailPage({ job }: { job: Job }) {
             Posting
           </h2>
           <ScrollArea className="h-[55vh] rounded-lg border border-border p-4">
-            <p className="text-sm leading-relaxed whitespace-pre-wrap">
-              {plainDescription || "No description in the snapshot."}
-            </p>
+            {plainDescription ? (
+              <EvidenceMarkedText text={plainDescription} marks={marks} />
+            ) : (
+              <p className="text-sm leading-relaxed whitespace-pre-wrap">
+                No description in the snapshot.
+              </p>
+            )}
           </ScrollArea>
         </section>
 
