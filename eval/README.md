@@ -70,6 +70,19 @@ reputation, the employer's country). When the posting is explicit, the two
 labels normally agree; when they disagree, that disagreement is interesting —
 label what you actually believe.
 
+### Verdict evidence rule (for silent postings)
+
+For a posting whose `text_stance` is `silent`, a verdict other than `unclear`
+requires a verbatim quote about **visas, work authorization, relocation
+support, or explicit worldwide / any-country hiring**. These do NOT qualify:
+
+- location-only restrictions ("remote in Europe", "US-based preferred")
+- equal-opportunity / diversity statements ("we celebrate 50 nationalities")
+- benefits (insurance, equipment, health cover)
+
+"Location-restricted remote" is future work for the **Reach screen**, not a
+label here.
+
 ## Files
 
 | file | what it is |
