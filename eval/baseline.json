@@ -1,0 +1,21 @@
+{
+  "engineVersion": "0.1.0",
+  "recordedAt": "2026-10-19T06:30:17.932Z",
+  "labelHash": "9f4437bb707f9257",
+  "note": "CI fails if a PR's dev eval drops below any of these on the same dev set. Update only with an intentional commit.",
+  "naturalDev": {
+    "statementPrecision": 0.875,
+    "statementRecall": 0.6666666666666666,
+    "blockedPrecision": 0.8333333333333334,
+    "blockedRecall": 0.7692307692307693,
+    "sponsorsPrecision": 1,
+    "stanceAccuracyAmongDetected": 0.9285714285714286,
+    "overallAccuracy": 0.95
+  },
+  "stratifiedDev": {
+    "blockedPrecision": 1,
+    "blockedRecall": 0.9523809523809523
+  },
+  "trickyCasesPassed": 7,
+  "trickyCasesTotal": 7
+}
