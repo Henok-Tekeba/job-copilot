@@ -26,9 +26,33 @@ const OUT = path.join(ROOT, "public", "verdicts.json");
 type FulltextRecord = { id: string; hash: string; truncated: boolean; text: string };
 
 function main() {
-  if (!fs.existsSync(FULLTEXT)) {
-    console.error("emit-verdicts: data/fulltext.jsonl missing — run the collect first.");
-    process.exit(1);
+  // Preferred source: the full posting bodies collected in Phase 1. On CI the
+  // data branch carries only the excerpted board snapshot, so fall back to
+  // those excerpts (and say so in the meta) rather than failing the deploy.
+  let rows: FulltextRecord[] = [];
+  let source = "full";
+  if (fs.existsSync(FULLTEXT)) {
+    rows = fs
+      .readFileSync(FULLTEXT, "utf-8")
+      .split("\n")
+      .filter(Boolean)
+      .map((line) => JSON.parse(line));
+  } else {
+    source = "excerpted";
+    console.warn(
+      "emit-verdicts: data/fulltext.jsonl missing — computing verdicts from the" +
+        " excerpted board snapshot. Verdicts rest on less text; publish the data" +
+        " branch to restore full-text verdicts."
+    );
+    const jobs: Array<{ id: string; description: string; deadline?: string }> = JSON.parse(
+      fs.readFileSync(path.join(ROOT, "data", "jobs.json"), "utf-8")
+    );
+    rows = jobs.map((j) => ({
+      id: j.id,
+      hash: "",
+      truncated: true,
+      text: j.description ?? "",
+    }));
   }
   const lookup = fs.existsSync(LOOKUP)
     ? JSON.parse(fs.readFileSync(LOOKUP, "utf-8"))
@@ -38,12 +62,6 @@ function main() {
     : {};
   const records = lookup.records as Record<string, { uk?: boolean; ukRating?: string; n?: number; lastYear?: number }>;
   const ukSource = lookup.meta.sources.find((s: { name: string }) => s.name === "uk-home-office-sponsor-register");
-
-  const rows: FulltextRecord[] = fs
-    .readFileSync(FULLTEXT, "utf-8")
-    .split("\n")
-    .filter(Boolean)
-    .map((line) => JSON.parse(line));
 
   const companyById = new Map<string, string>();
   const jobs: Array<{ id: string; company: string }> = JSON.parse(
@@ -83,6 +101,7 @@ function main() {
     meta: {
       engineVersion: ENGINE_VERSION,
       builtAt: new Date().toISOString(),
+      source,
       recordSource: ukSource
         ? {
             name: "UK Home Office sponsor register",
