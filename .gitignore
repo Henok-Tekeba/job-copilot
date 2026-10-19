@@ -53,3 +53,4 @@ next-env.d.ts
 
 # generated at build time from the data branch snapshot
 /public/jobs.json
+data/fulltext.jsonl
