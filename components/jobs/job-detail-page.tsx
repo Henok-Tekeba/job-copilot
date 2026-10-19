@@ -27,9 +27,24 @@ import { useProfile } from "@/hooks/use-profile";
 import { applyProfile, isDefaultProfile } from "@/lib/profile";
 import { isUnstatedLocation } from "@/lib/regions";
 import { stripHtml } from "@/lib/jobs";
-import { VERDICT_STYLE, EVIDENCE_FIELD_LABELS } from "@/lib/verdict-style";
+import { VERDICT_STYLE, EVIDENCE_FIELD_LABELS, ENGINE_STYLE } from "@/lib/verdict-style";
 import { EvidenceMarkedText, type EvidenceMark } from "@/components/jobs/evidence-marked-text";
 import type { Job } from "@/lib/types";
+import { cn } from "@/lib/utils";
+import type { VerdictStatus } from "@/engine/verdict";
+
+type EngineVerdict = {
+  status: VerdictStatus;
+  confidence: number;
+  reasons: Array<{
+    source: string;
+    summary: string;
+    quote?: string;
+    record?: { source: string; dataYear: string; detail: string };
+  }>;
+};
+
+export type { EngineVerdict };
 
 /**
  * The posting, as its own page.
@@ -39,7 +54,7 @@ import type { Job } from "@/lib/types";
  * reasoning, the fit breakdown, and the posting body, with triage actions that
  * survive reloads.
  */
-export function JobDetailPage({ job }: { job: Job }) {
+export function JobDetailPage({ job, verdict }: { job: Job; verdict?: EngineVerdict }) {
   const router = useRouter();
   const tracked = useTrackedJobs();
   const { profile } = useProfile();
@@ -94,8 +109,20 @@ export function JobDetailPage({ job }: { job: Job }) {
         note: `Deadline: ${job.evaluation.deadlineEvidence}`,
       });
     }
+    if (verdict) {
+      const colorClass = ENGINE_STYLE[verdict.status].text;
+      for (const reason of verdict.reasons) {
+        if (reason.quote) {
+          out.push({
+            phrase: reason.quote,
+            colorClass,
+            note: `${reason.summary}${reason.record ? ` — ${reason.record.source}, ${reason.record.dataYear}` : ""}`,
+          });
+        }
+      }
+    }
     return out;
-  }, [job]);
+  }, [job, verdict]);
   const locationLabel = isUnstatedLocation(job.location) ? "" : job.location;
 
   return (
@@ -176,7 +203,54 @@ export function JobDetailPage({ job }: { job: Job }) {
           </div>
         </div>
 
-        <EligibilityPanel eligibility={job.evaluation.eligibility} />
+        {verdict ? (
+          <section
+            className={cn(
+              "flex flex-col gap-3 border-l-2 py-1 pl-4",
+              ENGINE_STYLE[verdict.status].rail
+            )}
+          >
+            <div className="flex items-center gap-2">
+              <span className={cn("text-sm font-medium", ENGINE_STYLE[verdict.status].text)}>
+                {ENGINE_STYLE[verdict.status].label}
+              </span>
+              <span
+                className="inline-flex items-center gap-0.5"
+                aria-label={`Confidence ${Math.round(verdict.confidence * 100)}%`}
+                title={`Confidence ${Math.round(verdict.confidence * 100)}%`}
+              >
+                {[0, 1, 2].map((i) => (
+                  <span
+                    key={i}
+                    className={cn(
+                      "size-1 rounded-full",
+                      i < Math.min(3, Math.max(1, Math.round(verdict.confidence * 3)))
+                        ? cn("bg-current", ENGINE_STYLE[verdict.status].text)
+                        : "bg-current opacity-25"
+                    )}
+                  />
+                ))}
+              </span>
+            </div>
+            {verdict.reasons.map((reason, i) => (
+              <div key={i} className="flex flex-col gap-1">
+                <p className="text-sm leading-relaxed text-muted-foreground">{reason.summary}</p>
+                {reason.quote && (
+                  <p className={cn("border-l-2 pl-3 font-mono text-xs leading-relaxed", ENGINE_STYLE[verdict.status].text)}>
+                    “{reason.quote}”
+                  </p>
+                )}
+                {reason.record && (
+                  <p className="text-xs text-muted-foreground">
+                    {reason.record.detail} — {reason.record.source}, {reason.record.dataYear}
+                  </p>
+                )}
+              </div>
+            ))}
+          </section>
+        ) : (
+          <EligibilityPanel eligibility={job.evaluation.eligibility} />
+        )}
 
         {job.evaluation.deadlineEvidence && (
           <div className="flex flex-col gap-1 border-t border-border pt-3">

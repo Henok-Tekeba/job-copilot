@@ -20,7 +20,7 @@ import { precision, recall } from "../eval/stats";
 const ROOT = process.cwd();
 const records = JSON.parse(
   fs.readFileSync(path.join(ROOT, "data-sources", "lookup", "company-records.json"), "utf-8")
-).records as Record<string, unknown>;
+).records as Record<string, import("../engine/companyName").CompanyRecord>;
 
 // 30 true matches: (posting name, record name that must be found).
 const truePairs: Array<[string, string]> = [

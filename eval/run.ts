@@ -22,7 +22,7 @@ import * as fs from "fs";
 import * as path from "path";
 import { detectTextStance } from "../engine/textStance";
 import { combineVerdict } from "../engine/verdict";
-import { matchCompany, normaliseCompanyName, type CompanyRecordLike } from "../engine/companyName";
+import { matchCompany, normaliseCompanyName, type CompanyRecord } from "../engine/companyName";
 import { ENGINE_VERSION } from "../engine/version";
 import { precision, recall, wilson95, type Interval } from "./stats";
 
@@ -52,7 +52,7 @@ const BLOCKED: Stance[] = ["no_sponsorship", "requires_authorization", "citizens
 
 // Company records for the combined-verdict eval, loaded once.
 const recordsLookupPath = path.join(ROOT, "data-sources", "lookup", "company-records.json");
-const recordsLookup: Record<string, CompanyRecordLike> = fs.existsSync(recordsLookupPath)
+const recordsLookup: Record<string, CompanyRecord> = fs.existsSync(recordsLookupPath)
   ? (JSON.parse(fs.readFileSync(recordsLookupPath, "utf-8")).records)
   : {};
 const aliases: Record<string, string> = fs.existsSync(path.join(ROOT, "data-sources", "aliases.json"))

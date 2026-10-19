@@ -97,24 +97,88 @@ export function matchCompany(
   records: Record<string, CompanyRecord>,
   aliases: Record<string, string> = {}
 ): CompanyMatch {
+  return matchWithIndex(getMatchIndex(records), name, aliases, records);
+}
+
+// --- bulk matching ---------------------------------------------------------
+
+export type MatchIndex = {
+  keys: string[];
+  /** token -> keys containing it; the smallest set wins the intersection. */
+  tokenIndex: Map<string, Set<string>>;
+  /** first token -> keys starting with it; bounds the edit-distance pass. */
+  firstTokenIndex: Map<string, string[]>;
+  tokensOf: Map<string, Set<string>>;
+};
+
+const indexCache = new WeakMap<object, MatchIndex>();
+
+/** Build (or reuse) a match index for a records map. Cheap enough to call per lookup. */
+export function getMatchIndex(records: Record<string, CompanyRecord>): MatchIndex {
+  const cached = indexCache.get(records);
+  if (cached) return cached;
+  const keys = Object.keys(records);
+  const tokenIndex = new Map<string, Set<string>>();
+  const firstTokenIndex = new Map<string, string[]>();
+  const tokensOf = new Map<string, Set<string>>();
+  for (const key of keys) {
+    const tokens = tokenise(key);
+    const set = new Set(tokens);
+    tokensOf.set(key, set);
+    for (const t of set) {
+      let bucket = tokenIndex.get(t);
+      if (!bucket) tokenIndex.set(t, (bucket = new Set()));
+      bucket.add(key);
+    }
+    const first = tokens[0];
+    if (first) {
+      let list = firstTokenIndex.get(first);
+      if (!list) firstTokenIndex.set(first, (list = []));
+      list.push(key);
+    }
+  }
+  const index: MatchIndex = { keys, tokenIndex, firstTokenIndex, tokensOf };
+  indexCache.set(records, index);
+  return index;
+}
+
+function matchWithIndex(
+  index: MatchIndex,
+  name: string,
+  aliases: Record<string, string>,
+  records?: Record<string, CompanyRecord>
+): CompanyMatch {
   const key = normaliseCompanyName(name);
   if (!key) return { matched: false, confidence: 0, method: "none" };
 
-  if (records[key]) return { matched: true, key, confidence: 1, method: "exact" };
+  // Exact and alias need the records map; fall back to key-set check when the
+  // index is used standalone.
+  const has = (k: string) => (records ? !!records[k] : index.tokensOf.has(k));
+
+  if (has(key)) return { matched: true, key, confidence: 1, method: "exact" };
 
   const aliasTarget = aliases[key];
-  if (aliasTarget && records[aliasTarget]) {
+  if (aliasTarget && has(aliasTarget)) {
     return { matched: true, key: aliasTarget, confidence: 0.95, method: "alias" };
   }
 
   const tokens = tokenise(key);
-  // Fuzzy, strict: every significant token must appear in the record key, or
-  // the whole strings must be a tiny edit apart on a long-enough name.
   if (tokens.length > 0) {
-    for (const candidate of Object.keys(records)) {
-      const candidateTokens = new Set(tokenise(candidate));
-      const allTokens = tokens.every((t) => candidateTokens.has(t));
-      if (allTokens) {
+    // Token-subset candidates: only keys containing every query token. Walk
+    // the smallest token bucket, not all 126k keys.
+    let smallest: Set<string> | null = null;
+    for (const t of tokens) {
+      const bucket = index.tokenIndex.get(t);
+      if (!bucket) {
+        smallest = null;
+        break;
+      }
+      if (!smallest || bucket.size < smallest.size) smallest = bucket;
+    }
+    if (smallest) {
+      for (const candidate of smallest) {
+        const candidateTokens = index.tokensOf.get(candidate)!;
+        if (!tokens.every((t) => candidateTokens.has(t))) continue;
         // Token-subset match only when the two names are close in size —
         // allowing a 2-token query to match a 4-token record key is how a
         // consultancy name ends up matching an unrelated sole trader whose
@@ -125,9 +189,14 @@ export function matchCompany(
         return { matched: false, confidence: 0.3, method: "none" };
       }
     }
-    for (const candidate of Object.keys(records)) {
-      if (candidate.length >= 8 && levenshtein(candidate, key) <= 1) {
-        return { matched: true, key: candidate, confidence: 0.7, method: "fuzzy" };
+    // Tiny-edit pass, bounded by the first token so it touches dozens of keys,
+    // not the whole register.
+    if (key.length >= 8) {
+      const candidates = index.firstTokenIndex.get(tokens[0]!) ?? [];
+      for (const candidate of candidates) {
+        if (levenshtein(candidate, key) <= 1) {
+          return { matched: true, key: candidate, confidence: 0.7, method: "fuzzy" };
+        }
       }
     }
   }

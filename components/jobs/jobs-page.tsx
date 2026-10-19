@@ -23,6 +23,9 @@ import {
 } from "@/components/jobs/jobs-toolbar";
 import { ProfileBar } from "@/components/jobs/profile-bar";
 import { StatCards } from "@/components/jobs/stat-cards";
+import type { VerdictStatus } from "@/engine/verdict";
+
+type EngineVerdict = { status: VerdictStatus; confidence: number; reasons: Array<Record<string, unknown>> };
 import { OnboardingDialog, useOnboarding } from "@/components/jobs/onboarding";
 import { useProfile } from "@/hooks/use-profile";
 import { applyProfile, isDefaultProfile } from "@/lib/profile";
@@ -58,6 +61,26 @@ export default function JobsPage({
 
   // Data arrives as an asset rather than as serialised props, so the HTML stays
   // small enough to load on a phone.
+  const [verdicts, setVerdicts] = React.useState<Map<string, EngineVerdict>>(new Map());
+  React.useEffect(() => {
+    let cancelled = false;
+    const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
+    fetch(`${basePath}/verdicts.json`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (cancelled || !data?.verdicts) return;
+        setVerdicts(new Map(Object.entries(data.verdicts) as Array<[string, EngineVerdict]>));
+      })
+      .catch(() => {
+        // The board still works on the stored snapshot verdicts without it.
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   React.useEffect(() => {
     let cancelled = false;
     const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
@@ -455,6 +478,7 @@ export default function JobsPage({
                 loading={false}
                 appliedIds={appliedIds}
                 savedIds={tracked.saved}
+                verdicts={verdicts}
                 selectedId={selectedId}
                 onSelect={setSelectedId}
                 onToggleSaved={tracked.toggleSaved}
