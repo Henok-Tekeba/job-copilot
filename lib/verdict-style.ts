@@ -1,4 +1,40 @@
 import type { Eligibility } from "./types";
+import type { VerdictStatus } from "../engine/verdict";
+
+/**
+ * The four engine statuses (Phase 4), drawn like the rest of the palette:
+ * status colour pairs with an icon and a label, never colour alone.
+ */
+export const ENGINE_STYLE: Record<VerdictStatus, { label: string; text: string; badge: string; dot: string; rail: string }> = {
+  open: {
+    label: "Open to you",
+    text: "text-emerald-400",
+    badge: "border-emerald-500/40 text-emerald-400",
+    dot: "bg-emerald-500",
+    rail: "border-l-emerald-500",
+  },
+  likely: {
+    label: "Likely",
+    text: "text-sky-400",
+    badge: "border-sky-500/40 text-sky-400",
+    dot: "bg-sky-500",
+    rail: "border-l-sky-500/70",
+  },
+  unclear: {
+    label: "Unclear",
+    text: "text-amber-400",
+    badge: "border-amber-500/40 text-amber-400",
+    dot: "bg-amber-500",
+    rail: "border-l-amber-500/40",
+  },
+  unlikely: {
+    label: "Probably won't sponsor",
+    text: "text-red-400",
+    badge: "border-red-500/40 text-red-400",
+    dot: "bg-red-500",
+    rail: "border-l-red-500/70",
+  },
+};
 
 /**
  * How each eligibility verdict is drawn.

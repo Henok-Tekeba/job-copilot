@@ -1,0 +1,554 @@
+{
+  "engineVersion": "0.2.0",
+  "runAt": "2026-10-19T08:18:35.185Z",
+  "mode": "dev",
+  "labelHashes": {
+    "natural": "0a8e379ed93ff1ac",
+    "stratified": "bca6f0d2c8cf2b53"
+  },
+  "trickyCases": {
+    "total": 7,
+    "passed": 7,
+    "failures": []
+  },
+  "dev": {
+    "setName": "natural-dev",
+    "n": 200,
+    "statementDetection": {
+      "precision": {
+        "p": 0.9375,
+        "low": 0.7167073163197013,
+        "high": 0.9888809426916687,
+        "n": 16
+      },
+      "recall": {
+        "p": 0.8333333333333334,
+        "low": 0.6077750036164076,
+        "high": 0.9416352959953425,
+        "n": 18
+      }
+    },
+    "stanceAccuracyAmongDetected": {
+      "p": 0.9333333333333333,
+      "low": 0.7018292244757601,
+      "high": 0.9881334113938051,
+      "n": 15
+    },
+    "blocked": {
+      "precision": {
+        "p": 0.9166666666666666,
+        "low": 0.6461140782014047,
+        "high": 0.9851352905492264,
+        "n": 12
+      },
+      "recall": {
+        "p": 0.8461538461538461,
+        "low": 0.5776482949136899,
+        "high": 0.9567427368172621,
+        "n": 13
+      }
+    },
+    "sponsors": {
+      "precision": {
+        "p": 1,
+        "low": 0.5100999795960008,
+        "high": 1,
+        "n": 4
+      },
+      "recall": {
+        "p": 0.8,
+        "low": 0.3755282641185388,
+        "high": 0.9637768390302125,
+        "n": 5
+      }
+    },
+    "perClass": {
+      "sponsors": {
+        "precision": {
+          "p": 1,
+          "low": 0.5100999795960008,
+          "high": 1,
+          "n": 4
+        },
+        "recall": {
+          "p": 0.8,
+          "low": 0.3755282641185388,
+          "high": 0.9637768390302125,
+          "n": 5
+        },
+        "note": "small-n: 5 true sponsors in this set"
+      },
+      "no_sponsorship": {
+        "precision": {
+          "p": 1,
+          "low": 0.34237195288961925,
+          "high": 1,
+          "n": 2
+        },
+        "recall": {
+          "p": 0.6666666666666666,
+          "low": 0.2076549551264879,
+          "high": 0.9385096847238394,
+          "n": 3
+        },
+        "note": "small-n: 3 true no_sponsorship in this set"
+      },
+      "requires_authorization": {
+        "precision": {
+          "p": 0.875,
+          "low": 0.5291051942301386,
+          "high": 0.9775830911367038,
+          "n": 8
+        },
+        "recall": {
+          "p": 0.875,
+          "low": 0.5291051942301386,
+          "high": 0.9775830911367038,
+          "n": 8
+        },
+        "note": "small-n: 8 true requires_authorization in this set"
+      },
+      "citizenship_or_clearance": {
+        "precision": {
+          "p": 0.5,
+          "low": 0.09452865480086614,
+          "high": 0.9054713451991339,
+          "n": 2
+        },
+        "recall": {
+          "p": 0.5,
+          "low": 0.09452865480086614,
+          "high": 0.9054713451991339,
+          "n": 2
+        },
+        "note": "small-n: 2 true citizenship_or_clearance in this set"
+      }
+    },
+    "accuracy": {
+      "p": 0.975,
+      "low": 0.9428208558483829,
+      "high": 0.9892754385292123,
+      "n": 200
+    },
+    "confusion": {
+      "silent": {
+        "silent": 181,
+        "citizenship_or_clearance": 1
+      },
+      "no_sponsorship": {
+        "requires_authorization": 1,
+        "no_sponsorship": 2
+      },
+      "requires_authorization": {
+        "requires_authorization": 7,
+        "silent": 1
+      },
+      "citizenship_or_clearance": {
+        "citizenship_or_clearance": 1,
+        "silent": 1
+      },
+      "sponsors": {
+        "silent": 1,
+        "sponsors": 4
+      }
+    },
+    "worstMistakes": [
+      {
+        "id": "remoteok:1137463",
+        "company": "Fortanix",
+        "title": "Federal Business Development Director",
+        "trueStance": "silent",
+        "predictedStance": "citizenship_or_clearance",
+        "confidence": 0.9,
+        "quote": "Location in the Washington DC area and an active security clearance are highly desired.Â"
+      },
+      {
+        "id": "remotive:2091133",
+        "company": "Lemon.io",
+        "title": "Senior React Full-stack Developer",
+        "trueStance": "no_sponsorship",
+        "predictedStance": "requires_authorization",
+        "confidence": 0.85,
+        "quote": "We do not provide visa assistance, and our cooperation model does not include the benefits typically offered with direct hire.",
+        "trueQuote": "We do not provide visa assistance, and our cooperation model does not include the benefits typically offered with direct hire."
+      },
+      {
+        "id": "remoteok:1136796",
+        "company": "Delinea",
+        "title": "Staff Software Development Engineer SDM",
+        "trueStance": "requires_authorization",
+        "predictedStance": "silent",
+        "confidence": 0.85,
+        "quote": "(silent)"
+      },
+      {
+        "id": "ashby:openai:05223b5a-5ff1-4fe7-9f97-4ef7fc68b8ef",
+        "company": "OpenAI",
+        "title": "Forward Deployed Engineer - Munich",
+        "trueStance": "sponsors",
+        "predictedStance": "silent",
+        "confidence": 0.85,
+        "quote": "(silent)",
+        "trueQuote": "We offer relocation assistance."
+      },
+      {
+        "id": "remoteok:1137431",
+        "company": "Mercier Consultancy Group",
+        "title": "Danish Speaking Solutions Consultant Work Sofia Bulgaria",
+        "trueStance": "citizenship_or_clearance",
+        "predictedStance": "silent",
+        "confidence": 0.85,
+        "quote": "(silent)"
+      }
+    ],
+    "baselines": {
+      "alwaysSilent": {
+        "p": 0.91,
+        "low": 0.8622332538615105,
+        "high": 0.9423130212854665,
+        "n": 200
+      },
+      "alwaysUnclear": {
+        "p": 0.85,
+        "low": 0.7939430617334484,
+        "high": 0.892864734123727,
+        "n": 200
+      }
+    },
+    "verdict": {
+      "accuracy": {
+        "p": 0.87,
+        "low": 0.8163353692726989,
+        "high": 0.9097185863477437,
+        "n": 200
+      },
+      "perStatus": {
+        "open": {
+          "precision": {
+            "p": 0.6363636363636364,
+            "low": 0.4295134934371804,
+            "high": 0.802670272273921,
+            "n": 22
+          },
+          "recall": {
+            "p": 0.8235294117647058,
+            "low": 0.5897007098262422,
+            "high": 0.9380898628745101,
+            "n": 17
+          }
+        },
+        "likely": {
+          "precision": {
+            "p": 0,
+            "low": 0,
+            "high": 0.2425007574992425,
+            "n": 12
+          },
+          "recall": {
+            "p": null,
+            "low": null,
+            "high": null,
+            "n": 0
+          }
+        },
+        "unclear": {
+          "precision": {
+            "p": 0.9675324675324676,
+            "low": 0.9262531770462376,
+            "high": 0.9860538446768062,
+            "n": 154
+          },
+          "recall": {
+            "p": 0.8764705882352941,
+            "low": 0.818534809056978,
+            "high": 0.9177676639989534,
+            "n": 170
+          }
+        },
+        "unlikely": {
+          "precision": {
+            "p": 0.9166666666666666,
+            "low": 0.6461140782014047,
+            "high": 0.9851352905492264,
+            "n": 12
+          },
+          "recall": {
+            "p": 0.8461538461538461,
+            "low": 0.5776482949136899,
+            "high": 0.9567427368172621,
+            "n": 13
+          }
+        }
+      },
+      "confusion": {
+        "unclear": {
+          "unclear": 149,
+          "open": 8,
+          "likely": 12,
+          "unlikely": 1
+        },
+        "unlikely": {
+          "unlikely": 11,
+          "unclear": 2
+        },
+        "open": {
+          "open": 14,
+          "unclear": 3
+        }
+      }
+    }
+  },
+  "stratifiedDev": {
+    "setName": "stratified-dev",
+    "n": 21,
+    "statementDetection": {
+      "precision": {
+        "p": 1,
+        "low": 0.8388698745050667,
+        "high": 1,
+        "n": 20
+      },
+      "recall": {
+        "p": 0.9523809523809523,
+        "low": 0.7733018341376452,
+        "high": 0.9915442305280766,
+        "n": 21
+      }
+    },
+    "stanceAccuracyAmongDetected": {
+      "p": 0.9,
+      "low": 0.6989617935882066,
+      "high": 0.9721341060158468,
+      "n": 20
+    },
+    "blocked": {
+      "precision": {
+        "p": 1,
+        "low": 0.8388698745050667,
+        "high": 1,
+        "n": 20
+      },
+      "recall": {
+        "p": 0.9523809523809523,
+        "low": 0.7733018341376452,
+        "high": 0.9915442305280766,
+        "n": 21
+      }
+    },
+    "sponsors": {
+      "precision": {
+        "p": null,
+        "low": null,
+        "high": null,
+        "n": 0
+      },
+      "recall": {
+        "p": null,
+        "low": null,
+        "high": null,
+        "n": 0
+      }
+    },
+    "perClass": {
+      "sponsors": {
+        "precision": {
+          "p": null,
+          "low": null,
+          "high": null,
+          "n": 0
+        },
+        "recall": {
+          "p": null,
+          "low": null,
+          "high": null,
+          "n": 0
+        },
+        "note": "small-n: 0 true sponsors in this set"
+      },
+      "no_sponsorship": {
+        "precision": {
+          "p": 1,
+          "low": 0.5100999795960008,
+          "high": 1,
+          "n": 4
+        },
+        "recall": {
+          "p": 1,
+          "low": 0.5100999795960008,
+          "high": 1,
+          "n": 4
+        },
+        "note": "small-n: 4 true no_sponsorship in this set"
+      },
+      "requires_authorization": {
+        "precision": {
+          "p": 0.75,
+          "low": 0.40926987910258916,
+          "high": 0.9285223111419724,
+          "n": 8
+        },
+        "recall": {
+          "p": 1,
+          "low": 0.6096569663469354,
+          "high": 0.9999999999999999,
+          "n": 6
+        },
+        "note": "small-n: 6 true requires_authorization in this set"
+      },
+      "citizenship_or_clearance": {
+        "precision": {
+          "p": 1,
+          "low": 0.6755843804891231,
+          "high": 1,
+          "n": 8
+        },
+        "recall": {
+          "p": 0.7272727272727273,
+          "low": 0.4343497069897537,
+          "high": 0.9025411942607853,
+          "n": 11
+        },
+        "note": "small-n: 11 true citizenship_or_clearance in this set"
+      }
+    },
+    "accuracy": {
+      "p": 0.8571428571428571,
+      "low": 0.6536350585077049,
+      "high": 0.950190782017865,
+      "n": 21
+    },
+    "confusion": {
+      "no_sponsorship": {
+        "no_sponsorship": 4
+      },
+      "requires_authorization": {
+        "requires_authorization": 6
+      },
+      "citizenship_or_clearance": {
+        "citizenship_or_clearance": 8,
+        "silent": 1,
+        "requires_authorization": 2
+      }
+    },
+    "worstMistakes": [
+      {
+        "id": "hackernews:50062997",
+        "company": "Indiana Microelectronics LLC",
+        "title": "RF Engineer",
+        "trueStance": "citizenship_or_clearance",
+        "predictedStance": "requires_authorization",
+        "confidence": 0.9,
+        "quote": "- US citizen",
+        "trueQuote": "- US citizen\n\n- 3+ years of hands-on RF engineering"
+      },
+      {
+        "id": "hackernews:50095249",
+        "company": "3Gimbals",
+        "title": "Hiring (see posting)",
+        "trueStance": "citizenship_or_clearance",
+        "predictedStance": "requires_authorization",
+        "confidence": 0.9,
+        "quote": "Requirement: US Citizenship, Ability to obtain government clearance",
+        "trueQuote": "Requirement: US Citizenship, Ability to obtain government clearance"
+      },
+      {
+        "id": "ashby:openai:48993416-b5f5-4c3f-b7c8-b8ca7c2395e0",
+        "company": "OpenAI",
+        "title": "AI Support Engineer, Government - San Francisco, CA",
+        "trueStance": "citizenship_or_clearance",
+        "predictedStance": "silent",
+        "confidence": 0.85,
+        "quote": "(silent)",
+        "trueQuote": "applicants for this position must be U.S. citizens"
+      }
+    ],
+    "baselines": {
+      "alwaysSilent": {
+        "p": 0,
+        "low": 0,
+        "high": 0.15464382326420195,
+        "n": 21
+      },
+      "alwaysUnclear": {
+        "p": 0,
+        "low": 0,
+        "high": 0.15464382326420195,
+        "n": 21
+      }
+    },
+    "verdict": {
+      "accuracy": {
+        "p": 0.9523809523809523,
+        "low": 0.7733018341376452,
+        "high": 0.9915442305280766,
+        "n": 21
+      },
+      "perStatus": {
+        "open": {
+          "precision": {
+            "p": null,
+            "low": null,
+            "high": null,
+            "n": 0
+          },
+          "recall": {
+            "p": null,
+            "low": null,
+            "high": null,
+            "n": 0
+          }
+        },
+        "likely": {
+          "precision": {
+            "p": null,
+            "low": null,
+            "high": null,
+            "n": 0
+          },
+          "recall": {
+            "p": null,
+            "low": null,
+            "high": null,
+            "n": 0
+          }
+        },
+        "unclear": {
+          "precision": {
+            "p": 0,
+            "low": 0,
+            "high": 0.7934567085261071,
+            "n": 1
+          },
+          "recall": {
+            "p": null,
+            "low": null,
+            "high": null,
+            "n": 0
+          }
+        },
+        "unlikely": {
+          "precision": {
+            "p": 1,
+            "low": 0.8388698745050667,
+            "high": 1,
+            "n": 20
+          },
+          "recall": {
+            "p": 0.9523809523809523,
+            "low": 0.7733018341376452,
+            "high": 0.9915442305280766,
+            "n": 21
+          }
+        }
+      },
+      "confusion": {
+        "unlikely": {
+          "unlikely": 20,
+          "unclear": 1
+        }
+      }
+    }
+  },
+  "leakageChecks": [],
+  "labelsUnaudited": null
+}

@@ -26,15 +26,34 @@ import { DeadlineBadge } from "@/components/jobs/deadline-badge";
 import { useNow } from "@/hooks/use-mounted";
 import { relativeTime, sourceLabel } from "@/lib/jobs";
 import { cn } from "@/lib/utils";
-import { VERDICT_STYLE } from "@/lib/verdict-style";
+import { ENGINE_STYLE, VERDICT_STYLE } from "@/lib/verdict-style";
 import { isUnstatedLocation } from "@/lib/regions";
 import type { Job } from "@/lib/types";
+import type { VerdictStatus } from "@/engine/verdict";
+
+type EngineVerdict = { status: VerdictStatus; confidence: number; reasons: Array<Record<string, unknown>> };
+
+/** Three dots showing how much evidence backs the verdict. */
+function ConfidenceDots({ confidence, className }: { confidence: number; className?: string }) {
+  const filled = Math.min(3, Math.max(1, Math.round(confidence * 3)));
+  return (
+    <span className={cn("inline-flex items-center gap-0.5", className)} aria-label={`Confidence ${Math.round(confidence * 100)}%`}>
+      {[0, 1, 2].map((i) => (
+        <span
+          key={i}
+          className={cn("size-1 rounded-full", i < filled ? "bg-current" : "bg-current opacity-25")}
+        />
+      ))}
+    </span>
+  );
+}
 
 type JobsTableProps = {
   jobs: Job[];
   loading: boolean;
   appliedIds: Set<string>;
   savedIds: Set<string>;
+  verdicts?: Map<string, EngineVerdict>;
   selectedId?: string | null;
   onSelect?: (id: string) => void;
   onRowClick: (job: Job) => void;
@@ -44,7 +63,49 @@ type JobsTableProps = {
   onResetFilters: () => void;
 };
 
-function VerdictCell({ job }: { job: Job }) {
+function VerdictCell({ job, verdicts }: { job: Job; verdicts?: Map<string, EngineVerdict> }) {
+  const engine = verdicts?.get(job.id);
+
+  if (engine) {
+    const style = ENGINE_STYLE[engine.status];
+    return (
+      <HoverCard>
+        <HoverCardTrigger>
+          <span className={cn("inline-flex cursor-default items-center gap-1.5 text-sm font-medium", style.text)}>
+            {style.label}
+            <ConfidenceDots confidence={engine.confidence} />
+          </span>
+        </HoverCardTrigger>
+        <HoverCardContent side="right" align="start" className="w-80">
+          <span className={cn("text-xs font-medium", style.text)}>{style.label}</span>
+          {engine.reasons.map((reason, i) => (
+            <p key={i} className="mt-1 text-xs leading-relaxed text-muted-foreground">
+              {reason.summary as string}
+            </p>
+          ))}
+          {engine.reasons
+            .filter((r) => typeof r.quote === "string" && r.quote)
+            .slice(0, 1)
+            .map((r, i) => (
+              <p key={i} className="mt-2 border-t border-border pt-2 font-mono text-[11px] leading-relaxed text-muted-foreground">
+                “{r.quote as string}”
+              </p>
+            ))}
+          {engine.reasons
+            .filter((r) => r.record)
+            .map((r, i) => {
+              const rec = r.record as { source: string; dataYear: string; detail: string };
+              return (
+                <p key={i} className="mt-2 border-t border-border pt-2 text-[11px] text-muted-foreground">
+                  {rec.detail} — {rec.source}, {rec.dataYear}
+                </p>
+              );
+            })}
+        </HoverCardContent>
+      </HoverCard>
+    );
+  }
+
   const verdict = job.evaluation.eligibility?.verdict ?? "unknown";
   const reason =
     job.evaluation.eligibility?.summary ||
@@ -88,6 +149,7 @@ export function JobsTable({
   loading,
   appliedIds,
   savedIds,
+  verdicts,
   selectedId,
   onSelect,
   onRowClick,
@@ -162,7 +224,11 @@ export function JobsTable({
           const applied = appliedIds.has(job.id);
           const location = isUnstatedLocation(job.location) ? null : job.location;
           const missing = job.evaluation.missing;
+          const engine = verdicts?.get(job.id);
           const verdict = job.evaluation.eligibility?.verdict ?? "unknown";
+          const rail = engine
+            ? ENGINE_STYLE[engine.status].rail
+            : VERDICT_STYLE[verdict].rail;
 
           return (
             <TableRow
@@ -171,7 +237,7 @@ export function JobsTable({
               tabIndex={0}
               className={cn(
                 "group cursor-pointer border-b-border/70 border-l-2",
-                VERDICT_STYLE[verdict].rail,
+                rail,
                 selectedId === job.id && "bg-muted/60"
               )}
               onClick={() => {
@@ -186,7 +252,7 @@ export function JobsTable({
               }}
             >
               <TableCell className="py-2 pl-4 align-top sm:pl-6">
-                <VerdictCell job={job} />
+                <VerdictCell job={job} verdicts={verdicts} />
               </TableCell>
 
               <TableCell className="max-w-0 py-2 align-top">

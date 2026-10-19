@@ -5,6 +5,7 @@ import {
   VerdictInspector,
   type LandingSample,
 } from "@/components/landing/verdict-inspector";
+import { VerdictTool } from "@/components/landing/verdict-tool";
 import { ThemeToggle } from "@/components/theme-toggle";
 import type { JobsSummary } from "@/lib/summary";
 
@@ -80,6 +81,12 @@ export function LandingPage({
               </div>
             </div>
 
+            <div className="mt-10 border border-border bg-card p-5 sm:p-6">
+              <p className="mb-3 text-xs text-muted-foreground">
+                Paste any posting. The engine runs in your browser and shows its evidence.
+              </p>
+              <VerdictTool />
+            </div>
           </div>
         </section>
 

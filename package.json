@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "tsx scripts/emit-public-data.ts && next build",
+    "build": "tsx scripts/emit-public-data.ts && tsx scripts/emit-verdicts.ts && next build",
     "start": "next start",
     "lint": "eslint",
     "collect": "tsx scripts/collect.ts",
@@ -18,6 +18,8 @@
     "emit-data": "tsx scripts/emit-public-data.ts",
     "label": "tsx eval/labeler/serve.ts",
     "audit": "tsx eval/labeler/audit.ts",
+    "eval:dev": "tsx eval/run.ts",
+    "eval:final": "tsx eval/run.ts --final",
     "sample": "tsx eval/sample.ts"
   },
   "dependencies": {

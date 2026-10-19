@@ -1,8 +1,25 @@
 import { notFound } from "next/navigation";
-import { JobDetailPage } from "@/components/jobs/job-detail-page";
+import * as fs from "fs";
+import * as path from "path";
+import { JobDetailPage, type EngineVerdict } from "@/components/jobs/job-detail-page";
 import { loadJobsCached } from "@/lib/data";
 import { jobSchema } from "@/lib/types";
 import { VERDICT_STYLE } from "@/lib/verdict-style";
+
+/**
+ * Verdicts are computed once at build time (scripts/emit-verdicts.ts) and
+ * read here per page — no runtime, the export stays static.
+ */
+function loadVerdicts(): Map<string, EngineVerdict> {
+  try {
+    const raw = JSON.parse(
+      fs.readFileSync(path.join(process.cwd(), "public", "verdicts.json"), "utf-8")
+    );
+    return new Map(Object.entries(raw.verdicts) as Array<[string, EngineVerdict]>);
+  } catch {
+    return new Map();
+  }
+}
 
 export async function generateMetadata({
   params,
@@ -60,5 +77,6 @@ export default async function JobPage({
   const parsed = jobSchema.safeParse(job);
   if (!parsed.success) return notFound();
 
-  return <JobDetailPage job={parsed.data} />;
+  const verdicts = loadVerdicts();
+  return <JobDetailPage job={parsed.data} verdict={verdicts.get(parsed.data.id)} />;
 }

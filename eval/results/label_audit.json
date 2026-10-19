@@ -1,0 +1,44 @@
+{
+  "auditedAt": "2026-10-19T08:16:29.640Z",
+  "auditor": "ai-agent (delegated by repo owner)",
+  "totalAudited": 185,
+  "perGroup": {
+    "A": {
+      "accepted": 38,
+      "rejected": 0,
+      "corrected": 2,
+      "unsure": 0
+    },
+    "B": {
+      "accepted": 57,
+      "rejected": 0,
+      "corrected": 11,
+      "unsure": 0
+    },
+    "C": {
+      "accepted": 53,
+      "rejected": 22,
+      "corrected": 2,
+      "unsure": 0
+    }
+  },
+  "groupAErrorRate": {
+    "interval": {
+      "p": 0.05,
+      "low": 0.006,
+      "high": 0.169,
+      "n": 40
+    },
+    "note": "share of random-silent-sample labels that were wrong (rejections + corrections), Wilson 95% CI"
+  },
+  "rejectionCauses": {
+    "quote did not support verdict": 25,
+    "export-control boilerplate": 3,
+    "missed authorization statement": 2,
+    "benefits": 2,
+    "location-restricted remote": 2,
+    "EEO / diversity statement": 2,
+    "missed citizenship/clearance statement": 1
+  },
+  "note": "Decisions applied through the audit write-back; every changed label is stamped source=human_reviewed with a before-image in audit-results.jsonl."
+}

@@ -1,0 +1,34 @@
+name: eval
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  dev-eval:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Engine selfcheck
+        run: npm run selfcheck
+
+      - name: Dev eval (never the test set)
+        run: npx tsx eval/run.ts
+
+      - name: Guard baseline
+        run: npx tsx eval/check-baseline.ts
+
+      - name: Tricky negative cases
+        run: npx tsx -e "const {detectTextStance}=require('./engine/textStance');const fs=require('fs');const cases=fs.readFileSync('eval/tricky_cases.jsonl','utf-8').split('\n').filter(Boolean).map(JSON.parse);let bad=0;for(const c of cases){const got=detectTextStance(c.snippet).stance;if(got!==c.expect_stance){console.error('FAIL',c.name,'→',got);bad++;}}process.exit(bad?1:0)"

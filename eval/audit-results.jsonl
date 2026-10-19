@@ -1,0 +1,185 @@
+{"id":"hackernews:49928334","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.561Z"}
+{"id":"hackernews:49928066","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.562Z"}
+{"id":"jobicy:155601","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.563Z"}
+{"id":"remoteok:1137388","action":"corrected","group":"A","set":"natural","at":"2026-10-19T08:16:29.563Z","before":{"text_stance":"silent","overall_verdict":"unclear","verdict_ai_prior":""},"cause":"quote did not support verdict","evidence":"We hire globally and work across multiple countries and time zones"}
+{"id":"remoteok:1136861","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.564Z"}
+{"id":"lever:jobandtalent:5c33332b-1012-4d57-b105-d60cbc31b70a","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.564Z"}
+{"id":"ashby:cerebras:39c1aea3-d6df-4661-872d-082ba11df5fc","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.565Z"}
+{"id":"ashby:alan:17dbf0df-4b2a-45c0-9937-692b9c795305","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.565Z"}
+{"id":"greenhouse:binance:5002248101","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.565Z"}
+{"id":"ashby:miro:2701b589-4c6e-4bcf-97d4-0e86e9e089f3","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.566Z"}
+{"id":"remoteok:1136878","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.566Z"}
+{"id":"hackernews:49922881","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.567Z"}
+{"id":"jobicy:153450","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.567Z"}
+{"id":"hackernews:49924974","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.568Z"}
+{"id":"hackernews:49928997","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.568Z"}
+{"id":"greenhouse:datadog:8088095","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.569Z"}
+{"id":"remoteok:1137427","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.569Z"}
+{"id":"greenhouse:bybit:4971554101","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.569Z"}
+{"id":"hackernews:49924509","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.570Z"}
+{"id":"hackernews:49926504","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.570Z"}
+{"id":"jobicy:155565","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.570Z"}
+{"id":"greenhouse:bybit:4969765101","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.571Z"}
+{"id":"greenhouse:elastic:8007202","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.571Z"}
+{"id":"ashby:cohere:1b909aeb-1221-476f-88fe-8300a2065975","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.572Z"}
+{"id":"ashby:deepgram:9a030b32-d671-43e0-a221-4653bb73ba29","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.572Z"}
+{"id":"remoteok:1136796","action":"corrected","group":"A","set":"natural","at":"2026-10-19T08:16:29.572Z","before":{"text_stance":"silent","overall_verdict":"unclear","verdict_ai_prior":""},"cause":"missed authorization statement","evidence":"not considering candidates that need any type of US work authorization now or in the future"}
+{"id":"hackernews:49925928","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.573Z"}
+{"id":"hackernews:49926951","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.573Z"}
+{"id":"greenhouse:fireblocks:4700431006","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.574Z"}
+{"id":"ashby:m-kopa:247b0002-de27-4475-8db6-a0cc6f109847","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.574Z"}
+{"id":"greenhouse:bitpanda:4940716101","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.574Z"}
+{"id":"greenhouse:elastic:8091966","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.575Z"}
+{"id":"greenhouse:dataiku:6148066004","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.575Z"}
+{"id":"lever:sonarsource:2f1af926-9595-4031-8a26-3c776a6dfbcd","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.576Z"}
+{"id":"greenhouse:binance:5002311101","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.576Z"}
+{"id":"greenhouse:doctolib:8000653003","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.576Z"}
+{"id":"hackernews:49925904","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.577Z"}
+{"id":"ashby:cerebras:04ce4198-d9b6-4aae-ad11-97708033f94a","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.577Z"}
+{"id":"greenhouse:gitlab:8687926002","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.578Z"}
+{"id":"greenhouse:datadog:8096181","action":"accepted","group":"A","set":"natural","at":"2026-10-19T08:16:29.578Z"}
+{"id":"ashby:openai:05223b5a-5ff1-4fe7-9f97-4ef7fc68b8ef","action":"accepted","group":"B","set":"natural","at":"2026-10-19T08:16:29.578Z"}
+{"id":"ashby:openai:485cda77-5d8f-4aaa-bca5-916b011477e6","action":"accepted","group":"B","set":"stratified","at":"2026-10-19T08:16:29.579Z"}
+{"id":"remoteok:1137474","action":"accepted","group":"B","set":"stratified","at":"2026-10-19T08:16:29.580Z"}
+{"id":"ashby:clickup:920fb54c-ba58-4eac-919d-e85da9080802","action":"accepted","group":"B","set":"natural","at":"2026-10-19T08:16:29.580Z"}
+{"id":"ashby:alan:38020c1c-0ea4-4495-990f-e32d622e9c9d","action":"accepted","group":"B","set":"natural","at":"2026-10-19T08:16:29.581Z"}
+{"id":"ashby:openai:48993416-b5f5-4c3f-b7c8-b8ca7c2395e0","action":"accepted","group":"B","set":"stratified","at":"2026-10-19T08:16:29.581Z"}
+{"id":"greenhouse:anthropic:5443900008","action":"accepted","group":"B","set":"stratified","at":"2026-10-19T08:16:29.581Z"}
+{"id":"ashby:cohere:52a2b83b-7537-4e88-af7b-e4e9630a96e0","action":"accepted","group":"B","set":"natural","at":"2026-10-19T08:16:29.582Z"}
+{"id":"greenhouse:elastic:8138599","action":"accepted","group":"B","set":"stratified","at":"2026-10-19T08:16:29.582Z"}
+{"id":"greenhouse:datadog:8052118","action":"corrected","group":"B","set":"natural","at":"2026-10-19T08:16:29.582Z","before":{"text_stance":"citizenship_or_clearance","overall_verdict":"unlikely","verdict_ai_prior":""},"cause":"benefits","evidence":"Receive relocation support and travel benefits where applicable"}
+{"id":"ashby:cohere:556467eb-3dc8-46e2-b015-277872210997","action":"accepted","group":"B","set":"natural","at":"2026-10-19T08:16:29.583Z"}
+{"id":"ashby:alan:f60e2e04-a0a0-4197-abe8-a80a1b69557d","action":"accepted","group":"B","set":"stratified","at":"2026-10-19T08:16:29.584Z"}
+{"id":"ashby:clickup:1e8c7f3d-3cd6-4393-b17f-6a858f480ba9","action":"accepted","group":"B","set":"natural","at":"2026-10-19T08:16:29.584Z"}
+{"id":"greenhouse:anthropic:5406367008","action":"accepted","group":"B","set":"stratified","at":"2026-10-19T08:16:29.584Z"}
+{"id":"greenhouse:okx:8005095003","action":"accepted","group":"B","set":"stratified","at":"2026-10-19T08:16:29.585Z"}
+{"id":"greenhouse:okx:8004167003","action":"accepted","group":"B","set":"stratified","at":"2026-10-19T08:16:29.585Z"}
+{"id":"ashby:alan:583a9a1c-433e-4b76-a1b7-4d9e6a30f1da","action":"accepted","group":"B","set":"natural","at":"2026-10-19T08:16:29.586Z"}
+{"id":"greenhouse:doctolib:7989159003","action":"corrected","group":"B","set":"natural","at":"2026-10-19T08:16:29.586Z","before":{"text_stance":"sponsors","overall_verdict":"open","verdict_ai_prior":""},"cause":"quote did not support verdict","evidence":"Relocation support in case of international mobility"}
+{"id":"greenhouse:elastic:8153274","action":"accepted","group":"B","set":"stratified","at":"2026-10-19T08:16:29.586Z"}
+{"id":"hackernews:50059584","action":"accepted","group":"B","set":"stratified","at":"2026-10-19T08:16:29.587Z"}
+{"id":"ashby:alan:2dc99c53-9cc7-4c3f-a682-1f79bfa38ce6","action":"accepted","group":"B","set":"natural","at":"2026-10-19T08:16:29.587Z"}
+{"id":"hackernews:49923454","action":"corrected","group":"B","set":"natural","at":"2026-10-19T08:16:29.587Z","before":{"text_stance":"citizenship_or_clearance","overall_verdict":"unlikely","verdict_ai_prior":""},"cause":"export-control boilerplate","evidence":"Working with AI Agents alongside export controlled data is really difficult"}
+{"id":"remoteok:1137451","action":"accepted","group":"B","set":"natural","at":"2026-10-19T08:16:29.588Z"}
+{"id":"greenhouse:anthropic:5277776008","action":"accepted","group":"B","set":"natural","at":"2026-10-19T08:16:29.588Z"}
+{"id":"greenhouse:cloudflare:8097321","action":"corrected","group":"B","set":"natural","at":"2026-10-19T08:16:29.589Z","before":{"text_stance":"citizenship_or_clearance","overall_verdict":"unlikely","verdict_ai_prior":""},"cause":"export-control boilerplate","evidence":"conditioned on your authorization to receive software or technology controlled under these U.S. export laws without sponsorship for an export license"}
+{"id":"hackernews:50062997","action":"accepted","group":"B","set":"stratified","at":"2026-10-19T08:16:29.589Z"}
+{"id":"greenhouse:anthropic:5382518008","action":"accepted","group":"B","set":"stratified","at":"2026-10-19T08:16:29.590Z"}
+{"id":"greenhouse:planetscale:4389100009","action":"accepted","group":"B","set":"stratified","at":"2026-10-19T08:16:29.590Z"}
+{"id":"hackernews:49922803","action":"accepted","group":"B","set":"natural","at":"2026-10-19T08:16:29.590Z"}
+{"id":"greenhouse:doctolib:7832298003","action":"corrected","group":"B","set":"natural","at":"2026-10-19T08:16:29.591Z","before":{"text_stance":"sponsors","overall_verdict":"open","verdict_ai_prior":""},"cause":"quote did not support verdict","evidence":"Relocation support in case of international mobility"}
+{"id":"ashby:trm-labs:e8a7a3d5-938f-4d2b-b9d3-86765d8d1dd2","action":"accepted","group":"B","set":"stratified","at":"2026-10-19T08:16:29.592Z"}
+{"id":"remotive:2091133","action":"accepted","group":"B","set":"natural","at":"2026-10-19T08:16:29.592Z"}
+{"id":"remoteok:1137439","action":"accepted","group":"B","set":"natural","at":"2026-10-19T08:16:29.592Z"}
+{"id":"greenhouse:anthropic:5375371008","action":"accepted","group":"B","set":"natural","at":"2026-10-19T08:16:29.593Z"}
+{"id":"ashby:openai:6d1d835d-5882-4191-b78e-fd04a4c05f11","action":"accepted","group":"B","set":"stratified","at":"2026-10-19T08:16:29.593Z"}
+{"id":"greenhouse:monzo:8232726","action":"accepted","group":"B","set":"stratified","at":"2026-10-19T08:16:29.594Z"}
+{"id":"greenhouse:newrelic:5453390008","action":"accepted","group":"B","set":"stratified","at":"2026-10-19T08:16:29.594Z"}
+{"id":"greenhouse:anthropic:5286362008","action":"accepted","group":"B","set":"natural","at":"2026-10-19T08:16:29.594Z"}
+{"id":"remoteok:1137156","action":"accepted","group":"B","set":"natural","at":"2026-10-19T08:16:29.595Z"}
+{"id":"remoteok:1136949","action":"accepted","group":"B","set":"natural","at":"2026-10-19T08:16:29.595Z"}
+{"id":"greenhouse:anthropic:5445410008","action":"accepted","group":"B","set":"stratified","at":"2026-10-19T08:16:29.596Z"}
+{"id":"ashby:openai:be7b1bf5-37ab-40f7-9ec1-e9732244f12a","action":"accepted","group":"B","set":"stratified","at":"2026-10-19T08:16:29.596Z"}
+{"id":"ashby:trm-labs:2a784630-702d-4b49-a033-5cbd0d9c8a94","action":"accepted","group":"B","set":"stratified","at":"2026-10-19T08:16:29.596Z"}
+{"id":"ashby:trm-labs:5b1c4862-550f-48fe-89bf-33a9181f9bdc","action":"accepted","group":"B","set":"stratified","at":"2026-10-19T08:16:29.597Z"}
+{"id":"ashby:openai:067788c8-505b-4296-bc05-d5699cb87a1f","action":"corrected","group":"B","set":"natural","at":"2026-10-19T08:16:29.597Z","before":{"text_stance":"sponsors","overall_verdict":"open","verdict_ai_prior":""},"cause":"quote did not support verdict","evidence":"We offer relocation assistance."}
+{"id":"greenhouse:monzo:8156261","action":"accepted","group":"B","set":"stratified","at":"2026-10-19T08:16:29.597Z"}
+{"id":"greenhouse:anthropic:5375376008","action":"accepted","group":"B","set":"natural","at":"2026-10-19T08:16:29.598Z"}
+{"id":"greenhouse:luminate:4737889005","action":"accepted","group":"B","set":"stratified","at":"2026-10-19T08:16:29.598Z"}
+{"id":"greenhouse:thoughtworks:8255609","action":"accepted","group":"B","set":"stratified","at":"2026-10-19T08:16:29.599Z"}
+{"id":"ashby:trm-labs:85d748d0-5377-486f-9209-c811704dbdaa","action":"accepted","group":"B","set":"stratified","at":"2026-10-19T08:16:29.599Z"}
+{"id":"remotive:2091144","action":"corrected","group":"B","set":"natural","at":"2026-10-19T08:16:29.599Z","before":{"text_stance":"requires_authorization","overall_verdict":"unlikely","verdict_ai_prior":""},"cause":"quote did not support verdict","evidence":"Must have resided in the United States for the past three consecutive years"}
+{"id":"ashby:openai:b60d3040-38e4-4abe-8af8-881286b10d50","action":"accepted","group":"B","set":"stratified","at":"2026-10-19T08:16:29.600Z"}
+{"id":"greenhouse:newrelic:5371209008","action":"accepted","group":"B","set":"stratified","at":"2026-10-19T08:16:29.600Z"}
+{"id":"remoteok:1137431","action":"corrected","group":"B","set":"natural","at":"2026-10-19T08:16:29.601Z","before":{"text_stance":"sponsors","overall_verdict":"open","verdict_ai_prior":""},"cause":"missed citizenship/clearance statement","evidence":"Valid EU passport (mandatory)."}
+{"id":"greenhouse:thoughtworks:8200473","action":"accepted","group":"B","set":"stratified","at":"2026-10-19T08:16:29.601Z"}
+{"id":"hackernews:49925468","action":"corrected","group":"B","set":"natural","at":"2026-10-19T08:16:29.601Z","before":{"text_stance":"citizenship_or_clearance","overall_verdict":"unlikely","verdict_ai_prior":""},"cause":"quote did not support verdict","evidence":"work on hardware and software for US Department of Defense missions, NASA programs"}
+{"id":"ashby:alan:14729a35-9c9f-479e-860b-3d6c1348a2b0","action":"accepted","group":"B","set":"natural","at":"2026-10-19T08:16:29.602Z"}
+{"id":"hackernews:49922693","action":"accepted","group":"B","set":"natural","at":"2026-10-19T08:16:29.602Z"}
+{"id":"remoteok:1137406","action":"accepted","group":"B","set":"natural","at":"2026-10-19T08:16:29.603Z"}
+{"id":"greenhouse:cloudflare:8099671","action":"corrected","group":"B","set":"natural","at":"2026-10-19T08:16:29.603Z","before":{"text_stance":"requires_authorization","overall_verdict":"unlikely","verdict_ai_prior":""},"cause":"export-control boilerplate","evidence":"your authorization to receive software or technology controlled under these U.S. export laws without sponsorship for an export license"}
+{"id":"hackernews:50095249","action":"accepted","group":"B","set":"stratified","at":"2026-10-19T08:16:29.604Z"}
+{"id":"greenhouse:okx:8026443003","action":"accepted","group":"B","set":"stratified","at":"2026-10-19T08:16:29.604Z"}
+{"id":"lever:toptal:ce33342a-6e28-4108-b8f4-4799e05fcfc3","action":"accepted","group":"B","set":"natural","at":"2026-10-19T08:16:29.604Z"}
+{"id":"greenhouse:elastic:8018328","action":"accepted","group":"B","set":"natural","at":"2026-10-19T08:16:29.605Z"}
+{"id":"ashby:openai:082f4d82-499f-4150-892f-0b0d1105fffe","action":"corrected","group":"B","set":"natural","at":"2026-10-19T08:16:29.605Z","before":{"text_stance":"sponsors","overall_verdict":"open","verdict_ai_prior":""},"cause":"quote did not support verdict","evidence":"We use a hybrid model of three days per week in the office and offer relocation support."}
+{"id":"remoteok:1136795","action":"accepted","group":"B","set":"natural","at":"2026-10-19T08:16:29.606Z"}
+{"id":"greenhouse:anthropic:5286348008","action":"accepted","group":"B","set":"natural","at":"2026-10-19T08:16:29.606Z"}
+{"id":"greenhouse:newrelic:5416517008","action":"accepted","group":"B","set":"stratified","at":"2026-10-19T08:16:29.606Z"}
+{"id":"greenhouse:cloudflare:8102768","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.607Z"}
+{"id":"jobicy:155703","action":"rejected","group":"C","set":"natural","at":"2026-10-19T08:16:29.607Z","before":{"text_stance":"silent","overall_verdict":"likely","verdict_ai_prior":""},"cause":"quote did not support verdict","evidence":"The company is a pioneer of global distributed collaboration, with 1200+ colleagues in 75+ countries and very few office-based roles."}
+{"id":"jobicy:153447","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.607Z"}
+{"id":"hackernews:49924581","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.608Z"}
+{"id":"jobicy:153452","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.608Z"}
+{"id":"jobicy:153446","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.608Z"}
+{"id":"greenhouse:coinbase:8165389","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.609Z"}
+{"id":"ashby:cerebras:20010f8f-5ede-469a-b432-c38dc223e11c","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.609Z"}
+{"id":"remoteok:1137421","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.610Z"}
+{"id":"ashby:elevenlabs:1f7a2786-46d3-46c9-81f3-c3849b412988","action":"rejected","group":"C","set":"natural","at":"2026-10-19T08:16:29.610Z","before":{"text_stance":"silent","overall_verdict":"likely","verdict_ai_prior":""},"cause":"quote did not support verdict","evidence":"This role is remote-first, so it can be executed from anywhere in Argentina, with a preference of Buenos Aires."}
+{"id":"ashby:openai:0916f210-e851-493c-b8ec-51cf00152be1","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.610Z"}
+{"id":"ashby:hostinger:2b1f5cd4-f4ca-4078-830f-4f0479bf5c92","action":"rejected","group":"C","set":"natural","at":"2026-10-19T08:16:29.611Z","before":{"text_stance":"silent","overall_verdict":"open","verdict_ai_prior":""},"cause":"location-restricted remote","evidence":"Work where you do your best work: our offices in Vilnius, Kaunas, Jakarta, or Luxembourg, your home, or anywhere in the world."}
+{"id":"remotive:1680495","action":"rejected","group":"C","set":"natural","at":"2026-10-19T08:16:29.611Z","before":{"text_stance":"silent","overall_verdict":"open","verdict_ai_prior":""},"cause":"benefits","evidence":"International Health Insurance Reimbursement Program for eligible international team members"}
+{"id":"greenhouse:binance:5002222101","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.612Z"}
+{"id":"ashby:cohere:291e5dee-dcda-49e6-a1b6-dae0d48f80af","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.612Z"}
+{"id":"jobicy:153326","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.612Z"}
+{"id":"hackernews:49922769","action":"rejected","group":"C","set":"natural","at":"2026-10-19T08:16:29.613Z","before":{"text_stance":"silent","overall_verdict":"open","verdict_ai_prior":""},"cause":"quote did not support verdict","evidence":"REMOTE (Europe / US Eastern) | Full-time"}
+{"id":"greenhouse:contentful:8233486","action":"corrected","group":"C","set":"natural","at":"2026-10-19T08:16:29.613Z","before":{"text_stance":"silent","overall_verdict":"unclear","verdict_ai_prior":""},"cause":"missed authorization statement","evidence":"This position is not eligible for visa sponsorship. Applicants must be authorized to work without the need for visa sponsorship"}
+{"id":"remoteok:1137463","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.614Z"}
+{"id":"greenhouse:gemini:8214272","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.614Z"}
+{"id":"greenhouse:gitlab:8684061002","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.615Z"}
+{"id":"jobicy:155758","action":"rejected","group":"C","set":"natural","at":"2026-10-19T08:16:29.615Z","before":{"text_stance":"silent","overall_verdict":"open","verdict_ai_prior":""},"cause":"quote did not support verdict","evidence":"Independently Contracted Interpreters"}
+{"id":"hackernews:49927984","action":"rejected","group":"C","set":"natural","at":"2026-10-19T08:16:29.616Z","before":{"text_stance":"silent","overall_verdict":"open","verdict_ai_prior":""},"cause":"quote did not support verdict","evidence":"Sourcegraph | Remote | Full-Time"}
+{"id":"remoteok:1136857","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.616Z"}
+{"id":"remotive:2091130","action":"rejected","group":"C","set":"natural","at":"2026-10-19T08:16:29.616Z","before":{"text_stance":"silent","overall_verdict":"open","verdict_ai_prior":""},"cause":"quote did not support verdict","evidence":"We work with developers from 75+ countries across Europe, Latin America, North America (the U.S. and Canada), selected countries in Asia"}
+{"id":"greenhouse:coinbase:8164730","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.617Z"}
+{"id":"hackernews:49929200","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.617Z"}
+{"id":"hackernews:49929056","action":"rejected","group":"C","set":"natural","at":"2026-10-19T08:16:29.618Z","before":{"text_stance":"silent","overall_verdict":"likely","verdict_ai_prior":""},"cause":"location-restricted remote","evidence":"REMOTE in select countries (listed here https://perfectwiki.page/p/iOeyfUha_9)"}
+{"id":"greenhouse:elastic:8067195","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.618Z"}
+{"id":"remoteok:1137415","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.618Z"}
+{"id":"greenhouse:bitpanda:4989603101","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.619Z"}
+{"id":"ashby:openai:099dd6af-b017-4a60-85d5-4c79da3a9ead","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.619Z"}
+{"id":"jobicy:155709","action":"rejected","group":"C","set":"natural","at":"2026-10-19T08:16:29.619Z","before":{"text_stance":"silent","overall_verdict":"open","verdict_ai_prior":""},"cause":"quote did not support verdict","evidence":"This is an on-going freelance and remote position."}
+{"id":"greenhouse:binance:5002258101","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.620Z"}
+{"id":"greenhouse:datadog:8097533","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.620Z"}
+{"id":"remoteok:1136568","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.621Z"}
+{"id":"greenhouse:coinbase:8105437","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.621Z"}
+{"id":"jobicy:150846","action":"rejected","group":"C","set":"natural","at":"2026-10-19T08:16:29.621Z","before":{"text_stance":"silent","overall_verdict":"open","verdict_ai_prior":""},"cause":"quote did not support verdict","evidence":"Fully remote from 40+ countries and collaborate using Asana and Slack."}
+{"id":"remotive:2091131","action":"rejected","group":"C","set":"natural","at":"2026-10-19T08:16:29.622Z","before":{"text_stance":"silent","overall_verdict":"open","verdict_ai_prior":""},"cause":"quote did not support verdict","evidence":"Through our community, we will connect you with the best developers from more than 75 countries."}
+{"id":"hackernews:49926618","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.622Z"}
+{"id":"hackernews:49922929","action":"rejected","group":"C","set":"natural","at":"2026-10-19T08:16:29.623Z","before":{"text_stance":"silent","overall_verdict":"likely","verdict_ai_prior":""},"cause":"quote did not support verdict","evidence":"US, UK, EU, APAC ONSITE PREFERRED | Full-time"}
+{"id":"lever:blablacar:79578084-f3bc-4aa2-98a5-bc0885bfb8dd","action":"rejected","group":"C","set":"natural","at":"2026-10-19T08:16:29.623Z","before":{"text_stance":"silent","overall_verdict":"likely","verdict_ai_prior":""},"cause":"EEO / diversity statement","evidence":"Our team of 800 employees counts over 50 nationalities and is spread across our 5 global offices, 30% working fully remotely."}
+{"id":"ashby:elevenlabs:108c99e6-ba2b-44a0-b830-7d535e14a152","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.623Z"}
+{"id":"greenhouse:coinbase:8100066","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.624Z"}
+{"id":"ashby:hostinger:1a24ef55-737d-4671-9c84-927b08f09867","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.624Z"}
+{"id":"remoteok:1137418","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.625Z"}
+{"id":"ashby:cerebras:18d0a40f-69dd-4bf2-9ec3-860f7c26ed71","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.625Z"}
+{"id":"ashby:hostinger:57b7805f-412c-44fa-b8ac-6dc045a4e01d","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.625Z"}
+{"id":"lever:blablacar:a613d792-86f2-4fdc-a6ad-065ec3a56f81","action":"rejected","group":"C","set":"natural","at":"2026-10-19T08:16:29.626Z","before":{"text_stance":"silent","overall_verdict":"likely","verdict_ai_prior":""},"cause":"EEO / diversity statement","evidence":"Our team of 800 employees counts over 50 nationalities and is spread across our 5 global offices, 30% working fully remotely."}
+{"id":"jobicy:155560","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.626Z"}
+{"id":"jobicy:153449","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.627Z"}
+{"id":"hackernews:49925489","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.627Z"}
+{"id":"greenhouse:binance:5002275101","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.627Z"}
+{"id":"remotive:1185979","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.628Z"}
+{"id":"ashby:cohere:031c2335-db85-4265-8a88-a54b911be36a","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.628Z"}
+{"id":"greenhouse:gitlab:8654230002","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.629Z"}
+{"id":"ashby:hostinger:237cc377-d997-4e23-8618-147ad7695c36","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.629Z"}
+{"id":"hackernews:49922910","action":"rejected","group":"C","set":"natural","at":"2026-10-19T08:16:29.629Z","before":{"text_stance":"silent","overall_verdict":"open","verdict_ai_prior":""},"cause":"quote did not support verdict","evidence":"Product Engineer | Berlin, Germany / REMOTE (CET ±3 preferred)"}
+{"id":"jobicy:155566","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.630Z"}
+{"id":"jobicy:153321","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.630Z"}
+{"id":"ashby:elevenlabs:0b3a97d4-193c-4b47-9888-7ef5803ed945","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.630Z"}
+{"id":"greenhouse:cloudflare:8074364","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.631Z"}
+{"id":"greenhouse:cloudflare:8043287","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.631Z"}
+{"id":"ashby:elevenlabs:0d68b2a2-887e-491c-8b9b-56e8354f75fb","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.632Z"}
+{"id":"ashby:elevenlabs:10e6475e-67ef-4621-8718-7b087c354651","action":"rejected","group":"C","set":"natural","at":"2026-10-19T08:16:29.632Z","before":{"text_stance":"silent","overall_verdict":"likely","verdict_ai_prior":""},"cause":"quote did not support verdict","evidence":"This role is remote-first, so it can be executed from anywhere in Europe and the US East Coast"}
+{"id":"greenhouse:datadog:8095826","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.632Z"}
+{"id":"lever:tala:848e6f75-9b40-45d2-b5b8-82de6670b0ed","action":"rejected","group":"C","set":"natural","at":"2026-10-19T08:16:29.633Z","before":{"text_stance":"silent","overall_verdict":"open","verdict_ai_prior":""},"cause":"quote did not support verdict","evidence":"remote-first approach with office hubs in Santa Monica, CA (HQ); Nairobi, Kenya; Mexico City, Mexico; Manila, the Philippines; and Bangalore, India."}
+{"id":"greenhouse:algolia:6194397004","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.633Z"}
+{"id":"ashby:paddle:7642fac5-d94b-4157-8b19-79a7dbc115ea","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.634Z"}
+{"id":"ashby:posthog:20ab9628-20ff-4ae3-bd6a-46ae7e9dc6b8","action":"rejected","group":"C","set":"natural","at":"2026-10-19T08:16:29.634Z","before":{"text_stance":"silent","overall_verdict":"open","verdict_ai_prior":""},"cause":"quote did not support verdict","evidence":"We're a natively remote company."}
+{"id":"greenhouse:coinbase:8165441","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.634Z"}
+{"id":"hackernews:49925116","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.635Z"}
+{"id":"remotive:2091132","action":"rejected","group":"C","set":"natural","at":"2026-10-19T08:16:29.635Z","before":{"text_stance":"silent","overall_verdict":"open","verdict_ai_prior":""},"cause":"quote did not support verdict","evidence":"We work with developers across 75+ countries in Europe, Latin America, North America, select Asian markets"}
+{"id":"ashby:posthog:1464036f-94d5-4dbd-aef8-fe99246a26d4","action":"rejected","group":"C","set":"natural","at":"2026-10-19T08:16:29.636Z","before":{"text_stance":"silent","overall_verdict":"likely","verdict_ai_prior":""},"cause":"quote did not support verdict","evidence":"We’re looking for people (in the US - Pacific timezone)"}
+{"id":"ashby:hostinger:56dea52a-fd7b-4442-b509-255d37c5f7ab","action":"corrected","group":"C","set":"natural","at":"2026-10-19T08:16:29.636Z","before":{"text_stance":"silent","overall_verdict":"unclear","verdict_ai_prior":""},"cause":"quote did not support verdict","evidence":"your home, or anywhere in the world"}
+{"id":"jobicy:155708","action":"rejected","group":"C","set":"natural","at":"2026-10-19T08:16:29.637Z","before":{"text_stance":"silent","overall_verdict":"open","verdict_ai_prior":""},"cause":"quote did not support verdict","evidence":"This is an ongoing freelance and remote position."}
+{"id":"greenhouse:bitpanda:4987398101","action":"accepted","group":"C","set":"natural","at":"2026-10-19T08:16:29.637Z"}
