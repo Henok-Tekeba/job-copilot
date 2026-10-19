@@ -39,6 +39,13 @@ export type TextStanceResult = {
   nonEnglish: boolean;
   /** Which rule fired, for debugging and for the experiment log. */
   matchedRule?: string;
+  /**
+   * Explicit worldwide / any-country hiring evidence, when the text says it.
+   * Per the evidence rule, this qualifies a silent posting for a verdict
+   * better than "unclear" — but it is NOT a sponsorship statement, so it
+   * never changes the stance.
+   */
+  worldwide?: { quote: string; confidence: number };
 };
 
 const QUOTE_MAX = 240;
@@ -202,6 +209,20 @@ const SPONSOR_RULES: Rule[] = [
   },
 ];
 
+/**
+ * Explicit worldwide / any-country hiring. Deliberately narrow: every rule
+ * must anchor on "anywhere / worldwide / globally" (or hiring/working people
+ * across a stated number of countries). Customer or market reach ("users in
+ * 100+ countries") is NOT hiring, and bare "remote" without an anywhere
+ * anchor is location-restricted, not worldwide.
+ */
+const WORLDWIDE_RULES: Array<[string, RegExp]> = [
+  ["remote_worldwide", /\bremote[ -]?\(?(worldwide|global|anywhere)\)?\b/i],
+  ["anywhere_hiring", /\bfrom anywhere\b|\banywhere in the world\b|\bwork (from|anywhere)\b(?!.*\b(a |the )?city or country of)/i],
+  ["hires_globally", /\b(hire[sd]?|hiring) (globally|worldwide|internationally|from anywhere)\b/i],
+  ["people_across_countries", /\b(employees|colleagues|developers|teams?|people|contractors) (working|based|spread|distributed|hiring) (in|across|from) \d{1,}\+? countries\b|\bdevelopers? from (more than )?\d{1,}\+? countries\b/i],
+];
+
 function splitSentences(text: string): string[] {
   return text
     .split(/(?<=[.!?;])\s+|\n+/)
@@ -278,5 +299,24 @@ export function detectTextStance(text: string): TextStanceResult {
   // three-line stub.
   const words = trimmed.split(/\s+/).length;
   const confidence = words >= 150 ? 0.85 : words >= 40 ? 0.65 : 0.4;
+
+  // Worldwide-hiring evidence rides along on a silent stance: it can lift the
+  // verdict later (verdict.ts), but it is never a sponsorship statement.
+  for (const [name, pattern] of WORLDWIDE_RULES) {
+    for (const sentence of sentences) {
+      if (isBoilerplate(sentence)) continue;
+      if (pattern.test(sentence)) {
+        return {
+          stance: "silent",
+          quote: "",
+          confidence,
+          nonEnglish: false,
+          matchedRule: `no_match+${name}`,
+          worldwide: { quote: sentence.slice(0, QUOTE_MAX), confidence: 0.8 },
+        };
+      }
+    }
+  }
+
   return { stance: "silent", quote: "", confidence, nonEnglish: false, matchedRule: "no_match" };
 }

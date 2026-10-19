@@ -98,3 +98,33 @@ Matcher tuning (tune for precision — a wrong match is worse than a miss):
 - e3b: precision 100% (n=18), all 30 near-misses rejected. Recall 100% on the
   18 of 30 true pairs whose record actually exists in the register (the other
   12 were invented test names, correctly absent — a miss there is correct).
+
+## Phase 4 — combined verdict
+
+Scoring table (engine/verdict.ts): blocking text → unlikely; sponsor text →
+open; silent + worldwide-hiring text → open; silent + real company record →
+likely; silent + nothing → unclear. Every reason cites its quote or record.
+
+- v1 (records only): verdict accuracy 80.0% vs 79.5% always-unclear baseline —
+  no better than the baseline. Reason: the README evidence rule says explicit
+  worldwide/any-country hiring qualifies for a non-unclear verdict, and 23 dev
+  labels use it ("REMOTE (Worldwide)"), but the engine ignored it. open
+  recall was 17.4%.
+- v2 worldwide rules v1, loose: accuracy FELL to 67.5% (below baseline).
+  Diagnosis: the patterns matched customer reach ("users in 100+ countries",
+  "sold in 200 countries") and partial-remote perks ("25 days to work from a
+  country of your choice"). open precision 23.7%. REVERTED.
+- v3 worldwide rules v2 (tight: anywhere/worldwide anchors, hiring-subject
+  country counts): verdict accuracy 81.5% (above the 79.5% baseline); open
+  P 63.6% / R 60.9%; unclear P 90.3% / R 87.4%. KEPT.
+- v4 STOP: verdict "likely" scores 0% precision (12 predicted, none labeled
+  likely) because the label cleanup correctly reduced company-prior "likely"
+  to "unclear", leaving only 5 dev labels for the class, and the engine's
+  record-backed likely predictions cannot match them by construction. This is
+  the known weakness of evaluating verdicts on unaudited labels: the audit
+  must decide whether record-backed "likely" is right. Not fixable without
+  touching labels.
+
+Verdict accuracy is NOT in the CI gate (baseline.json) while labels are
+unaudited — a gate on a metric this noisy would block honest work. It enters
+the gate after label_audit.json exists.

@@ -1,6 +1,6 @@
 {
   "engineVersion": "0.1.0",
-  "runAt": "2026-10-19T06:29:43.204Z",
+  "runAt": "2026-10-19T06:40:53.374Z",
   "mode": "dev",
   "labelHashes": {
     "natural": "9f4437bb707f9257",
@@ -262,6 +262,93 @@
         "high": 0.8451390516889363,
         "n": 200
       }
+    },
+    "verdict": {
+      "accuracy": {
+        "p": 0.815,
+        "low": 0.7554281794988185,
+        "high": 0.8626988367726394,
+        "n": 200
+      },
+      "perStatus": {
+        "open": {
+          "precision": {
+            "p": 0.6363636363636364,
+            "low": 0.4295134934371804,
+            "high": 0.802670272273921,
+            "n": 22
+          },
+          "recall": {
+            "p": 0.6086956521739131,
+            "low": 0.4078517960374599,
+            "high": 0.7784262201761787,
+            "n": 23
+          }
+        },
+        "likely": {
+          "precision": {
+            "p": 0,
+            "low": 0,
+            "high": 0.2425007574992425,
+            "n": 12
+          },
+          "recall": {
+            "p": 0,
+            "low": 0,
+            "high": 0.43449149475208104,
+            "n": 5
+          }
+        },
+        "unclear": {
+          "precision": {
+            "p": 0.9025974025974026,
+            "low": 0.8455154205321458,
+            "high": 0.940082292618253,
+            "n": 154
+          },
+          "recall": {
+            "p": 0.8742138364779874,
+            "low": 0.81369340406447,
+            "high": 0.9170780941276383,
+            "n": 159
+          }
+        },
+        "unlikely": {
+          "precision": {
+            "p": 0.8333333333333334,
+            "low": 0.5519636426153274,
+            "high": 0.9530358523851776,
+            "n": 12
+          },
+          "recall": {
+            "p": 0.7692307692307693,
+            "low": 0.49743126004873084,
+            "high": 0.918206209075343,
+            "n": 13
+          }
+        }
+      },
+      "confusion": {
+        "unclear": {
+          "unclear": 139,
+          "open": 7,
+          "likely": 11,
+          "unlikely": 2
+        },
+        "unlikely": {
+          "unlikely": 10,
+          "unclear": 2,
+          "likely": 1
+        },
+        "open": {
+          "open": 14,
+          "unclear": 9
+        },
+        "likely": {
+          "open": 1,
+          "unclear": 4
+        }
+      }
     }
   },
   "stratifiedDev": {
@@ -440,6 +527,78 @@
         "low": 0,
         "high": 0.15464382326420195,
         "n": 21
+      }
+    },
+    "verdict": {
+      "accuracy": {
+        "p": 0.9523809523809523,
+        "low": 0.7733018341376452,
+        "high": 0.9915442305280766,
+        "n": 21
+      },
+      "perStatus": {
+        "open": {
+          "precision": {
+            "p": null,
+            "low": null,
+            "high": null,
+            "n": 0
+          },
+          "recall": {
+            "p": null,
+            "low": null,
+            "high": null,
+            "n": 0
+          }
+        },
+        "likely": {
+          "precision": {
+            "p": null,
+            "low": null,
+            "high": null,
+            "n": 0
+          },
+          "recall": {
+            "p": null,
+            "low": null,
+            "high": null,
+            "n": 0
+          }
+        },
+        "unclear": {
+          "precision": {
+            "p": 0,
+            "low": 0,
+            "high": 0.7934567085261071,
+            "n": 1
+          },
+          "recall": {
+            "p": null,
+            "low": null,
+            "high": null,
+            "n": 0
+          }
+        },
+        "unlikely": {
+          "precision": {
+            "p": 1,
+            "low": 0.8388698745050667,
+            "high": 1,
+            "n": 20
+          },
+          "recall": {
+            "p": 0.9523809523809523,
+            "low": 0.7733018341376452,
+            "high": 0.9915442305280766,
+            "n": 21
+          }
+        }
+      },
+      "confusion": {
+        "unlikely": {
+          "unlikely": 20,
+          "unclear": 1
+        }
       }
     }
   },

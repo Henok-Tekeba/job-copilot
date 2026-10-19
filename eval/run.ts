@@ -21,6 +21,8 @@ import * as crypto from "crypto";
 import * as fs from "fs";
 import * as path from "path";
 import { detectTextStance } from "../engine/textStance";
+import { combineVerdict } from "../engine/verdict";
+import { matchCompany, normaliseCompanyName, type CompanyRecordLike } from "../engine/companyName";
 import { ENGINE_VERSION } from "../engine/version";
 import { precision, recall, wilson95, type Interval } from "./stats";
 
@@ -47,6 +49,15 @@ type Stance =
   | "silent";
 
 const BLOCKED: Stance[] = ["no_sponsorship", "requires_authorization", "citizenship_or_clearance"];
+
+// Company records for the combined-verdict eval, loaded once.
+const recordsLookupPath = path.join(ROOT, "data-sources", "lookup", "company-records.json");
+const recordsLookup: Record<string, CompanyRecordLike> = fs.existsSync(recordsLookupPath)
+  ? (JSON.parse(fs.readFileSync(recordsLookupPath, "utf-8")).records)
+  : {};
+const aliases: Record<string, string> = fs.existsSync(path.join(ROOT, "data-sources", "aliases.json"))
+  ? (JSON.parse(fs.readFileSync(path.join(ROOT, "data-sources", "aliases.json"), "utf-8")).aliases)
+  : {};
 
 function sha256(file: string): string {
   return crypto.createHash("sha256").update(fs.readFileSync(file)).digest("hex").slice(0, 16);
@@ -91,6 +102,11 @@ type SetResult = {
     trueQuote?: string;
   }>;
   baselines: { alwaysSilent: Interval; alwaysUnclear: Interval };
+  verdict: {
+    accuracy: Interval;
+    perStatus: Record<string, { precision: Interval; recall: Interval }>;
+    confusion: Record<string, Record<string, number>>;
+  };
 };
 
 function evaluateSet(
@@ -195,7 +211,60 @@ function evaluateSet(
       alwaysSilent: wilson95(silentTruth, n),
       alwaysUnclear: wilson95(unclearTruth, n),
     },
+    verdict: verdictEval(rows),
   };
+}
+
+const VERDICT_STATUSES = ["open", "likely", "unclear", "unlikely"] as const;
+
+/**
+ * Scores the combined verdict against the human overall_verdict label.
+ *
+ * Honest caveat, stated in every report: the verdict labels for silent
+ * postings were REDUCED to "unclear" during cleanup wherever the original
+ * label rested on model memory rather than posting evidence (kept as
+ * verdict_ai_prior). So this metric measures whether the engine agrees with
+ * "unclear unless evidence exists" — it will look good partly by
+ * construction, and it cannot measure whether "likely" verdicts are RIGHT
+ * until company records are richer than the UK register alone.
+ */
+function verdictEval(rows: Array<{ post: Posting; label: Label; predicted: ReturnType<typeof detectTextStance> }>) {
+  let correct = 0;
+  const confusion: Record<string, Record<string, number>> = {};
+  const counts: Record<string, { tp: number; fp: number; fn: number }> = {};
+
+  for (const { post, label, predicted } of rows) {
+    const key = normaliseCompanyName(post.company || "");
+    const record = key ? recordsLookup[key] : undefined;
+    const match = matchCompany(post.company || "", recordsLookup, aliases);
+    const verdict = combineVerdict({
+      textStance: predicted,
+      company: post.company || "",
+      record,
+      recordMatchConfidence: match.method === "none" ? 0 : match.confidence,
+      provenance: { name: "UK Home Office sponsor register", dataYear: "2026-10-16" },
+    });
+
+    confusion[label.overall_verdict] = confusion[label.overall_verdict] || {};
+    confusion[label.overall_verdict][verdict.status] = (confusion[label.overall_verdict][verdict.status] || 0) + 1;
+
+    if (verdict.status === label.overall_verdict) correct++;
+    counts[verdict.status] = counts[verdict.status] || { tp: 0, fp: 0, fn: 0 };
+    if (verdict.status === label.overall_verdict) counts[verdict.status].tp++;
+    else {
+      counts[verdict.status].fp++;
+      counts[label.overall_verdict] = counts[label.overall_verdict] || { tp: 0, fp: 0, fn: 0 };
+      counts[label.overall_verdict].fn++;
+    }
+  }
+
+  const n = rows.length;
+  const perStatus: Record<string, { precision: Interval; recall: Interval }> = {};
+  for (const status of VERDICT_STATUSES) {
+    const c = counts[status] || { tp: 0, fp: 0, fn: 0 };
+    perStatus[status] = { precision: precision(c.tp, c.fp), recall: recall(c.tp, c.fn) };
+  }
+  return { accuracy: wilson95(correct, n), perStatus, confusion };
 }
 
 function trickyCases(): { total: number; passed: number; failures: Array<{ name: string; got: string }> } {
@@ -320,6 +389,10 @@ function main() {
     console.log(`  blocked: precision ${ci(r.blocked.precision)} | recall ${ci(r.blocked.recall)}`);
     console.log(`  sponsors: precision ${ci(r.sponsors.precision)} | recall ${ci(r.sponsors.recall)}`);
     console.log(`  overall stance accuracy: ${ci(r.accuracy)}`);
+    console.log(`  verdict accuracy: ${ci(r.verdict.accuracy)}`);
+    for (const [status, m] of Object.entries(r.verdict.perStatus)) {
+      console.log(`    verdict ${status}: P ${ci(m.precision)} | R ${ci(m.recall)}`);
+    }
     console.log(`  baselines: always-silent ${ci(r.baselines.alwaysSilent)} | always-unclear(verdict) ${ci(r.baselines.alwaysUnclear)}`);
   }
   const tc = results.trickyCases as { total: number; passed: number; failures: Array<{ name: string; got: string }> };
