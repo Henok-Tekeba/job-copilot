@@ -78,19 +78,45 @@ label what you actually believe.
 | `labels.jsonl` | One line per labeled posting: `{id, hash, text_stance, overall_verdict, revisit, labeledAt}`. `hash` is a SHA-256 prefix of the posting text, so a stale label (text changed since labeling) can be detected. |
 | `split.json` | The dev/test split and the seed that produced it. |
 
-## Baselines (majority class, from the cleaned natural-set labels)
+## Baselines (majority class) — natural set only, never pooled with stratified
 
-Any classifier must beat these to be worth anything. They come straight from
-`labels.jsonl`:
+Any classifier must beat these to be worth anything. From `labels.jsonl`:
 
-| baseline | full 300 | dev 200 |
-|---|---|---|
-| always answer `silent` (text_stance) | 88.0% | 89.5% |
-| always answer `unclear` (overall_verdict) | 75.3% | 79.5% |
+| baseline | full natural (300) | dev (200) | test (100) |
+|---|---|---|---|
+| always answer `silent` (text_stance) | **88.0%** (264/300) | 89.5% (179/200) | 85.0% (85/100) |
+| always answer `unclear` (overall_verdict) | **75.3%** (226/300) | 79.5% (159/200) | 67.0% (67/100) |
 
-A model that says "silent" to everything scores 88%. Every accuracy number we
-report must be read against that bar, and per-class precision/recall matter
-more than raw accuracy.
+The `always unclear` number holds only because exactly **38** postings say
+nothing about visas yet carry a verdict other than `unclear` (27 `open`,
+11 `likely`). All 38 carry a verbatim posting quote behind the verdict and all
+38 are in the audit queue. Any one the audit rejects loses its quote and
+becomes `unclear` + `verdict_ai_prior`, which raises the baseline.
+
+## Metrics (what the runner reports, per set)
+
+Natural and stratified sets are scored separately, never pooled. Headline
+metrics, each with a 95% Wilson interval (`eval/stats.ts`) and its n:
+
+1. **Statement detection** — precision and recall of non-silent vs silent.
+2. **Stance accuracy among detected statements** — of the postings the engine
+   correctly says are non-silent, how often the stance is right.
+3. **`blocked` precision/recall** — blocked = no_sponsorship +
+   requires_authorization + citizenship_or_clearance (merged class, because
+   each fine-grained class alone is too rare to measure).
+4. **`sponsors` precision/recall.**
+
+Fine-grained per-class stance scores are secondary and marked small-n.
+
+## Tricky cases
+
+`eval/tricky_cases.jsonl` — named negative cases: real boilerplate that looks
+like sponsorship language but is not. The engine must classify every one as
+`silent`. Currently: the Cloudflare export-license clause (58 postings carry
+it), Datadog's export-control "authorizations", EEO protected-class
+"citizenship status" lists (21 postings), Substack's product "sponsorship
+opportunities", Binance's "Visa" the payment network, domestic "relocation
+assistance" without visa context, and a synthetic sponsor-as-job-title case.
 
 ## Two-pass consistency
 

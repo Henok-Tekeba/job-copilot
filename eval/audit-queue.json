@@ -6,189 +6,219 @@
       "id": "remotive:2091133",
       "reasons": [
         "non-silent"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "hackernews:49922803",
       "reasons": [
         "non-silent"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "ashby:alan:38020c1c-0ea4-4495-990f-e32d622e9c9d",
       "reasons": [
         "non-silent"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "ashby:openai:067788c8-505b-4296-bc05-d5699cb87a1f",
       "reasons": [
         "non-silent"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "ashby:alan:583a9a1c-433e-4b76-a1b7-4d9e6a30f1da",
       "reasons": [
         "non-silent"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "ashby:clickup:920fb54c-ba58-4eac-919d-e85da9080802",
       "reasons": [
         "non-silent",
         "revisit-flagged"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "ashby:openai:082f4d82-499f-4150-892f-0b0d1105fffe",
       "reasons": [
         "non-silent"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "remoteok:1137406",
       "reasons": [
         "non-silent"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:elastic:8018328",
       "reasons": [
         "non-silent"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "remoteok:1136795",
       "reasons": [
         "non-silent"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:doctolib:7989159003",
       "reasons": [
         "non-silent",
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "remotive:2091144",
       "reasons": [
         "non-silent"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "ashby:alan:14729a35-9c9f-479e-860b-3d6c1348a2b0",
       "reasons": [
         "non-silent",
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:doctolib:7832298003",
       "reasons": [
         "non-silent",
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "ashby:openai:05223b5a-5ff1-4fe7-9f97-4ef7fc68b8ef",
       "reasons": [
         "non-silent"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "lever:toptal:ce33342a-6e28-4108-b8f4-4799e05fcfc3",
       "reasons": [
         "non-silent"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "remoteok:1137439",
       "reasons": [
         "non-silent"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "remoteok:1137451",
       "reasons": [
         "non-silent"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "ashby:cohere:52a2b83b-7537-4e88-af7b-e4e9630a96e0",
       "reasons": [
         "non-silent",
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "hackernews:49923454",
       "reasons": [
         "non-silent"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:anthropic:5277776008",
       "reasons": [
         "non-silent"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:cloudflare:8097321",
       "reasons": [
         "non-silent",
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "ashby:clickup:1e8c7f3d-3cd6-4393-b17f-6a858f480ba9",
       "reasons": [
         "non-silent"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:anthropic:5375371008",
       "reasons": [
         "non-silent"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "ashby:alan:2dc99c53-9cc7-4c3f-a682-1f79bfa38ce6",
       "reasons": [
         "non-silent"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:anthropic:5286362008",
       "reasons": [
         "non-silent"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "ashby:cohere:556467eb-3dc8-46e2-b015-277872210997",
       "reasons": [
         "non-silent"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "remoteok:1137431",
       "reasons": [
         "non-silent",
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "hackernews:49922693",
       "reasons": [
         "non-silent"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:datadog:8052118",
       "reasons": [
         "non-silent",
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "hackernews:49925468",
@@ -196,769 +226,1116 @@
         "non-silent",
         "revisit-flagged",
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:cloudflare:8099671",
       "reasons": [
         "non-silent",
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "remoteok:1137156",
       "reasons": [
         "non-silent"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:anthropic:5375376008",
       "reasons": [
         "non-silent",
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "remoteok:1136949",
       "reasons": [
         "non-silent"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:anthropic:5286348008",
       "reasons": [
         "non-silent",
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "remoteok:1137463",
       "reasons": [
         "revisit-flagged",
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:elastic:8007202",
       "reasons": [
         "pass-disagreement",
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:datadog:8095826",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "ashby:cohere:291e5dee-dcda-49e6-a1b6-dae0d48f80af",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "remoteok:1137388",
       "reasons": [
         "pass-disagreement",
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:elastic:8091966",
       "reasons": [
         "pass-disagreement",
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:datadog:8088095",
       "reasons": [
         "pass-disagreement",
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:coinbase:8164730",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "ashby:posthog:20ab9628-20ff-4ae3-bd6a-46ae7e9dc6b8",
       "reasons": [
         "pass-disagreement",
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "lever:tala:848e6f75-9b40-45d2-b5b8-82de6670b0ed",
       "reasons": [
         "pass-disagreement",
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:gemini:8214272",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "ashby:elevenlabs:0b3a97d4-193c-4b47-9888-7ef5803ed945",
       "reasons": [
         "pass-disagreement",
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "jobicy:153449",
       "reasons": [
         "pass-disagreement",
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "remoteok:1136796",
       "reasons": [
         "pass-disagreement",
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "remotive:1185979",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:bitpanda:4987398101",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:bitpanda:4989603101",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "ashby:cerebras:18d0a40f-69dd-4bf2-9ec3-860f7c26ed71",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "ashby:paddle:7642fac5-d94b-4157-8b19-79a7dbc115ea",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "jobicy:153452",
       "reasons": [
         "pass-disagreement",
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:elastic:8067195",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "ashby:elevenlabs:1f7a2786-46d3-46c9-81f3-c3849b412988",
       "reasons": [
         "pass-disagreement",
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "jobicy:153447",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:contentful:8233486",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:cloudflare:8102768",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:coinbase:8165389",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:cloudflare:8074364",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:cloudflare:8043287",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "jobicy:155709",
       "reasons": [
         "pass-disagreement",
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "remotive:2091132",
       "reasons": [
         "pass-disagreement",
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "ashby:hostinger:57b7805f-412c-44fa-b8ac-6dc045a4e01d",
       "reasons": [
         "pass-disagreement",
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "hackernews:49929056",
       "reasons": [
         "pass-disagreement",
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "ashby:posthog:1464036f-94d5-4dbd-aef8-fe99246a26d4",
       "reasons": [
         "pass-disagreement",
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "remoteok:1137418",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:binance:5002275101",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:coinbase:8100066",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:bybit:4971554101",
       "reasons": [
         "pass-disagreement",
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:gitlab:8684061002",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:binance:5002248101",
       "reasons": [
         "pass-disagreement",
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "ashby:elevenlabs:0d68b2a2-887e-491c-8b9b-56e8354f75fb",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "ashby:cohere:031c2335-db85-4265-8a88-a54b911be36a",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:coinbase:8165441",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "remoteok:1136568",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:gitlab:8654230002",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "remoteok:1137415",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "hackernews:49925116",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "remoteok:1136857",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "ashby:openai:099dd6af-b017-4a60-85d5-4c79da3a9ead",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "jobicy:155560",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:binance:5002222101",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "ashby:hostinger:56dea52a-fd7b-4442-b509-255d37c5f7ab",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "hackernews:49927984",
       "reasons": [
         "pass-disagreement",
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "ashby:openai:0916f210-e851-493c-b8ec-51cf00152be1",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:coinbase:8105437",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:algolia:6194397004",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "jobicy:155703",
       "reasons": [
         "pass-disagreement",
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "ashby:cerebras:39c1aea3-d6df-4661-872d-082ba11df5fc",
       "reasons": [
         "pass-disagreement",
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "jobicy:155758",
       "reasons": [
         "pass-disagreement",
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:datadog:8097533",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:dataiku:6148066004",
       "reasons": [
         "pass-disagreement",
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "ashby:cerebras:20010f8f-5ede-469a-b432-c38dc223e11c",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:gitlab:8687926002",
       "reasons": [
         "pass-disagreement",
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:datadog:8096181",
       "reasons": [
         "pass-disagreement",
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:binance:5002258101",
       "reasons": [
         "pass-disagreement"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "ashby:cohere:1b909aeb-1221-476f-88fe-8300a2065975",
       "reasons": [
         "pass-disagreement",
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "hackernews:49926618",
       "reasons": [
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "ashby:elevenlabs:108c99e6-ba2b-44a0-b830-7d535e14a152",
       "reasons": [
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "jobicy:153321",
       "reasons": [
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "remotive:2091130",
       "reasons": [
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "remotive:1680495",
       "reasons": [
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "jobicy:155708",
       "reasons": [
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "ashby:hostinger:1a24ef55-737d-4671-9c84-927b08f09867",
       "reasons": [
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "ashby:hostinger:2b1f5cd4-f4ca-4078-830f-4f0479bf5c92",
       "reasons": [
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "jobicy:155566",
       "reasons": [
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "hackernews:49922769",
       "reasons": [
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "hackernews:49922929",
       "reasons": [
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "hackernews:49924581",
       "reasons": [
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "ashby:elevenlabs:10e6475e-67ef-4621-8718-7b087c354651",
       "reasons": [
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "jobicy:153326",
       "reasons": [
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "hackernews:49925489",
       "reasons": [
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "lever:blablacar:79578084-f3bc-4aa2-98a5-bc0885bfb8dd",
       "reasons": [
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "hackernews:49922910",
       "reasons": [
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "hackernews:49929200",
       "reasons": [
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "remotive:2091131",
       "reasons": [
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "remoteok:1137421",
       "reasons": [
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "jobicy:153446",
       "reasons": [
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "ashby:hostinger:237cc377-d997-4e23-8618-147ad7695c36",
       "reasons": [
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "jobicy:150846",
       "reasons": [
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "lever:blablacar:a613d792-86f2-4fdc-a6ad-065ec3a56f81",
       "reasons": [
         "silent-with-verdict-kept"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "lever:sonarsource:2f1af926-9595-4031-8a26-3c776a6dfbcd",
       "reasons": [
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "hackernews:49924974",
       "reasons": [
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "hackernews:49922881",
       "reasons": [
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:doctolib:8000653003",
       "reasons": [
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "lever:jobandtalent:5c33332b-1012-4d57-b105-d60cbc31b70a",
       "reasons": [
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "hackernews:49926951",
       "reasons": [
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "hackernews:49928997",
       "reasons": [
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "hackernews:49925904",
       "reasons": [
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "hackernews:49926504",
       "reasons": [
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "hackernews:49928066",
       "reasons": [
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "remoteok:1137427",
       "reasons": [
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "jobicy:153450",
       "reasons": [
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "ashby:m-kopa:247b0002-de27-4475-8db6-a0cc6f109847",
       "reasons": [
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:bybit:4969765101",
       "reasons": [
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "ashby:deepgram:9a030b32-d671-43e0-a221-4653bb73ba29",
       "reasons": [
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "jobicy:155601",
       "reasons": [
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:bitpanda:4940716101",
       "reasons": [
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "ashby:alan:17dbf0df-4b2a-45c0-9937-692b9c795305",
       "reasons": [
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:fireblocks:4700431006",
       "reasons": [
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "ashby:miro:2701b589-4c6e-4bcf-97d4-0e86e9e089f3",
       "reasons": [
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "ashby:cerebras:04ce4198-d9b6-4aae-ad11-97708033f94a",
       "reasons": [
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "hackernews:49924509",
       "reasons": [
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "hackernews:49928334",
       "reasons": [
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "jobicy:155565",
       "reasons": [
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "greenhouse:binance:5002311101",
       "reasons": [
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "hackernews:49925928",
       "reasons": [
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "remoteok:1136861",
       "reasons": [
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
     },
     {
       "id": "remoteok:1136878",
       "reasons": [
         "random-silent-sample"
-      ]
+      ],
+      "set": "natural"
+    },
+    {
+      "id": "greenhouse:newrelic:5371209008",
+      "reasons": [
+        "stratified-rare-class"
+      ],
+      "set": "stratified"
+    },
+    {
+      "id": "greenhouse:newrelic:5416517008",
+      "reasons": [
+        "stratified-rare-class"
+      ],
+      "set": "stratified"
+    },
+    {
+      "id": "ashby:alan:f60e2e04-a0a0-4197-abe8-a80a1b69557d",
+      "reasons": [
+        "stratified-rare-class"
+      ],
+      "set": "stratified"
+    },
+    {
+      "id": "greenhouse:luminate:4737889005",
+      "reasons": [
+        "stratified-rare-class"
+      ],
+      "set": "stratified"
+    },
+    {
+      "id": "greenhouse:monzo:8156261",
+      "reasons": [
+        "stratified-rare-class"
+      ],
+      "set": "stratified"
+    },
+    {
+      "id": "greenhouse:monzo:8232726",
+      "reasons": [
+        "stratified-rare-class"
+      ],
+      "set": "stratified"
+    },
+    {
+      "id": "greenhouse:newrelic:5453390008",
+      "reasons": [
+        "stratified-rare-class"
+      ],
+      "set": "stratified"
+    },
+    {
+      "id": "greenhouse:okx:8004167003",
+      "reasons": [
+        "stratified-rare-class"
+      ],
+      "set": "stratified"
+    },
+    {
+      "id": "greenhouse:okx:8005095003",
+      "reasons": [
+        "stratified-rare-class"
+      ],
+      "set": "stratified"
+    },
+    {
+      "id": "greenhouse:okx:8026443003",
+      "reasons": [
+        "stratified-rare-class"
+      ],
+      "set": "stratified"
+    },
+    {
+      "id": "greenhouse:planetscale:4389100009",
+      "reasons": [
+        "stratified-rare-class"
+      ],
+      "set": "stratified"
+    },
+    {
+      "id": "hackernews:50059584",
+      "reasons": [
+        "stratified-rare-class"
+      ],
+      "set": "stratified"
+    },
+    {
+      "id": "remoteok:1137474",
+      "reasons": [
+        "stratified-rare-class"
+      ],
+      "set": "stratified"
+    },
+    {
+      "id": "ashby:openai:485cda77-5d8f-4aaa-bca5-916b011477e6",
+      "reasons": [
+        "stratified-rare-class"
+      ],
+      "set": "stratified"
+    },
+    {
+      "id": "ashby:openai:48993416-b5f5-4c3f-b7c8-b8ca7c2395e0",
+      "reasons": [
+        "stratified-rare-class"
+      ],
+      "set": "stratified"
+    },
+    {
+      "id": "ashby:openai:6d1d835d-5882-4191-b78e-fd04a4c05f11",
+      "reasons": [
+        "stratified-rare-class"
+      ],
+      "set": "stratified"
+    },
+    {
+      "id": "ashby:openai:b60d3040-38e4-4abe-8af8-881286b10d50",
+      "reasons": [
+        "stratified-rare-class"
+      ],
+      "set": "stratified"
+    },
+    {
+      "id": "ashby:openai:be7b1bf5-37ab-40f7-9ec1-e9732244f12a",
+      "reasons": [
+        "stratified-rare-class"
+      ],
+      "set": "stratified"
+    },
+    {
+      "id": "ashby:trm-labs:2a784630-702d-4b49-a033-5cbd0d9c8a94",
+      "reasons": [
+        "stratified-rare-class"
+      ],
+      "set": "stratified"
+    },
+    {
+      "id": "ashby:trm-labs:5b1c4862-550f-48fe-89bf-33a9181f9bdc",
+      "reasons": [
+        "stratified-rare-class"
+      ],
+      "set": "stratified"
+    },
+    {
+      "id": "ashby:trm-labs:85d748d0-5377-486f-9209-c811704dbdaa",
+      "reasons": [
+        "stratified-rare-class"
+      ],
+      "set": "stratified"
+    },
+    {
+      "id": "ashby:trm-labs:e8a7a3d5-938f-4d2b-b9d3-86765d8d1dd2",
+      "reasons": [
+        "stratified-rare-class"
+      ],
+      "set": "stratified"
+    },
+    {
+      "id": "greenhouse:anthropic:5382518008",
+      "reasons": [
+        "stratified-rare-class"
+      ],
+      "set": "stratified"
+    },
+    {
+      "id": "greenhouse:anthropic:5406367008",
+      "reasons": [
+        "stratified-rare-class"
+      ],
+      "set": "stratified"
+    },
+    {
+      "id": "greenhouse:anthropic:5443900008",
+      "reasons": [
+        "stratified-rare-class"
+      ],
+      "set": "stratified"
+    },
+    {
+      "id": "greenhouse:anthropic:5445410008",
+      "reasons": [
+        "stratified-rare-class"
+      ],
+      "set": "stratified"
+    },
+    {
+      "id": "greenhouse:elastic:8138599",
+      "reasons": [
+        "stratified-rare-class"
+      ],
+      "set": "stratified"
+    },
+    {
+      "id": "greenhouse:elastic:8153274",
+      "reasons": [
+        "stratified-rare-class"
+      ],
+      "set": "stratified"
+    },
+    {
+      "id": "greenhouse:thoughtworks:8200473",
+      "reasons": [
+        "stratified-rare-class"
+      ],
+      "set": "stratified"
+    },
+    {
+      "id": "greenhouse:thoughtworks:8255609",
+      "reasons": [
+        "stratified-rare-class"
+      ],
+      "set": "stratified"
+    },
+    {
+      "id": "hackernews:50062997",
+      "reasons": [
+        "stratified-rare-class"
+      ],
+      "set": "stratified"
+    },
+    {
+      "id": "hackernews:50095249",
+      "reasons": [
+        "stratified-rare-class"
+      ],
+      "set": "stratified"
     }
   ]
 }

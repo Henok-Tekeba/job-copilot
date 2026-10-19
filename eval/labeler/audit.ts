@@ -20,7 +20,9 @@ import * as path from "path";
 
 const ROOT = process.cwd();
 const POSTINGS = path.join(ROOT, "eval", "postings.jsonl");
+const STRAT_POSTINGS = path.join(ROOT, "eval", "stratified", "postings.jsonl");
 const LABELS = path.join(ROOT, "eval", "labels.jsonl");
+const STRAT_LABELS = path.join(ROOT, "eval", "stratified", "labels.jsonl");
 const QUEUE = path.join(ROOT, "eval", "audit-queue.json");
 const RESULTS = path.join(ROOT, "eval", "audit-results.jsonl");
 const PORT = 4178;
@@ -110,7 +112,7 @@ function render() {
   document.getElementById('progress').innerHTML = '<b>' + index + '</b> / ' + queue.length + ' audited';
   if (!item) { document.getElementById('text').textContent = 'Audit complete. Thank you.'; return; }
   const p = postings.get(item.id), l = labels.get(item.id) || {};
-  document.getElementById('meta').textContent = item.reasons.join(' · ') + ' — ' + (p.company || '?') + ' — ' + p.title;
+  document.getElementById('meta').textContent = '[' + (item.set || 'natural') + '] ' + item.reasons.join(' · ') + ' — ' + (p.company || '?') + ' — ' + p.title;
   document.getElementById('text').innerHTML = highlight(p.text);
   document.getElementById('text').scrollTop = 0;
   document.getElementById('labels').innerHTML =
@@ -171,8 +173,8 @@ const server = http.createServer((req, res) => {
       JSON.stringify({
         queue,
         doneIds: done.map((d) => d.id),
-        postings: readJsonl<Posting>(POSTINGS),
-        labels: readJsonl<Label>(LABELS),
+        postings: [...readJsonl<Posting>(POSTINGS), ...readJsonl<Posting>(STRAT_POSTINGS)],
+        labels: [...readJsonl<Label>(LABELS), ...readJsonl<Label>(STRAT_LABELS)],
       })
     );
     return;
