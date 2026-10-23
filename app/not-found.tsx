@@ -28,7 +28,7 @@ export default function NotFound() {
         <h1 className="mt-2 text-[clamp(1.5rem,3vw,2rem)] font-medium tracking-[-0.02em] text-[#14141a]">
           This page is not on the board
         </h1>
-        <p className="mt-2 max-w-md text-[13.5px] leading-relaxed text-[#8b8b93]">
+        <p className="mt-2 max-w-md text-[13.5px] leading-relaxed text-[#6f6f78]">
           The link is old or the page moved. The internship board is where
           everything lives.
         </p>

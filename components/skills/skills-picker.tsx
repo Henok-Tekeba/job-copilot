@@ -39,10 +39,6 @@ export function SkillsPicker({
 
   const demandMap = React.useMemo(() => new Map(demand), [demand]);
   const canonicalSet = React.useMemo(() => new Set(canonicalSkills), [canonicalSkills]);
-  const inDemand = React.useMemo(
-    () => demand.filter(([s]) => canonicalSet.has(s)).slice(0, 18).map(([s]) => s),
-    [demand, canonicalSet],
-  );
 
   const trackSkills = React.useMemo(() => {
     if (activeTracks.size === 0) return [];
@@ -51,6 +47,23 @@ export function SkillsPicker({
       .flatMap((t) => t.skills)
       .filter((s, i, all) => all.indexOf(s) === i);
   }, [activeTracks, tracks]);
+
+  // With tracks picked, "most in demand" means within those tracks — sorted by
+  // how often the board asks for each.
+  const demanded = React.useMemo(() => {
+    if (activeTracks.size === 0) {
+      return demand.filter(([s]) => canonicalSet.has(s)).slice(0, 18).map(([s]) => s);
+    }
+    return trackSkills
+      .filter((s) => demandMap.has(s))
+      .sort((a, b) => (demandMap.get(b) ?? 0) - (demandMap.get(a) ?? 0))
+      .slice(0, 18);
+  }, [activeTracks.size, demand, canonicalSet, trackSkills, demandMap]);
+
+  const demandLabel =
+    activeTracks.size === 0
+      ? "Most in demand on the board"
+      : "Most in demand for your tracks";
 
   const searchResults = React.useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -110,7 +123,7 @@ export function SkillsPicker({
           <span
             className={cn(
               "font-mono text-[10.5px] tabular-nums",
-              active ? "text-white/70" : "text-[#8b8b93]",
+              active ? "text-white/70" : "text-[#6f6f78]",
             )}
           >
             {count}
@@ -143,7 +156,7 @@ export function SkillsPicker({
         <h1 className="text-[clamp(1.5rem,3vw,2rem)] font-medium tracking-[-0.02em] text-[#14141a]">
           Pick your skills
         </h1>
-        <p className="mt-2 max-w-xl text-[13.5px] leading-relaxed text-[#8b8b93]">
+        <p className="mt-2 max-w-xl text-[13.5px] leading-relaxed text-[#6f6f78]">
           Every internship on the board is re-graded against what you pick —
           you will see a personal Match % on every row. Everything stays in this
           browser.
@@ -187,9 +200,9 @@ export function SkillsPicker({
         {/* Most in demand */}
         <div className="mt-8">
           <p className="text-[13px] font-semibold text-[#14141a]">
-            Most in demand on the board
+            {demandLabel}
           </p>
-          <div className="mt-3 flex flex-wrap gap-2">{inDemand.map((s) => chip(s))}</div>
+          <div className="mt-3 flex flex-wrap gap-2">{demanded.map((s) => chip(s))}</div>
         </div>
 
         {/* Track skills */}
@@ -209,7 +222,7 @@ export function SkillsPicker({
           </p>
           <div className="mt-3 flex gap-2">
             <div className="flex h-10 min-w-0 flex-1 items-center rounded-lg border border-[#e9e9ee] bg-white px-3">
-              <SearchIcon className="size-3.5 shrink-0 text-[#8b8b93]" />
+              <SearchIcon className="size-3.5 shrink-0 text-[#6f6f78]" />
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
@@ -248,7 +261,7 @@ export function SkillsPicker({
               <button
                 type="button"
                 onClick={() => setSelected(new Set())}
-                className="ml-3 text-[#8b8b93] hover:underline"
+                className="ml-3 text-[#6f6f78] hover:underline"
               >
                 Clear all
               </button>
@@ -257,7 +270,7 @@ export function SkillsPicker({
           <div className="flex items-center gap-3">
             <Link
               href="/jobs"
-              className="text-[13px] font-medium text-[#8b8b93] transition-colors hover:text-[#14141a]"
+              className="text-[13px] font-medium text-[#6f6f78] transition-colors hover:text-[#14141a]"
             >
               Skip
             </Link>
@@ -270,6 +283,17 @@ export function SkillsPicker({
               Save & see matches
             </button>
           </div>
+        </div>
+      </div>
+
+      <div className="mx-auto mt-4 flex w-full max-w-[900px] flex-wrap items-center gap-x-4 gap-y-1 px-1">
+        <p className="text-[11px] text-[#6f6f78]">
+          You can change this any time from the board&apos;s “Your skills” link.
+        </p>
+        <div className="ml-auto flex items-center gap-4">
+          <Link href="/privacy" className="text-[11px] text-[#5c5c64] hover:text-[#14141a]">Privacy</Link>
+          <Link href="/terms" className="text-[11px] text-[#5c5c64] hover:text-[#14141a]">Terms</Link>
+          <Link href="/cookies" className="text-[11px] text-[#5c5c64] hover:text-[#14141a]">Cookies</Link>
         </div>
       </div>
     </main>

@@ -5,7 +5,6 @@ import { Check, X } from "lucide-react";
 import { LogoMark } from "@/components/logo-mark";
 import { CountUp, Reveal } from "@/components/reveal";
 import { WallDocument } from "@/components/landing/wall-document";
-import { TypedHeading } from "@/components/landing/typed-heading";
 import { CtaLink } from "@/components/landing/cta-link";
 import { RecentCarousel } from "@/components/landing/recent-carousel";
 import { LandingSearch } from "@/components/landing/landing-search";
@@ -131,7 +130,7 @@ function RecentCard({ job, featured }: { job: Job; featured: boolean }) {
           <span className="block truncate text-[13px] font-medium text-[#14141a]">
             {job.company || "Unknown company"}
           </span>
-          <span className="block font-mono text-[10.5px] tabular-nums text-[#8b8b93]">
+          <span className="block font-mono text-[10.5px] tabular-nums text-[#6f6f78]">
             {[
               isUnstatedLocation(job.location) ? "" : job.location,
               `Posted ${posted}`,
@@ -197,7 +196,7 @@ export function LandingPage({
           <br />
           Work <span className="text-[#2b4bf2]">without borders.</span>
         </h1>
-        <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-[#8b8b93]">
+        <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-[#6f6f78]">
           Every posting on the board is read for the two things nobody tells you:
           whether this employer would actually take you, and what you still need
           before you apply.
@@ -206,178 +205,12 @@ export function LandingPage({
         <LandingSearch />
       </section>
 
-      {/* The wall — a real posting, caught in the act, and the ledger */}
-      <section className="border-t border-[#e9e9ee]">
-        <div className="mx-auto w-full max-w-[1080px] px-4 py-16 sm:px-6 sm:py-24">
-          <Reveal>
-            <TypedHeading
-              ink="Thousands of tech internships open every month. Your region gets filtered out by "
-              accent="a line you never see."
-              speed={60}
-              className="max-w-2xl text-[clamp(1.9rem,4.4vw,2.9rem)] leading-[1.06] font-medium tracking-[-0.02em] text-[#14141a]"
-            />
-          </Reveal>
-
-          {wallSample && (
-            <Reveal>
-              <div className="relative mt-12 rounded-[24px] border border-[#ececf0] bg-white p-6 shadow-[0_24px_64px_-32px_rgba(15,15,30,0.3)] sm:p-10">
-                <div className="flex items-center gap-3">
-                  <span className="font-mono text-[11px] text-[#8b8b93]">
-                    A posting, exactly as it reads
-                  </span>
-                  <span className="h-px flex-1 bg-[#e9e9ee]" />
-                  <span className="rounded-lg bg-[#f4f4f6] px-3 py-1.5 text-[12px] font-medium text-[#5c5c64]">
-                    <CountUp to={stats.regionLocked} /> postings carry a
-                    line like this
-                  </span>
-                </div>
-                <p className="mt-6 text-[13px] font-semibold text-[#14141a]">
-                  {wallSample.title}
-                </p>
-                <p className="text-[12px] text-[#8b8b93]">{wallSample.company}</p>
-                <WallDocument sample={wallSample} />
-              </div>
-            </Reveal>
-          )}
-
-          <div className="mt-12">
-            {LEDGER.map((row, i) => (
-              <Reveal key={row.label} delay={i * 70} className="last:border-b">
-              <div
-                className="flex items-baseline justify-between gap-4 border-t border-[#e9e9ee] py-4"
-              >
-                <span
-                  className={
-                    row.accent
-                      ? "text-[15px] font-semibold text-[#2b4bf2]"
-                      : "text-[15px] text-[#14141a]"
-                  }
-                >
-                  {row.label}
-                </span>
-                <span
-                  className={
-                    row.accent
-                      ? "text-[20px] font-semibold text-[#2b4bf2] tabular-nums"
-                      : "text-[20px] font-medium text-[#14141a] tabular-nums"
-                  }
-                >
-                  <CountUp to={row.value} />
-                  <span className="ml-2 text-[12px] font-normal text-[#8b8b93]">
-                    {Math.round((row.value / stats.total) * 100)}%
-                  </span>
-                </span>
-              </div>
-              </Reveal>
-            ))}
-          </div>
-
-          <p className="mt-4 text-[11px] text-[#8b8b93]">
-            Counted live from the {stats.total.toLocaleString("en-US")} internships
-            and contracts on the board right now. Sponsorship:{" "}
-            {stats.sponsorshipOffered.toLocaleString("en-US")} postings say it is
-            offered, {stats.sponsorshipDenied.toLocaleString("en-US")} say no,{" "}
-            {stats.sponsorshipSilent.toLocaleString("en-US")} never mention it.
-          </p>
-        </div>
-      </section>
-
-      {/* How it reads — four reads, one rule, their outputs */}
-      <section className="border-t border-[#e9e9ee]">
-        <div className="mx-auto w-full max-w-[1080px] px-4 py-16 sm:px-6 sm:py-24">
-          <Reveal>
-            <h2 className="text-[clamp(1.9rem,4vw,2.7rem)] font-medium tracking-[-0.02em] text-[#14141a]">
-              How a posting is read
-            </h2>
-          </Reveal>
-          <Reveal delay={100}>
-            <div className="mt-12 grid gap-x-10 gap-y-12 border-t border-[#14141a] pt-0 sm:grid-cols-2 lg:grid-cols-4">
-              {HOW.map((step, i) => (
-                <div key={step.title} className="relative pt-8">
-                  <span
-                    aria-hidden="true"
-                    className="absolute top-[-3.5px] left-0 size-[7px] bg-[#2b4bf2]"
-                  />
-                  <span className="text-[40px] leading-none font-medium tracking-tight text-[#14141a]">
-                    {i + 1}
-                    <span className="text-[#2b4bf2]">.</span>
-                  </span>
-                  <h3 className="mt-3 text-[15px] font-semibold text-[#14141a]">
-                    {step.title}
-                  </h3>
-                  <p className="mt-1.5 text-[12.5px] leading-relaxed text-[#8b8b93]">
-                    {step.body}
-                  </p>
-                  <p className="mt-4 border-t border-[#e9e9ee] pt-2.5 text-[12px] text-[#8b8b93]">
-                    <span className="font-medium text-[#5c5c64]">You get: </span>
-                    {step.output}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* Comparison */}
-      <section className="border-t border-[#e9e9ee] bg-[#f4f4f6]">
-        <div className="mx-auto w-full max-w-[1080px] px-4 py-16 sm:px-6 sm:py-24">
-          <Reveal>
-            <h2 className="max-w-2xl text-[clamp(1.9rem,4vw,2.7rem)] leading-[1.08] font-medium tracking-[-0.02em] text-[#14141a]">
-              The big boards sell listings.{" "}
-              <span className="text-[#2b4bf2]">Shortlist sells the answer.</span>
-            </h2>
-          </Reveal>
-          <Reveal delay={100}>
-            <div className="mt-10 overflow-hidden rounded-[24px] border border-[#ececf0] bg-white shadow-[0_24px_64px_-32px_rgba(15,15,30,0.25)]">
-              <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] gap-x-4 border-b border-[#e9e9ee] bg-[#f4f4f6] px-5 py-3 text-[12px] font-semibold text-[#5c5c64] sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)] sm:px-8">
-                <span>&nbsp;</span>
-                <span className="hidden sm:block">The big boards</span>
-                <span className="text-[#2b4bf2]">Shortlist</span>
-              </div>
-              {COMPARE.map((row) => (
-                <div
-                  key={row.label}
-                  className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)] items-start gap-x-4 border-b border-[#e9e9ee] px-5 py-4 text-[13px] last:border-b-0 sm:px-8"
-                >
-                  <span className="font-semibold text-[#14141a]">{row.label}</span>
-                  <span className="hidden items-start gap-2 text-[#8b8b93] sm:flex">
-                    <X className="mt-0.5 size-3.5 shrink-0 text-[#c9c9cf]" />
-                    {row.them}
-                  </span>
-                  <span className="flex items-start gap-2 text-[#14141a]">
-                    <Check className="mt-0.5 size-3.5 shrink-0 text-[#2b4bf2]" strokeWidth={3} />
-                    {row.us}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
       <section className="mx-auto w-full max-w-[1080px] px-4 pt-10 pb-20 sm:px-6">
         <h2 className="text-[clamp(1.9rem,4vw,2.7rem)] font-semibold tracking-[-0.025em] text-[#14141a]">
           Latest{" "}
-          <span className="relative inline-block px-1 text-[#2b4bf2]">
+          <mark className="hl hl-on px-1 font-semibold">
             Internships
-            <svg
-              aria-hidden="true"
-              viewBox="0 0 120 44"
-              fill="none"
-              className="absolute -inset-x-3 -inset-y-2 size-full text-[#2b4bf2]/25"
-            >
-              <ellipse
-                cx="60"
-                cy="22"
-                rx="56"
-                ry="17"
-                stroke="currentColor"
-                strokeWidth="3"
-                transform="rotate(-3 60 22)"
-              />
-            </svg>
-          </span>{" "}
+          </mark>{" "}
           Opportunity
         </h2>
 
@@ -415,6 +248,158 @@ export function LandingPage({
         </div>
       </section>
 
+
+      {/* The wall — a real posting, caught in the act, and the ledger */}
+      <section className="border-t border-[#e9e9ee]">
+        <div className="mx-auto w-full max-w-[1080px] px-4 py-16 sm:px-6 sm:py-24">
+          <Reveal>
+            <h2 className="max-w-2xl text-[clamp(1.9rem,4.4vw,2.9rem)] leading-[1.06] font-medium tracking-[-0.02em] text-[#14141a]">
+              <span className="mask-wipe">
+                Thousands of tech internships get posted every month. Your
+                region gets filtered out by{" "}
+                <span className="text-[#2b4bf2]">a line you never see.</span>
+              </span>
+            </h2>
+          </Reveal>
+
+          {wallSample && (
+            <Reveal>
+              <div className="relative mt-12 rounded-[24px] border border-[#ececf0] bg-white p-6 shadow-[0_24px_64px_-32px_rgba(15,15,30,0.3)] sm:p-10">
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-[11px] text-[#6f6f78]">
+                    A posting, exactly as it reads
+                  </span>
+                  <span className="h-px flex-1 bg-[#e9e9ee]" />
+                  <span className="rounded-lg bg-[#f4f4f6] px-3 py-1.5 text-[12px] font-medium text-[#5c5c64]">
+                    {stats.regionLocked.toLocaleString("en-US")} postings carry a
+                    line like this
+                  </span>
+                </div>
+                <p className="mt-6 text-[13px] font-semibold text-[#14141a]">
+                  {wallSample.title}
+                </p>
+                <p className="text-[12px] text-[#6f6f78]">{wallSample.company}</p>
+                <WallDocument sample={wallSample} />
+              </div>
+            </Reveal>
+          )}
+
+          <div className="mt-12">
+            {LEDGER.map((row, i) => (
+              <Reveal key={row.label} delay={i * 70} className="last:border-b">
+              <div
+                className="flex items-baseline justify-between gap-4 border-t border-[#e9e9ee] py-4"
+              >
+                <span
+                  className={
+                    row.accent
+                      ? "text-[15px] font-semibold text-[#2b4bf2]"
+                      : "text-[15px] text-[#14141a]"
+                  }
+                >
+                  {row.label}
+                </span>
+                <span
+                  className={
+                    row.accent
+                      ? "text-[20px] font-semibold text-[#2b4bf2] tabular-nums"
+                      : "text-[20px] font-medium text-[#14141a] tabular-nums"
+                  }
+                >
+                  {row.accent ? <CountUp to={row.value} /> : row.value.toLocaleString("en-US")}
+                  <span className="ml-2 text-[12px] font-normal text-[#6f6f78]">
+                    {Math.round((row.value / stats.total) * 100)}%
+                  </span>
+                </span>
+              </div>
+              </Reveal>
+            ))}
+          </div>
+
+          <p className="mt-4 text-[11px] text-[#6f6f78]">
+            Counted live from the {stats.total.toLocaleString("en-US")} internships
+            and contracts on the board right now. Sponsorship:{" "}
+            {stats.sponsorshipOffered.toLocaleString("en-US")} postings say it is
+            offered, {stats.sponsorshipDenied.toLocaleString("en-US")} say no,{" "}
+            {stats.sponsorshipSilent.toLocaleString("en-US")} never mention it.
+          </p>
+        </div>
+      </section>
+
+      {/* How it reads — four reads, one rule, their outputs */}
+      <section className="border-t border-[#e9e9ee]">
+        <div className="mx-auto w-full max-w-[1080px] px-4 py-16 sm:px-6 sm:py-24">
+          <Reveal>
+            <h2 className="text-[clamp(1.9rem,4vw,2.7rem)] font-medium tracking-[-0.02em] text-[#14141a]">
+              How a posting is read
+            </h2>
+          </Reveal>
+          <Reveal delay={100}>
+            <div className="mt-12 grid gap-x-10 gap-y-12 border-t border-[#14141a] pt-0 sm:grid-cols-2 lg:grid-cols-4">
+              {HOW.map((step, i) => (
+                <div key={step.title} className="relative pt-8">
+                  <span
+                    aria-hidden="true"
+                    className="absolute top-[-3.5px] left-0 size-[7px] bg-[#2b4bf2]"
+                  />
+                  <span className="text-[40px] leading-none font-medium tracking-tight text-[#14141a]">
+                    {i + 1}
+                    <span className="text-[#2b4bf2]">.</span>
+                  </span>
+                  <h3 className="mt-3 text-[15px] font-semibold text-[#14141a]">
+                    {step.title}
+                  </h3>
+                  <p className="mt-1.5 text-[12.5px] leading-relaxed text-[#6f6f78]">
+                    {step.body}
+                  </p>
+                  <p className="mt-4 border-t border-[#e9e9ee] pt-2.5 text-[12px] text-[#6f6f78]">
+                    <span className="font-medium text-[#5c5c64]">You get: </span>
+                    {step.output}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Comparison */}
+      <section className="border-t border-[#e9e9ee] bg-[#f4f4f6]">
+        <div className="mx-auto w-full max-w-[1080px] px-4 py-16 sm:px-6 sm:py-24">
+          <Reveal>
+            <h2 className="max-w-2xl text-[clamp(1.9rem,4vw,2.7rem)] leading-[1.08] font-medium tracking-[-0.02em] text-[#14141a]">
+              The big boards sell listings.{" "}
+              <span className="text-[#2b4bf2]">Shortlist sells the answer.</span>
+            </h2>
+          </Reveal>
+          <Reveal delay={100}>
+            <div className="mt-10 overflow-hidden rounded-[24px] border border-[#ececf0] bg-white shadow-[0_24px_64px_-32px_rgba(15,15,30,0.25)]">
+              <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] gap-x-4 border-b border-[#e9e9ee] bg-[#f4f4f6] px-5 py-3 text-[12px] font-semibold text-[#5c5c64] sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)] sm:px-8">
+                <span>&nbsp;</span>
+                <span className="hidden sm:block">The big boards</span>
+                <span className="text-[#2b4bf2]">Shortlist</span>
+              </div>
+              {COMPARE.map((row) => (
+                <div
+                  key={row.label}
+                  className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)] items-start gap-x-4 border-b border-[#e9e9ee] px-5 py-4 text-[13px] last:border-b-0 sm:px-8"
+                >
+                  <span className="font-semibold text-[#14141a]">{row.label}</span>
+                  <span className="hidden items-start gap-2 text-[#6f6f78] sm:flex">
+                    <X className="mt-0.5 size-3.5 shrink-0 text-[#c9c9cf]" />
+                    {row.them}
+                  </span>
+                  <span className="flex items-start gap-2 text-[#14141a]">
+                    <Check className="mt-0.5 size-3.5 shrink-0 text-[#2b4bf2]" strokeWidth={3} />
+                    {row.us}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
       {/* Final CTA */}
       <section className="border-t border-[#e9e9ee]">
         <div className="mx-auto w-full max-w-[1080px] px-4 py-16 text-center sm:px-6 sm:py-24">
@@ -425,7 +410,7 @@ export function LandingPage({
             </h2>
           </Reveal>
           <Reveal delay={90}>
-            <p className="mx-auto mt-3 max-w-md text-[13.5px] leading-relaxed text-[#8b8b93]">
+            <p className="mx-auto mt-3 max-w-md text-[13.5px] leading-relaxed text-[#6f6f78]">
               Pick your skills once. See, on every posting, whether they would
               take you — and what is missing before you apply.
             </p>
@@ -440,7 +425,7 @@ export function LandingPage({
 
       <footer className="mx-auto w-full max-w-[1080px] px-4 pb-10 sm:px-6">
         <div className="border-t border-[#e9e9ee] pt-6">
-          <p className="max-w-2xl text-[11px] leading-[1.6] text-[#8b8b93]">
+          <p className="max-w-2xl text-[11px] leading-[1.6] text-[#6f6f78]">
             This tool reads the words in a posting. It cannot know what an
             employer decides in the room, whether a role is already filled, or
             whether a visa will be granted. Treat every verdict as a signal, not
@@ -459,7 +444,7 @@ export function LandingPage({
             <a href="mailto:tekebahenok6@gmail.com" className="text-[11px] text-[#5c5c64] transition-colors hover:text-[#14141a]">
               Contact
             </a>
-            <span className="ml-auto text-[11px] text-[#8b8b93]">
+            <span className="ml-auto text-[11px] text-[#6f6f78]">
               © {new Date().getFullYear()} Shortlist
             </span>
           </div>

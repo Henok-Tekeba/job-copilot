@@ -64,7 +64,7 @@ export function LandingSearch() {
         type="submit"
         className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-[#2b4bf2] px-6 text-[15px] font-medium text-white transition-colors hover:bg-[#2340e0]"
       >
-        Find my internships
+        Find internships
         <ArrowRight className="size-4" />
       </button>
     </form>

@@ -9,7 +9,7 @@ import { DEFAULT_PROFILE, PROFILE_STORAGE_KEY } from "@/lib/profile";
  * Conversion CTA with the same first-touch rule as the hero search: no
  * profile yet → the skill picker; profile exists → straight to the board.
  */
-export function CtaLink({ children = "Find my internships" }: { children?: string }) {
+export function CtaLink({ children = "Find internships" }: { children?: string }) {
   const router = useRouter();
 
   const go = () => {

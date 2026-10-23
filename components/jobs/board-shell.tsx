@@ -2,10 +2,17 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Asterisk, MapPin, Search } from "lucide-react";
+import { Asterisk, MapPin, Search, SlidersHorizontal } from "lucide-react";
 
 import { LogoMark } from "@/components/logo-mark";
 import type { OpportunityFilter } from "@/components/jobs/board-filters";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { cn } from "cn";
 
 export type BoardTab = "all" | "saved" | "applied";
@@ -101,7 +108,7 @@ export function BoardShell({
             onSubmit={(e) => e.preventDefault()}
             className="mt-6 flex h-14 items-center rounded-full bg-white pr-1.5 shadow-[0_14px_36px_-22px_rgba(15,15,30,0.35)]"
           >
-            <Search className="ml-5 size-4 shrink-0 text-[#8b8b93]" />
+            <Search className="ml-5 size-4 shrink-0 text-[#6f6f78]" />
             <input
               value={searchValue}
               onChange={(e) => onSearchChange(e.target.value)}
@@ -110,7 +117,7 @@ export function BoardShell({
               className="h-full min-w-0 flex-1 bg-transparent px-3 text-[14px] text-[#14141a] outline-none placeholder:text-[#9c9ca4]"
             />
             <span aria-hidden="true" className="mx-1 h-8 w-px shrink-0 bg-[#e9e9ee]" />
-            <MapPin className="ml-2 hidden size-4 shrink-0 text-[#8b8b93] sm:block" />
+            <MapPin className="ml-2 hidden size-4 shrink-0 text-[#6f6f78] sm:block" />
             <input
               value={locationValue}
               onChange={(e) => onLocationChange(e.target.value)}
@@ -143,13 +150,35 @@ export function BoardShell({
                   "ml-2 inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1 font-mono text-[11px] tabular-nums",
                   tab === item.key
                     ? "bg-white/20 text-white"
-                    : "border border-[#e9e9ee] bg-white text-[#8b8b93]",
+                    : "border border-[#e9e9ee] bg-white text-[#6f6f78]",
                 )}
               >
                 {counts[item.key]}
               </span>
             </button>
           ))}
+
+          {sidebarSlot ? (
+            <Sheet>
+              <SheetTrigger
+                render={
+                  <button
+                    type="button"
+                    className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-lg border border-[#e9e9ee] bg-white px-4 text-[13px] font-medium text-[#5c5c64] lg:hidden"
+                  >
+                    <SlidersHorizontal className="size-3.5" />
+                    Filters
+                  </button>
+                }
+              />
+              <SheetContent side="left" className="w-[320px] max-w-[90vw] overflow-y-auto p-6">
+                <SheetHeader className="mb-4 text-left">
+                  <SheetTitle className="text-[15px] font-semibold">Filters</SheetTitle>
+                </SheetHeader>
+                {sidebarSlot}
+              </SheetContent>
+            </Sheet>
+          ) : null}
 
           <span
             aria-hidden="true"
@@ -178,6 +207,24 @@ export function BoardShell({
           </div>
           <div className="min-w-0">{children}</div>
         </div>
+
+        <footer className="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-[#e9e9ee] py-6">
+          <Link href="/skills" className="text-[12px] text-[#5c5c64] transition-colors hover:text-[#14141a]">
+            Your skills
+          </Link>
+          <Link href="/privacy" className="text-[12px] text-[#5c5c64] transition-colors hover:text-[#14141a]">
+            Privacy
+          </Link>
+          <Link href="/terms" className="text-[12px] text-[#5c5c64] transition-colors hover:text-[#14141a]">
+            Terms
+          </Link>
+          <Link href="/cookies" className="text-[12px] text-[#5c5c64] transition-colors hover:text-[#14141a]">
+            Cookies
+          </Link>
+          <span className="ml-auto text-[11px] text-[#6f6f78]">
+            © {new Date().getFullYear()} Shortlist
+          </span>
+        </footer>
       </div>
     </div>
   );

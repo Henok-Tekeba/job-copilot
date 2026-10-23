@@ -77,7 +77,7 @@ export function BoardFilters({
       />
 
       <Group
-        label="Speciality"
+        label="Scope"
         open={open.speciality}
         onToggle={() => toggle("speciality")}
       >

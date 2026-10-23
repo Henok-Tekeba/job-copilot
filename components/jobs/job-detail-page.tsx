@@ -14,6 +14,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CompanyAvatar } from "@/components/company-avatar";
+import { format } from "date-fns";
 import {
   DeadlineBadge,
   NewBadge,
@@ -89,7 +90,7 @@ export function JobDetailPage({ job, verdict }: { job: Job; verdict?: EngineVerd
             href={job.sourceUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[11px] text-[#8b8b93] hover:underline"
+            className="text-[11px] text-[#6f6f78] hover:underline"
           >
             {job.attribution}
           </a>
@@ -102,7 +103,7 @@ export function JobDetailPage({ job, verdict }: { job: Job; verdict?: EngineVerd
               <h1 className="text-[clamp(1.5rem,3vw,2rem)] font-medium leading-[1.15] tracking-[-0.02em] text-balance text-[#14141a]">
                 {job.title}
               </h1>
-              <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px] text-[#8b8b93]">
+              <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px] text-[#6f6f78]">
                 <span>{opportunityLabel(job.evaluation.opportunity)}</span>
                 {workplaceLabel && <span>· {workplaceLabel}</span>}
                 {job.deadline && <DeadlineBadge deadline={job.deadline} />}
@@ -131,7 +132,7 @@ export function JobDetailPage({ job, verdict }: { job: Job; verdict?: EngineVerd
                 <EligibilityPanel eligibility={job.evaluation.eligibility} />
               )}
               {job.evaluation.deadlineEvidence && (
-                <p className="text-[12px] text-[#8b8b93]">
+                <p className="text-[12px] text-[#6f6f78]">
                   Deadline read from the posting: {job.evaluation.deadlineEvidence}
                 </p>
               )}
@@ -146,11 +147,11 @@ export function JobDetailPage({ job, verdict }: { job: Job; verdict?: EngineVerd
                     <span className="text-[40px] leading-none font-semibold tracking-tight text-[#14141a] tabular-nums">
                       {fit.priority}
                     </span>
-                    <span className="pb-1 text-[12px] text-[#8b8b93]">
+                    <span className="pb-1 text-[12px] text-[#6f6f78]">
                       Priority — {fit.score} skill fit
                     </span>
                   </div>
-                  <p className="truncate text-[12px] text-[#8b8b93]">{fit.reasons.join(" · ")}</p>
+                  <p className="truncate text-[12px] text-[#6f6f78]">{fit.reasons.join(" · ")}</p>
                   {fit.requiredMissing.length > 0 && (
                     <div className="flex flex-wrap items-center gap-1">
                       {fit.requiredMissing.slice(0, 4).map((skill) => (
@@ -159,7 +160,7 @@ export function JobDetailPage({ job, verdict }: { job: Job; verdict?: EngineVerd
                         </Badge>
                       ))}
                       {fit.requiredMissing.length > 4 && (
-                        <span className="text-[11px] text-[#8b8b93]">
+                        <span className="text-[11px] text-[#6f6f78]">
                           +{fit.requiredMissing.length - 4} more to learn
                         </span>
                       )}
@@ -167,7 +168,7 @@ export function JobDetailPage({ job, verdict }: { job: Job; verdict?: EngineVerd
                   )}
                 </div>
               ) : (
-                <span className="text-[13px] text-[#8b8b93]">Not enough skills detected</span>
+                <span className="text-[13px] text-[#6f6f78]">Not enough skills detected</span>
               )}
             </section>
 
@@ -179,7 +180,7 @@ export function JobDetailPage({ job, verdict }: { job: Job; verdict?: EngineVerd
                   {plainDescription.slice(0, 900)}
                 </p>
               ) : (
-                <p className="text-[13px] leading-relaxed text-[#8b8b93]">
+                <p className="text-[13px] leading-relaxed text-[#6f6f78]">
                   No description in the snapshot.
                 </p>
               )}
@@ -203,14 +204,18 @@ export function JobDetailPage({ job, verdict }: { job: Job; verdict?: EngineVerd
                 <p className="truncate text-[15px] font-semibold text-[#14141a]">
                   {job.company || "Unknown company"}
                 </p>
-                <p className="truncate text-[12px] text-[#8b8b93]">
+                <p className="truncate text-[12px] text-[#6f6f78]">
                   {locationLabel || "Location not stated"}
                 </p>
               </div>
             </div>
 
             <MetaRow label="Source">{cap(job.source)}</MetaRow>
-            {job.postedAt && <MetaRow label="Posted">{job.postedAt.slice(0, 10)}</MetaRow>}
+            {job.postedAt && (
+              <MetaRow label="Posted">
+                {format(new Date(job.postedAt), "MMM d, yyyy")}
+              </MetaRow>
+            )}
 
             <div className="flex flex-col gap-2">
               <Button
@@ -220,7 +225,7 @@ export function JobDetailPage({ job, verdict }: { job: Job; verdict?: EngineVerd
                 className="h-11 rounded-xl text-[14px]"
               >
                 <ExternalLink />
-                Apply on the board
+                Apply on the company site
               </Button>
               <div className="grid grid-cols-2 gap-2">
                 <Button
@@ -247,7 +252,7 @@ export function JobDetailPage({ job, verdict }: { job: Job; verdict?: EngineVerd
                   tracked.dismiss(job.id);
                   router.push("/jobs");
                 }}
-                className="justify-start rounded-xl text-[13px] text-[#8b8b93] hover:text-[#14141a]"
+                className="justify-start rounded-xl text-[13px] text-[#6f6f78] hover:text-[#14141a]"
               >
                 <Trash />
                 Dismiss
@@ -255,7 +260,7 @@ export function JobDetailPage({ job, verdict }: { job: Job; verdict?: EngineVerd
             </div>
 
             {activeProfile && (
-              <p className="text-[11px] text-[#8b8b93]">
+              <p className="text-[11px] text-[#6f6f78]">
                 Fit shown for your profile ({profile.skills.length} skills).
               </p>
             )}
@@ -278,7 +283,7 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 function MetaRow({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex items-center justify-between gap-3 border-b border-[#e9e9ee] pb-2 text-[13px]">
-      <span className="text-[#8b8b93]">{label}</span>
+      <span className="text-[#6f6f78]">{label}</span>
       <span className="truncate text-right text-[#14141a]">{children}</span>
     </div>
   );

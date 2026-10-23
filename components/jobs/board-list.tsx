@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Bookmark } from "lucide-react";
-import { formatDistanceToNowStrict } from "date-fns";
+import { format, formatDistanceToNowStrict } from "date-fns";
 
 import { Button } from "@/components/ui/button";
 import { CompanyAvatar } from "@/components/company-avatar";
@@ -80,7 +80,9 @@ function BoardRow({
       }}
       className={cn(
         "grid cursor-pointer grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-4 gap-y-2 rounded-2xl px-4 py-3 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#2b4bf2]/35 sm:grid-cols-[auto_minmax(0,240px)_1fr_160px_110px_auto] sm:py-3.5",
-        selected ? "bg-[#f4f4f6]" : "hover:bg-[#f4f4f6]/70",
+        selected
+          ? "bg-[#f4f4f6] shadow-[inset_2px_0_0_#2b4bf2]"
+          : "hover:bg-[#f4f4f6]/70",
       )}
     >
       <CompanyAvatar job={job} />
@@ -89,7 +91,7 @@ function BoardRow({
         <p className="truncate text-[15px] font-medium leading-snug text-[#14141a]">
           {job.title}
         </p>
-        <p className="truncate text-[12px] text-[#8b8b93]">
+        <p className="truncate text-[12px] text-[#6f6f78]">
           {job.company || "Unknown company"}
           {applied ? " · Applied ✓" : ""}
         </p>
@@ -112,8 +114,8 @@ function BoardRow({
         {job.location}
       </p>
 
-      <p className="hidden font-mono text-[12px] text-[#8b8b93] lg:block">
-        {mounted ? timeAgo(job.postedAt) : "—"}
+      <p className="hidden font-mono text-[12px] text-[#6f6f78] lg:block">
+        {mounted ? timeAgo(job.postedAt) : job.postedAt ? format(new Date(job.postedAt), "MMM d") : "—"}
       </p>
 
       {matchPct !== null ? (

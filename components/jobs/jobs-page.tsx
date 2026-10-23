@@ -181,11 +181,17 @@ export default function JobsPage({ initialJobs }: { initialJobs: Job[] }) {  // 
     return jobs.map((j) => applyProfile(j, profile.skills));
   }, [jobs, profile]);
 
-  const filteredJobs = React.useMemo(() => {
-    const query = search.trim().toLowerCase();
-    return effectiveJobs
-      .filter((job) => {
-        if (tracked.dismissed.has(job.id)) return false;
+  // One predicate, two consumers: the visible list and the tab count. The tab
+  // count ignores the opportunity pill so its number keeps the same meaning
+  // whichever pill is active — a count that silently changes is a lie.
+  const passesFilters = React.useCallback(
+    (
+      job: Job,
+      opts?: { ignoreOpportunity?: boolean; ignoreTab?: boolean },
+    ) => {
+      const query = search.trim().toLowerCase();
+      if (tracked.dismissed.has(job.id)) return false;
+      if (!opts?.ignoreTab) {
         if (tab === "saved" && !tracked.saved.has(job.id)) return false;
         if (
           tab === "applied" &&
@@ -193,29 +199,57 @@ export default function JobsPage({ initialJobs }: { initialJobs: Job[] }) {  // 
           !appliedIds.has(job.id)
         )
           return false;
-        if (!showNonSoftware && job.relevance !== "software") return false;
-        if (query && !job.title.toLowerCase().includes(query) && !job.company.toLowerCase().includes(query)) {
-          return false;
-        }
-        if (!SHOWN_OPPORTUNITY.has(job.evaluation.opportunity)) return false;
-        if (
-          opportunityFilter !== "all" &&
-          job.evaluation.opportunity !== opportunityFilter
-        ) {
-          return false;
-        }
-        if (sourceFilter !== "all" && job.source !== sourceFilter) return false;
-        if (
-          location &&
-          !job.location.toLowerCase().includes(location.toLowerCase())
-        ) {
-          return false;
-        }
-        if (eligibilityFilter === "open" && job.evaluation.eligible === "no") return false;
-        if (eligibilityFilter === "no" && job.evaluation.eligible !== "no") return false;
-        if (job.evaluation.fitScore !== null && job.evaluation.fitScore < minFit) return false;
-        return true;
-      })
+      }
+      if (!showNonSoftware && job.relevance !== "software") return false;
+      if (
+        query &&
+        !job.title.toLowerCase().includes(query) &&
+        !job.company.toLowerCase().includes(query)
+      ) {
+        return false;
+      }
+      if (!SHOWN_OPPORTUNITY.has(job.evaluation.opportunity)) return false;
+      if (
+        !opts?.ignoreOpportunity &&
+        opportunityFilter !== "all" &&
+        job.evaluation.opportunity !== opportunityFilter
+      ) {
+        return false;
+      }
+      if (sourceFilter !== "all" && job.source !== sourceFilter) return false;
+      if (
+        location &&
+        !job.location.toLowerCase().includes(location.toLowerCase())
+      ) {
+        return false;
+      }
+      if (eligibilityFilter === "open" && job.evaluation.eligible === "no")
+        return false;
+      if (eligibilityFilter === "no" && job.evaluation.eligible !== "no")
+        return false;
+      if (job.evaluation.fitScore !== null && job.evaluation.fitScore < minFit)
+        return false;
+      return true;
+    },
+    [
+      search,
+      location,
+      opportunityFilter,
+      sourceFilter,
+      eligibilityFilter,
+      showNonSoftware,
+      minFit,
+      tab,
+      tracked.dismissed,
+      tracked.saved,
+      tracked.applied,
+      appliedIds,
+    ],
+  );
+
+  const filteredJobs = React.useMemo(() => {
+    return effectiveJobs
+      .filter((job) => passesFilters(job))
       .sort((a, b) => {
         if (sortBy === "closing") {
           // Closed and undated postings sink below anything still open.
@@ -237,22 +271,15 @@ export default function JobsPage({ initialJobs }: { initialJobs: Job[] }) {  // 
         // `priority` already folds in seniority and eligibility.
         return byPriority(a, b);
       });
-  }, [
-    effectiveJobs,
-    search,
-    location,
-    opportunityFilter,
-    sourceFilter,
-    eligibilityFilter,
-    showNonSoftware,
-    minFit,
-    sortBy,
-    tab,
-    tracked.saved,
-    tracked.applied,
-    tracked.dismissed,
-    appliedIds,
-  ]);
+  }, [effectiveJobs, passesFilters, sortBy]);
+
+  const allCount = React.useMemo(
+    () =>
+      effectiveJobs.filter((job) =>
+        passesFilters(job, { ignoreOpportunity: true, ignoreTab: true }),
+      ).length,
+    [effectiveJobs, passesFilters],
+  );
 
   const pageCount = Math.max(1, Math.ceil(filteredJobs.length / PAGE_SIZE));
   const safePageIndex = Math.min(pageIndex, pageCount - 1);
@@ -362,7 +389,7 @@ export default function JobsPage({ initialJobs }: { initialJobs: Job[] }) {  // 
       tab={tab}
       onTabChange={setTab}
       counts={{
-        all: filteredJobs.length,
+        all: allCount,
         saved: tracked.saved.size,
         applied: tracked.applied.size + appliedIds.size,
       }}

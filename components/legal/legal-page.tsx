@@ -39,7 +39,7 @@ export function LegalPage({
         <h1 className="text-[clamp(1.5rem,3vw,2rem)] font-medium tracking-[-0.02em] text-[#14141a]">
           {title}
         </h1>
-        <p className="mt-2 text-[12px] text-[#8b8b93]">Last updated {updated}</p>
+        <p className="mt-2 text-[12px] text-[#6f6f78]">Last updated {updated}</p>
         <div className="mt-8 flex flex-col gap-6">{children}</div>
       </div>
     </main>
