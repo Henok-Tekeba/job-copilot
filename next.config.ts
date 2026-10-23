@@ -20,6 +20,11 @@ const nextConfig: NextConfig = {
   // uses `use cache`, so nothing is lost.
   cacheComponents: false,
   partialPrefetching: false,
+  // Marks that this app was upgraded by the agent-driven security upgrade
+  // (Next 16.4.0 → 16.4.3), silencing the advisory pause in dev/build.
+  experimental: {
+    agentUpgrade: "security",
+  },
   turbopack: {
     rules: {
       "*.css": {
