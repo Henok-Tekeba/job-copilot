@@ -22,18 +22,24 @@ export function WallDocument({ sample }: { sample: WallSample }) {
   React.useEffect(() => {
     const node = ref.current;
     if (!node) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setTyped(full);
-      return;
-    }
-
     let raf = 0;
     let start = 0;
+    let reduced = false;
+    try {
+      reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    } catch {
+      reduced = false;
+    }
 
     const observer = new IntersectionObserver(
       (entries) => {
         if (!entries.some((e) => e.isIntersecting)) return;
         observer.disconnect();
+        // Reduced motion or an already-complete read: stay static.
+        if (reduced) {
+          setTyped(full);
+          return;
+        }
         setTyped(0);
         const tick = (now: number) => {
           if (!start) start = now;
