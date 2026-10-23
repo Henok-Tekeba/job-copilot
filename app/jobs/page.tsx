@@ -1,6 +1,7 @@
+import { Suspense } from "react";
 import JobsPage from "@/components/jobs/jobs-page";
 import { loadJobs } from "@/lib/data";
-import { byPriority, isReachable, summarizeJobs } from "@/lib/summary";
+import { byPriority, isReachable } from "@/lib/summary";
 
 /**
  * How many postings to render into the HTML.
@@ -20,12 +21,15 @@ export default function Jobs() {
 
   // Pre-render the postings the default view would actually show, in the order
   // it would show them, so the first paint does not reshuffle after loading.
-  const firstPage = jobs.filter(isReachable).sort(byPriority).slice(0, PRERENDER_COUNT);
+  const firstPage = jobs
+    .filter((job) => job.evaluation.opportunity === "internship" || job.evaluation.opportunity === "contract")
+    .filter(isReachable)
+    .sort(byPriority)
+    .slice(0, PRERENDER_COUNT);
 
   return (
-    <JobsPage
-      initialJobs={firstPage}
-      initialSummary={summarizeJobs(jobs)}
-    />
+    <Suspense fallback={null}>
+      <JobsPage initialJobs={firstPage} />
+    </Suspense>
   );
 }

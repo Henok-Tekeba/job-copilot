@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
+import { Geist } from "next/font/google";
 import { AppShell } from "@/components/app-shell";
 import "./globals.css";
 
@@ -9,36 +9,37 @@ const geistSans = Geist({
   weight: ["400", "500", "600", "700"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-  weight: ["400", "500"],
-});
-
-const instrumentSerif = Instrument_Serif({
-  variable: "--font-instrument-serif",
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal", "italic"],
-});
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
 export const metadata: Metadata = {
-  title: "Job Copilot",
-  description: "Track, score, and close the gap on job opportunities.",
+  metadataBase: new URL(SITE_URL),
+  title: "Shortlist",
+  description: "Tech internships and contracts, scored for international applicants.",
+  openGraph: {
+    type: "website",
+    siteName: "Shortlist",
+    title: "Shortlist",
+    description: "Tech internships and contracts, scored for international applicants.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Shortlist",
+    description: "Tech internships and contracts, scored for international applicants.",
+  },
 };
 
 export const viewport: Viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: dark)", color: "#252525" },
-    { media: "(prefers-color-scheme: light)", color: "#faf8f5" },
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
   ],
 };
 
-const themeScript = `try{if(localStorage.getItem("jc-theme")==="light")document.documentElement.classList.remove("dark")}catch(e){}`;
+const themeScript = `try{if(localStorage.getItem("jc-theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className="dark h-full antialiased">
+    <html lang="en" className="h-full antialiased">
       <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       {process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN && (
         <script
@@ -48,7 +49,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
       )}
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} min-h-full bg-background font-sans text-foreground`}
+        className={`${geistSans.variable} min-h-full bg-background font-sans text-foreground`}
       >
         <AppShell>{children}</AppShell>
       </body>

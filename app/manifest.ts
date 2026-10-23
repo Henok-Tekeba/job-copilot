@@ -4,12 +4,19 @@ export const dynamic = "force-static";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Job Copilot",
-    short_name: "Job Copilot",
-    description: "Track, score, and close the gap on job opportunities.",
+    name: "Shortlist",
+    short_name: "Shortlist",
+    description: "Tech internships and contracts, scored for international applicants.",
     start_url: "./jobs",
     display: "standalone",
-    background_color: "#000000",
-    theme_color: "#000000",
+    background_color: "#ffffff",
+    theme_color: "#2b4bf2",
+    icons: [
+      {
+        src: "./icon.svg",
+        sizes: "any",
+        type: "image/svg+xml",
+      },
+    ],
   };
 }

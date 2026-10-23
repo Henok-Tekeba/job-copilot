@@ -20,6 +20,7 @@
 import * as crypto from "crypto";
 import * as fs from "fs";
 import * as path from "path";
+import { execSync } from "child_process";
 import { detectTextStance } from "../engine/textStance";
 import { combineVerdict } from "../engine/verdict";
 import { matchCompany, normaliseCompanyName, type CompanyRecord } from "../engine/companyName";
@@ -234,7 +235,7 @@ function verdictEval(rows: Array<{ post: Posting; label: Label; predicted: Retur
   const counts: Record<string, { tp: number; fp: number; fn: number }> = {};
 
   for (const { post, label, predicted } of rows) {
-    const key = normaliseCompanyName(post.company || "");
+    const key = post.company || "";
     const record = key ? recordsLookup[key] : undefined;
     const match = matchCompany(post.company || "", recordsLookup, aliases);
     const verdict = combineVerdict({
@@ -317,10 +318,9 @@ function main() {
     try {
       commit = crypto.createHash("sha256").update(fs.readFileSync(path.join(ROOT, ".git", "HEAD"))).digest("hex").slice(0, 12);
     } catch { /* not a git checkout */ }
-    try {
-      const { execSync } = require("child_process") as typeof import("child_process");
-      commit = execSync("git rev-parse --short HEAD", { cwd: ROOT }).toString().trim();
-    } catch { /* keep fallback */ }
+      try {
+        commit = execSync("git rev-parse --short HEAD", { cwd: ROOT }).toString().trim();
+      } catch { /* keep fallback */ }
     const stamp = `${new Date().toISOString()} engine=${ENGINE_VERSION} commit=${commit} labels_natural=${labelHashes.natural} labels_stratified=${labelHashes.stratified} ${unaudited ? "UNAUDITED" : "audited"}\n`;
     fs.appendFileSync(TEST_RUNS_LOG, stamp);
   }

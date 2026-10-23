@@ -1,32 +1,24 @@
 "use client";
 
 import * as React from "react";
-import { SearchIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Kbd, KbdGroup } from "@/components/ui/kbd";
-import { PageHeader } from "@/components/page-header";
-import { byPriority, summarizeJobs, type JobsSummary } from "@/lib/summary";
+
+import { byPriority } from "@/lib/summary";
 import { daysUntil } from "@/lib/jobs";
 import type { Job } from "@/lib/types";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { CommandPalette } from "@/components/jobs/command-palette";
-import { JobsCardList } from "@/components/jobs/jobs-card-list";
-import { JobsPagination } from "@/components/jobs/jobs-pagination";
-import { JobsTable } from "@/components/jobs/jobs-table";
+import { BoardList } from "@/components/jobs/board-list";
+import { BoardShell } from "@/components/jobs/board-shell";
 import {
-  JobsToolbar,
+  BoardFilters,
   type OpportunityFilter,
   type SortBy,
-} from "@/components/jobs/jobs-toolbar";
-import { ProfileBar } from "@/components/jobs/profile-bar";
-import { StatCards } from "@/components/jobs/stat-cards";
-import type { VerdictStatus } from "@/engine/verdict";
-
-type EngineVerdict = { status: VerdictStatus; confidence: number; reasons: Array<Record<string, unknown>> };
-import { OnboardingDialog, useOnboarding } from "@/components/jobs/onboarding";
+} from "@/components/jobs/board-filters";
+import { JobsPagination } from "@/components/jobs/jobs-pagination";
 import { useProfile } from "@/hooks/use-profile";
 import { applyProfile, isDefaultProfile } from "@/lib/profile";
 import {
@@ -36,7 +28,6 @@ import {
   EmptyHeader,
   EmptyTitle,
 } from "@/components/ui/empty";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useTrackedJobs } from "@/hooks/use-tracked-jobs";
 
@@ -45,14 +36,11 @@ type SourceFilter = "all" | Job["source"];
 
 const PAGE_SIZE = 24;
 
-export default function JobsPage({
-  initialJobs,
-  initialSummary,
-}: {
-  initialJobs: Job[];
-  initialSummary: JobsSummary;
-}) {
-  // Seeded with a real first page from the server, so the first paint is
+// Shortlist is internships and contracts only; anything else the feeds
+// carry (full-time, junior, program) is dropped before it ever renders.
+const SHOWN_OPPORTUNITY = new Set(["internship", "contract"]);
+
+export default function JobsPage({ initialJobs }: { initialJobs: Job[] }) {  // Seeded with a real first page from the server, so the first paint is
   // postings rather than skeletons.
   const [jobs, setJobs] = React.useState<Job[]>(initialJobs);
   const [loaded, setLoaded] = React.useState(false);
@@ -61,26 +49,6 @@ export default function JobsPage({
 
   // Data arrives as an asset rather than as serialised props, so the HTML stays
   // small enough to load on a phone.
-  const [verdicts, setVerdicts] = React.useState<Map<string, EngineVerdict>>(new Map());
-  React.useEffect(() => {
-    let cancelled = false;
-    const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
-
-    fetch(`${basePath}/verdicts.json`)
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
-        if (cancelled || !data?.verdicts) return;
-        setVerdicts(new Map(Object.entries(data.verdicts) as Array<[string, EngineVerdict]>));
-      })
-      .catch(() => {
-        // The board still works on the stored snapshot verdicts without it.
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
   React.useEffect(() => {
     let cancelled = false;
     const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
@@ -105,12 +73,16 @@ export default function JobsPage({
     };
   }, [reloadToken]);
 
-  const summary = loaded ? summarizeJobs(jobs) : initialSummary;
-
   const [search, setSearch] = React.useState("");
-  // Defaults to "all" rather than "focus": with 128 company boards connected,
-  // the open-and-worldwide roles are mostly full-time, and hiding them by
-  // default buried the single biggest source of reachable work.
+  // The landing hero search lands on /jobs?search=…; adopt it once on mount.
+  const searchParams = useSearchParams();
+  React.useEffect(() => {
+    const incoming = searchParams.get("search");
+    if (incoming != null && incoming !== "") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setSearch(incoming);
+    }
+  }, [searchParams]);
   const [opportunityFilter, setOpportunityFilter] =
     React.useState<OpportunityFilter>("all");
   const [sourceFilter, setSourceFilter] = React.useState<SourceFilter>("all");
@@ -119,6 +91,9 @@ export default function JobsPage({
   const [minFit, setMinFit] = React.useState(0);
   // Defaults to priority so the prerendered order matches the hydrated order.
   const [sortBy, setSortBy] = React.useState<SortBy>("priority");
+  // The hero's second field filters by what the posting itself says about
+  // where the work sits.
+  const [location, setLocation] = React.useState("");
 
   // Pagination is owned here, not by the table or the card list. Both render the
   // same slice so the page can be prerendered small: 4,000 postings rendered in
@@ -129,13 +104,11 @@ export default function JobsPage({
   // Saved / applied / dismissed, persisted in the browser. The static site has
   // no server, so this is the application tracker.
   const tracked = useTrackedJobs();
-  const { profile, toggleSkill, setSkills, setActive } = useProfile();
-  const [tab, setTab] = React.useState<"all" | "saved" | "applied">("all");
-  const [profileSheetOpen, setProfileSheetOpen] = React.useState(false);
-  const { show: showOnboarding, dismiss: dismissOnboarding } = useOnboarding();
+  const { profile } = useProfile();  const [tab, setTab] = React.useState<"all" | "saved" | "applied">("all");
 
   const filterKey = [
     search,
+    location,
     opportunityFilter,
     sourceFilter,
     eligibilityFilter,
@@ -158,15 +131,33 @@ export default function JobsPage({
   React.useEffect(() => {
     if (process.env.NEXT_PUBLIC_STATIC === "1") return;
     async function loadApplied() {
-      const res = await fetch("/api/applications");
-      if (res.ok) {
+      try {
+        const res = await fetch("/api/applications");
+        if (!res.ok) return;
         const apps: Array<{ jobId: string | null }> = await res.json();
         const ids = new Set(apps.filter((a) => a.jobId).map((a) => a.jobId!));
         setAppliedIds(ids);
+      } catch {
+        // The API route was removed with the applications page; the local
+        // tracker still records applied state.
       }
     }
     loadApplied();
   }, []);
+
+  const handleDismiss = React.useCallback(
+    (id: string) => {
+      tracked.dismiss(id);
+    },
+    [tracked],
+  );
+
+  const openJob = React.useCallback(
+    (job: Job) => {
+      router.push(`/jobs/${job.id}`);
+    },
+    [router],
+  );
 
   React.useEffect(() => {
     const handler = (event: KeyboardEvent) => {
@@ -206,17 +197,20 @@ export default function JobsPage({
         if (query && !job.title.toLowerCase().includes(query) && !job.company.toLowerCase().includes(query)) {
           return false;
         }
-        if (opportunityFilter === "focus" && job.evaluation.opportunity === "fulltime") {
-          return false;
-        }
+        if (!SHOWN_OPPORTUNITY.has(job.evaluation.opportunity)) return false;
         if (
-          opportunityFilter !== "focus" &&
           opportunityFilter !== "all" &&
           job.evaluation.opportunity !== opportunityFilter
         ) {
           return false;
         }
         if (sourceFilter !== "all" && job.source !== sourceFilter) return false;
+        if (
+          location &&
+          !job.location.toLowerCase().includes(location.toLowerCase())
+        ) {
+          return false;
+        }
         if (eligibilityFilter === "open" && job.evaluation.eligible === "no") return false;
         if (eligibilityFilter === "no" && job.evaluation.eligible !== "no") return false;
         if (job.evaluation.fitScore !== null && job.evaluation.fitScore < minFit) return false;
@@ -246,6 +240,7 @@ export default function JobsPage({
   }, [
     effectiveJobs,
     search,
+    location,
     opportunityFilter,
     sourceFilter,
     eligibilityFilter,
@@ -331,16 +326,26 @@ export default function JobsPage({
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [pagedJobs, selectedId, tracked]);
+  }, [pagedJobs, selectedId, tracked, openJob, handleDismiss]);
 
 
-  const handleDismiss = (id: string) => {
-    tracked.dismiss(id);
-  };
-
-  const openJob = (job: Job) => {
-    router.push(`/jobs/${job.id}`);
-  };
+  const sidebarNode = (
+    <BoardFilters
+      search={search}
+      onSearchChange={setSearch}
+      opportunityFilter={opportunityFilter}
+      onOpportunityFilterChange={setOpportunityFilter}
+      eligibilityFilter={eligibilityFilter}
+      onEligibilityFilterChange={setEligibilityFilter}
+      showNonSoftware={showNonSoftware}
+      onShowNonSoftwareChange={setShowNonSoftware}
+      sortBy={sortBy}
+      onSortByChange={setSortBy}
+      minFit={minFit}
+      onMinFitChange={setMinFit}
+      profileActive={!isDefaultProfile(profile)}
+    />
+  );
 
   const handleResetFilters = () => {
     setSearch("");
@@ -349,36 +354,27 @@ export default function JobsPage({
     setEligibilityFilter("open");
     setShowNonSoftware(false);
     setMinFit(0);
+    setLocation("");
   };
 
   return (
-    <>
-      <PageHeader>
-        <Button
-          variant="secondary"
-          size="sm"
-          className="ml-auto"
-          aria-label="Search jobs"
-          onClick={() => setPaletteOpen(true)}
-        >
-          <SearchIcon />
-          <span className="hidden md:inline">Search jobs</span>
-          <KbdGroup className="hidden md:flex">
-            <Kbd>⌘</Kbd>
-            <Kbd>K</Kbd>
-          </KbdGroup>
-        </Button>
-      </PageHeader>
-
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-6 sm:px-6 sm:py-8">
-        <div className="flex flex-col gap-1.5 pt-1">
-          <h1 className="font-heading text-3xl font-semibold tracking-tight">Jobs</h1>
-          <p className="text-sm text-muted-foreground">
-            Tech internships, contracts and junior roles, read for international applicants.
-          </p>
-        </div>
-
-        {loadFailed && jobs.length === 0 ? (
+    <BoardShell
+      tab={tab}
+      onTabChange={setTab}
+      counts={{
+        all: filteredJobs.length,
+        saved: tracked.saved.size,
+        applied: tracked.applied.size + appliedIds.size,
+      }}
+      opportunityFilter={opportunityFilter}
+      onOpportunityFilterChange={setOpportunityFilter}
+      searchValue={search}
+      onSearchChange={setSearch}
+      locationValue={location}
+      onLocationChange={setLocation}
+      sidebarSlot={sidebarNode}
+    >
+      {loadFailed && jobs.length === 0 ? (
           <Empty>
             <EmptyHeader>
               <EmptyTitle>Could not load postings</EmptyTitle>
@@ -401,145 +397,43 @@ export default function JobsPage({
             </EmptyContent>
           </Empty>
         ) : (
-          <>
-        <StatCards
-          summary={summary}
-          jobs={jobs}
-          loaded={loaded}
-          onReachable={() => setEligibilityFilter("open")}
-          onInternships={() => setOpportunityFilter("internship")}
-          onClosingSoon={() => setSortBy("closing")}
-          onBestPriority={() => setSortBy("priority")}
+        <>
+        <BoardList
+          jobs={pagedJobs}
+          loading={false}
+          appliedIds={appliedIds}
+          savedIds={tracked.saved}
+          selectedId={selectedId}
+          profileActive={!isDefaultProfile(profile)}
+          onToggleSaved={tracked.toggleSaved}
+          onOpen={openJob}
+          onResetFilters={handleResetFilters}
+          emptyTitle={
+            tab === "saved"
+              ? "Nothing saved yet"
+              : tab === "applied"
+                ? "Nothing marked applied"
+                : "No internships match"
+          }
+          emptyDescription={
+            tab === "saved"
+              ? "Save postings you want to come back to and they will collect here."
+              : tab === "applied"
+                ? "Mark a posting as applied to keep the list here."
+                : "Try widening the search or lowering the minimum fit score."
+          }
         />
 
-        <ProfileBar
-          profile={profile}
-          onToggleSkill={toggleSkill}
-          onSetSkills={setSkills}
-          onSetActive={setActive}
-          sheetOpen={profileSheetOpen}
-          onSheetOpenChange={setProfileSheetOpen}
-        />
-
-        <OnboardingDialog
-          open={showOnboarding}
-          onOpenProfile={() => {
-            dismissOnboarding();
-            setProfileSheetOpen(true);
-          }}
-          onSkip={dismissOnboarding}
-        />
-
-        <div className="flex flex-col gap-4">
-          <JobsToolbar
-            search={search}
-            onSearchChange={setSearch}
-            opportunityFilter={opportunityFilter}
-            onOpportunityFilterChange={setOpportunityFilter}
-            sourceFilter={sourceFilter}
-            onSourceFilterChange={setSourceFilter}
-            eligibilityFilter={eligibilityFilter}
-            onEligibilityFilterChange={setEligibilityFilter}
-            showNonSoftware={showNonSoftware}
-            onShowNonSoftwareChange={setShowNonSoftware}
-            minFit={minFit}
-            onMinFitChange={setMinFit}
-            sortBy={sortBy}
-            onSortByChange={setSortBy}
+        {loaded && (
+          <JobsPagination
+            pageIndex={safePageIndex}
+            pageSize={PAGE_SIZE}
+            total={filteredJobs.length}
+            onPageChange={setPageIndex}
           />
-
-          <Tabs value={tab} onValueChange={(v) => setTab(v as typeof tab)}>
-            <TabsList variant="line" className="max-w-full overflow-x-auto">
-              <TabsTrigger value="all">
-                All
-                <span className="font-mono text-xs tabular-nums">
-                  {filteredJobs.length}
-                </span>
-              </TabsTrigger>
-              <TabsTrigger value="saved">
-                Saved
-                <span className="font-mono text-xs tabular-nums">
-                  {tracked.saved.size}
-                </span>
-              </TabsTrigger>
-              <TabsTrigger value="applied">
-                Applied
-                <span className="font-mono text-xs tabular-nums">
-                  {tracked.applied.size + appliedIds.size}
-                </span>
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
-
-          <div className="-mx-4 border-t border-border sm:-mx-6">
-            <div className="hidden md:block">
-              <JobsTable
-                jobs={pagedJobs}
-                loading={false}
-                appliedIds={appliedIds}
-                savedIds={tracked.saved}
-                verdicts={verdicts}
-                selectedId={selectedId}
-                onSelect={setSelectedId}
-                onToggleSaved={tracked.toggleSaved}
-                onToggleApplied={(job) =>
-                  tracked.applied.has(job.id) || appliedIds.has(job.id)
-                    ? tracked.unmarkApplied(job.id)
-                    : tracked.markApplied(job)
-                }
-                onRowClick={openJob}
-                onDismiss={handleDismiss}
-                onResetFilters={handleResetFilters}
-              />
-            </div>
-            <div className="md:hidden">
-              <JobsCardList
-                jobs={pagedJobs}
-                loading={false}
-                appliedIds={appliedIds}
-                savedIds={tracked.saved}
-                onToggleSaved={tracked.toggleSaved}
-                onToggleApplied={(job) =>
-                  tracked.applied.has(job.id) || appliedIds.has(job.id)
-                    ? tracked.unmarkApplied(job.id)
-                    : tracked.markApplied(job)
-                }
-                emptyTitle={
-                  tab === "saved"
-                    ? "Nothing saved yet"
-                    : tab === "applied"
-                      ? "Nothing marked applied"
-                      : "No jobs match"
-                }
-                emptyDescription={
-                  tab === "saved"
-                    ? "Save postings you want to come back to and they will collect here."
-                    : tab === "applied"
-                      ? "Mark a posting as applied to keep the list here."
-                      : "Try widening the search or lowering the minimum fit score."
-                }
-                onRowClick={openJob}
-                onResetFilters={handleResetFilters}
-              />
-            </div>
-          </div>
-
-          <p className="hidden px-1 pt-2 text-[11px] text-muted-foreground/70 md:block">
-            j/k move · Enter open · s save · x dismiss · a applied · / search · ? shortcuts
-          </p>
-
-          {loaded && (
-            <JobsPagination
-              pageIndex={safePageIndex}
-              pageSize={PAGE_SIZE}
-              total={filteredJobs.length}
-              onPageChange={setPageIndex}
-            />
-          )}
-        </div>
-          </>
         )}
-      </div>
+        </>
+      )}
 
       <CommandPalette
         jobs={jobs}
@@ -573,6 +467,6 @@ export default function JobsPage({
           </div>
         </DialogContent>
       </Dialog>
-    </>
+    </BoardShell>
   );
 }

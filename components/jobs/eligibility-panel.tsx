@@ -4,8 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { REGION_LABELS, isUnstatedLocation } from "@/lib/regions";
 import { EVIDENCE_FIELD_LABELS, VERDICT_STYLE } from "@/lib/verdict-style";
-import { cn } from "@/lib/utils";
-import type { Eligibility } from "@/lib/types";
+import { workplaceLabel } from "@/lib/labels";import type { Eligibility } from "@/lib/types";
 
 /**
  * The verdict, as the spine of the posting.
@@ -32,14 +31,9 @@ export function EligibilityPanel({ eligibility }: { eligibility?: Eligibility })
         : null;
 
   return (
-    <section
-      className={cn(
-        "flex flex-col gap-3 border-l-2 py-1 pl-4",
-        VERDICT_STYLE[verdict].rail
-      )}
-    >
+    <section className="flex flex-col gap-3 border-l-2 border-[#14141a] py-1 pl-4">
       <div className="flex flex-col gap-1.5">
-        <span className={cn("text-sm font-medium", VERDICT_STYLE[verdict].text)}>
+        <span className="text-sm font-medium text-[#14141a]">
           {VERDICT_STYLE[verdict].label}
         </span>
         <p className="text-sm leading-relaxed text-muted-foreground">{summary}</p>
@@ -47,21 +41,10 @@ export function EligibilityPanel({ eligibility }: { eligibility?: Eligibility })
 
       <div className="flex flex-wrap items-center gap-1.5">
         {workplace && workplace !== "unknown" && (
-          <Badge variant="outline" className="capitalize">
-            {workplace}
-          </Badge>
+          <Badge variant="outline">{workplaceLabel(workplace)}</Badge>
         )}
         {sponsorshipLabel && (
-          <Badge
-            variant="outline"
-            className={
-              sponsorship?.verdict === "offered"
-                ? "border-emerald-500/40 text-emerald-400"
-                : "border-red-500/40 text-red-400"
-            }
-          >
-            {sponsorshipLabel}
-          </Badge>
+          <Badge variant="outline">{sponsorshipLabel}</Badge>
         )}
         {regionLabels.length > 0 && (
           <span className="text-xs text-muted-foreground">
@@ -70,7 +53,7 @@ export function EligibilityPanel({ eligibility }: { eligibility?: Eligibility })
         )}
       </div>
 
-      {blockedBy && <p className="text-xs text-red-400">{blockedBy}</p>}
+      {blockedBy && <p className="text-xs text-[#5c5c64]">{blockedBy}</p>}
 
       {timezone.required && (
         <p className="text-xs text-muted-foreground">
@@ -95,7 +78,7 @@ export function EligibilityPanel({ eligibility }: { eligibility?: Eligibility })
                 {isUnstatedLocation(item.value) ? (
                   <span className="italic text-muted-foreground">not stated</span>
                 ) : (
-                  <span className="font-mono">{item.value}</span>
+                  <span className="text-[#14141a]">{item.value}</span>
                 )}
               </span>
             ))}

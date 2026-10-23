@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="14" fill="#2b4bf2"/>
+  <g transform="translate(10 10) scale(1.833)" fill="#ffffff">
+    <path
+      fill-rule="evenodd"
+      clip-rule="evenodd"
+      d="M12 3.4 19.45 7.7v8.6L12 20.6l-7.45-4.3V7.7L12 3.4Z M13.5 9h2.6a1.5 1.5 0 0 1 1.5 1.5v1.4l-1.5.65 1.5.65v.35a1.5 1.5 0 0 1-1.5 1.5h-2.6A1.5 1.5 0 0 1 12 13.55V10.5A1.5 1.5 0 0 1 13.5 9Z"
+      fill="#ffffff"
+      stroke="#ffffff"
+      stroke-width="2.6"
+      stroke-linejoin="round"
+    />
+  </g>
+</svg>

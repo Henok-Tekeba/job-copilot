@@ -1,144 +1,237 @@
 import Link from "next/link";
+import { format } from "date-fns";
 
-import { AsciiMap } from "@/components/ascii-map";
-import {
-  VerdictInspector,
-  type LandingSample,
-} from "@/components/landing/verdict-inspector";
-import { VerdictTool } from "@/components/landing/verdict-tool";
-import { ThemeToggle } from "@/components/theme-toggle";
-import type { JobsSummary } from "@/lib/summary";
+import { LogoMark } from "@/components/logo-mark";
+import { RecentCarousel } from "@/components/landing/recent-carousel";
+import { LandingSearch } from "@/components/landing/landing-search";
+import { CompanyAvatar } from "@/components/company-avatar";
+import { opportunityLabel, workplaceLabel } from "@/lib/labels";
+import { isUnstatedLocation } from "@/lib/regions";
+import { VERDICT_STYLE } from "@/lib/verdict-style";
+import type { Job } from "@/lib/types";
 
-const STEPS = [
-  {
-    title: "Can they take you?",
-    body: "We read the location rules and visa notes in the posting and give a plain answer, with the exact words that caused it.",
-  },
-  {
-    title: "Would you pass?",
-    body: "Your skills and level are scored against what the posting asks for, so you know where you stand before applying.",
-  },
-  {
-    title: "What are you missing?",
-    body: "The skills you do not have yet are named up front, so you know what to learn next.",
-  },
-  {
-    title: "By when?",
-    body: "Deadlines are pulled from the posting text, so you do not miss a cutoff.",
-  },
+const CATEGORIES = [
+  { label: "Open to you", tint: "bg-emerald-100 text-emerald-700" },
+  { label: "Needs relocation", tint: "bg-sky-100 text-sky-700" },
+  { label: "Region locked", tint: "bg-red-100 text-red-700" },
+  { label: "Reach unclear", tint: "bg-amber-100 text-amber-700" },
 ] as const;
 
-export function LandingPage({
-  samples,
-  summary,
-  feeds,
-}: {
-  samples: LandingSample[];
-  summary: JobsSummary;
-  feeds: number;
-}) {
+type Counts = {
+  open: number;
+  relocation: number;
+  regionLocked: number;
+  unclear: number;
+};
+
+/** No motion on cards: stillness is the brand. Hover only ever changes text colour. */
+function RecentCard({ job, featured }: { job: Job; featured: boolean }) {
+  const verdict = job.evaluation.eligibility?.verdict ?? "unknown";
+  const posted = job.postedAt ? format(new Date(job.postedAt), "MMM d") : "recent";
+
   return (
-    <div className="flex min-h-svh flex-col">
-      <header className="border-b border-border">
-        <div className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between px-4 sm:px-6">
-          <span className="font-heading text-sm font-semibold tracking-tight">
-            Job Copilot
-          </span>
-          <div className="flex items-center gap-4">
-            <Link
-              href="/jobs"
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:text-foreground focus-visible:underline"
+    <Link
+      href={`/jobs/${job.id}`}
+      className={
+        featured
+          ? "flex h-full min-h-[230px] flex-col rounded-2xl border border-[#2b4bf2]/45 bg-white p-5 shadow-[0_18px_40px_-26px_rgba(43,75,242,0.5)]"
+          : "flex h-full min-h-[230px] flex-col rounded-2xl border border-[#ececf0] bg-white p-5 shadow-[0_14px_36px_-26px_rgba(15,15,30,0.2)]"
+      }
+    >
+      <div className="flex items-center gap-2">
+        <span className={`size-2 shrink-0 rounded-full ${VERDICT_STYLE[verdict].dot}`} />
+        <span className={`text-[11px] font-medium ${VERDICT_STYLE[verdict].text}`}>
+          {VERDICT_STYLE[verdict].label}
+        </span>
+      </div>
+
+      <h3 className="mt-2 line-clamp-2 text-[16px] leading-snug font-semibold tracking-[-0.01em] text-[#14141a]">
+        {job.title}
+      </h3>
+
+      <div className="mt-3 flex flex-wrap gap-1.5">
+        {[opportunityLabel(job.evaluation.opportunity), workplaceLabel(job.evaluation.eligibility?.workplace)]
+          .filter(Boolean)
+          .map((chip) => (
+            <span
+              key={chip}
+              className="rounded-md bg-[#f4f4f6] px-2 py-1 text-[10.5px] font-medium text-[#5c5c64]"
             >
-              Browse the board
-            </Link>
-            <ThemeToggle className="size-8" />
-          </div>
+              {chip}
+            </span>
+          ))}
+      </div>
+
+      <p className="mt-4 font-mono text-[13px] font-medium text-[#14141a] tabular-nums">
+        {job.deadline
+          ? `Apply by ${format(new Date(job.deadline), "MMM d")}`
+          : "Rolling deadline"}
+      </p>
+
+      <div className="mt-auto flex items-center gap-2.5 pt-5">
+        <CompanyAvatar job={job} />
+        <span className="min-w-0 flex-1">
+          <span className="block truncate text-[13px] font-medium text-[#14141a]">
+            {job.company || "Unknown company"}
+          </span>
+          <span className="block font-mono text-[10.5px] tabular-nums text-[#8b8b93]">
+            {[
+              isUnstatedLocation(job.location) ? "" : job.location,
+              `Posted ${posted}`,
+            ]
+              .filter(Boolean)
+              .join(" · ")}
+          </span>
+        </span>
+      </div>
+    </Link>
+  );
+}
+
+/**
+ * The landing: bold typography leading, with the brand blue reserved for the
+ * words that matter and a single strong search row. Snap functionality stays
+ * in the latest-postings rail; hover states change colour only, never
+ * position, never shadows, never borders.
+ */
+export function LandingPage({
+  recent,
+  counts,
+}: {
+  recent: Job[];
+  counts: Counts;
+}) {
+  const countFor = (label: (typeof CATEGORIES)[number]["label"]) =>
+    label === "Open to you"
+      ? counts.open
+      : label === "Needs relocation"
+        ? counts.relocation
+        : label === "Region locked"
+          ? counts.regionLocked
+          : counts.unclear;
+
+  return (
+    <main className="flex min-h-dvh flex-col bg-white">
+      <header className="mx-auto flex w-full max-w-[1080px] items-center justify-between px-4 py-4 sm:px-6">
+        <div className="flex items-center gap-2">
+          <span className="flex size-8 items-center justify-center rounded-lg bg-[#2b4bf2] text-white">
+            <LogoMark className="size-4.5" />
+          </span>
+          <span className="text-[15px] font-semibold tracking-tight text-[#14141a]">
+            shortlist
+          </span>
+        </div>
+        <div className="flex items-center gap-4">
+          <Link
+            href="/jobs"
+            className="text-[13px] font-medium text-[#5c5c64] transition-colors hover:text-[#14141a]"
+          >
+            Board
+          </Link>
         </div>
       </header>
 
-      <main className="flex-1">
-        <section className="relative mx-auto w-full max-w-6xl px-4 pt-16 pb-20 sm:px-6 sm:pt-24 sm:pb-32">
-          <AsciiMap
-            className="absolute inset-x-0 top-0 h-72 [mask-image:linear-gradient(to_bottom,black_50%,transparent)] text-[10px] sm:h-[26rem] sm:text-[13px] lg:h-[34rem] lg:text-[16px]"
-          />
-          <div className="relative max-w-2xl">
-            <div className="flex flex-col gap-8">
-              <h1 className="max-w-xl font-serif text-4xl font-normal leading-[1.0] tracking-tight sm:text-5xl">
-                Will this employer take an <em className="italic">international</em> applicant?
-              </h1>
-              <p className="max-w-md text-base leading-relaxed text-muted-foreground">
-                Tech internships, contracts and junior roles from {feeds} hiring
-                feeds. Each one checked for two things: whether they would take
-                an international applicant, and what you would still be missing.
-              </p>
-              <div className="flex items-center gap-6 text-xs text-muted-foreground">
-                <span className="font-mono tabular-nums">
-                  {summary.total} postings
-                </span>
-                <span className="font-mono tabular-nums">
-                  {summary.reachable} open to you
-                </span>
-              </div>
-            </div>
+      <section className="mx-auto w-full max-w-[1080px] px-4 pt-14 pb-8 sm:px-6 sm:pt-24">
+        <h1 className="max-w-3xl text-[clamp(2.6rem,6vw,4.1rem)] leading-[1.05] font-medium tracking-[-0.02em] text-[#14141a]">
+          Land the right internship.
+          <br />
+          Work <span className="text-[#2b4bf2]">without borders.</span>
+        </h1>
+        <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-[#8b8b93]">
+          Every posting on the board is read for the two things nobody tells you:
+          whether this employer would actually take you, and what you still need
+          before you apply.
+        </p>
 
-            <div className="mt-10 border border-border bg-card p-5 sm:p-6">
-              <p className="mb-3 text-xs text-muted-foreground">
-                Paste any posting. The engine runs in your browser and shows its evidence.
-              </p>
-              <VerdictTool />
-            </div>
-          </div>
-        </section>
+        <LandingSearch />
+      </section>
 
-        <section className="border-t border-border">
-          <div className="mx-auto w-full max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
-            <h2 className="text-balance font-serif text-2xl font-normal tracking-tight">
-              Try three real postings
-            </h2>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Pick one to see how the board reads it.
-            </p>
-            <div className="mt-8">
-              <VerdictInspector samples={samples} />
-            </div>
-          </div>
-        </section>
+      <section className="mx-auto w-full max-w-[1080px] px-4 pt-10 pb-20 sm:px-6">
+        <h2 className="text-[clamp(1.9rem,4vw,2.7rem)] font-semibold tracking-[-0.025em] text-[#14141a]">
+          Latest{" "}
+          <span className="relative inline-block px-1 text-[#2b4bf2]">
+            Internships
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 120 44"
+              fill="none"
+              className="absolute -inset-x-3 -inset-y-2 size-full text-[#2b4bf2]/25"
+            >
+              <ellipse
+                cx="60"
+                cy="22"
+                rx="56"
+                ry="17"
+                stroke="currentColor"
+                strokeWidth="3"
+                transform="rotate(-3 60 22)"
+              />
+            </svg>
+          </span>{" "}
+          Opportunity
+        </h2>
 
-        <section className="border-t border-border">
-          <div className="mx-auto w-full max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
-            <h2 className="text-balance font-serif text-2xl font-normal tracking-tight">
-              How a posting is read
-            </h2>
-            <ol className="mt-10 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-              {STEPS.map((step, index) => (
-                <li
-                  key={step.title}
-                  className="flex flex-col gap-3 border-t border-border pt-5"
+        <div className="mt-8 grid gap-8 lg:grid-cols-[230px_1fr]">
+          <aside className="flex flex-col justify-center gap-1">
+            {CATEGORIES.map((cat, i) => (
+              <Link
+                key={cat.label}
+                href="/jobs"
+                className="group flex items-center justify-between rounded-xl px-3 py-2.5 transition-colors hover:bg-[#f4f4f6]"
+              >
+                <span
+                  className={
+                    i === 0
+                      ? "text-sm font-medium text-[#2b4bf2]"
+                      : "text-sm text-[#5c5c64] transition-colors group-hover:text-[#14141a]"
+                  }
                 >
-                  <span className="font-mono text-sm tabular-nums text-muted-foreground">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <span className="text-sm font-medium">{step.title}</span>
-                  <span className="text-xs leading-relaxed text-muted-foreground">
-                    {step.body}
-                  </span>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </section>
-      </main>
+                  {cat.label}
+                </span>
+                <span
+                  className={`rounded-md px-2 py-0.5 font-mono text-[11px] tabular-nums ${cat.tint}`}
+                >
+                  {countFor(cat.label)}
+                </span>
+              </Link>
+            ))}
+          </aside>
 
-      <footer className="border-t border-border">
-        <div className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6">
-          <p className="max-w-2xl text-xs leading-relaxed text-muted-foreground">
+          <RecentCarousel>
+            {recent.map((job, i) => (
+              <RecentCard key={job.id} job={job} featured={i === 0} />
+            ))}
+          </RecentCarousel>
+        </div>
+      </section>
+
+      <footer className="mx-auto w-full max-w-[1080px] px-4 pb-10 sm:px-6">
+        <div className="border-t border-[#e9e9ee] pt-6">
+          <p className="max-w-2xl text-[11px] leading-[1.6] text-[#8b8b93]">
             This tool reads the words in a posting. It cannot know what an
             employer decides in the room, whether a role is already filled, or
             whether a visa will be granted. Treat every verdict as a signal, not
             a promise.
           </p>
+          <div className="mt-4 flex items-center gap-4">
+            <Link href="/privacy" className="text-[11px] text-[#5c5c64] transition-colors hover:text-[#14141a]">
+              Privacy Policy
+            </Link>
+            <Link href="/terms" className="text-[11px] text-[#5c5c64] transition-colors hover:text-[#14141a]">
+              Terms of Service
+            </Link>
+            <Link href="/cookies" className="text-[11px] text-[#5c5c64] transition-colors hover:text-[#14141a]">
+              Cookies
+            </Link>
+            <a href="mailto:tekebahenok6@gmail.com" className="text-[11px] text-[#5c5c64] transition-colors hover:text-[#14141a]">
+              Contact
+            </a>
+            <span className="ml-auto text-[11px] text-[#8b8b93]">
+              © {new Date().getFullYear()} Shortlist
+            </span>
+          </div>
         </div>
       </footer>
-    </div>
+    </main>
   );
 }

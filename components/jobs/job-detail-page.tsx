@@ -13,9 +13,7 @@ import {
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Textarea } from "@/components/ui/textarea";
-import { PageHeader } from "@/components/page-header";
+import { CompanyAvatar } from "@/components/company-avatar";
 import {
   DeadlineBadge,
   NewBadge,
@@ -27,10 +25,9 @@ import { useProfile } from "@/hooks/use-profile";
 import { applyProfile, isDefaultProfile } from "@/lib/profile";
 import { isUnstatedLocation } from "@/lib/regions";
 import { stripHtml } from "@/lib/jobs";
-import { VERDICT_STYLE, EVIDENCE_FIELD_LABELS, ENGINE_STYLE } from "@/lib/verdict-style";
-import { EvidenceMarkedText, type EvidenceMark } from "@/components/jobs/evidence-marked-text";
+import { ENGINE_STYLE } from "@/lib/verdict-style";
+import { workplaceLabel as workplaceWord, opportunityLabel, cap } from "@/lib/labels";
 import type { Job } from "@/lib/types";
-import { cn } from "@/lib/utils";
 import type { VerdictStatus } from "@/engine/verdict";
 
 type EngineVerdict = {
@@ -67,324 +64,222 @@ export function JobDetailPage({ job, verdict }: { job: Job; verdict?: EngineVerd
 
   const applied = tracked.isApplied(job.id);
   const saved = tracked.saved.has(job.id);
-  const notes = tracked.jobNotesFor(job.id);
 
   const fit = jobForView.evaluation.fit;
   const plainDescription = stripHtml(job.description);
 
-  const marks: EvidenceMark[] = React.useMemo(() => {
-    const out: EvidenceMark[] = [];
-    const eligibility = job.evaluation.eligibility;
-    if (eligibility) {
-      const colorClass = VERDICT_STYLE[eligibility.verdict].text;
-      const verdictLabel = VERDICT_STYLE[eligibility.verdict].label;
-      for (const item of eligibility.evidence) {
-        if (item.value && !isUnstatedLocation(item.value)) {
-          const label = EVIDENCE_FIELD_LABELS[item.field] ?? item.field;
-          out.push({
-            phrase: item.value,
-            colorClass,
-            note: `${label}: "${item.value}" → ${verdictLabel}`,
-          });
-        }
-      }
-      for (const signal of eligibility.sponsorship?.signals ?? []) {
-        const colorClass =
-          eligibility.sponsorship?.verdict === "offered"
-            ? "text-emerald-400"
-            : eligibility.sponsorship?.verdict === "not-offered"
-              ? "text-red-400"
-              : "text-amber-400";
-        out.push({
-          phrase: signal,
-          colorClass,
-          note: `Sponsorship signal: "${signal}"`,
-        });
-      }
-    }
-    if (job.evaluation.deadlineEvidence) {
-      out.push({
-        phrase: job.evaluation.deadlineEvidence,
-        colorClass: "text-amber-400",
-        note: `Deadline: ${job.evaluation.deadlineEvidence}`,
-      });
-    }
-    if (verdict) {
-      const colorClass = ENGINE_STYLE[verdict.status].text;
-      for (const reason of verdict.reasons) {
-        if (reason.quote) {
-          out.push({
-            phrase: reason.quote,
-            colorClass,
-            note: `${reason.summary}${reason.record ? ` — ${reason.record.source}, ${reason.record.dataYear}` : ""}`,
-          });
-        }
-      }
-    }
-    return out;
-  }, [job, verdict]);
   const locationLabel = isUnstatedLocation(job.location) ? "" : job.location;
+  const workplaceLabel = workplaceWord(job.evaluation.eligibility?.workplace);
 
   return (
-    <>
-      <PageHeader>
-        <Button
-          variant="ghost"
-          size="sm"
-          render={<Link href="/jobs" />}
-          className="-ml-1"
-        >
-          <ArrowLeftIcon />
-          All jobs
-        </Button>
-      </PageHeader>
-
-      <div className="mx-auto flex w-full max-w-3xl flex-col gap-8 px-4 py-6 sm:px-6 sm:py-8">
-        <div className="flex flex-col gap-3">
-          <h1 className="font-heading text-3xl font-semibold leading-snug tracking-tight text-balance">
-            {job.title}
-          </h1>
-
-          <p className="text-sm text-muted-foreground">
-            {[job.company || "Unknown company", locationLabel]
-              .filter(Boolean)
-              .join(" · ")}
-          </p>
-
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
-            <span>{job.evaluation.opportunity}</span>
-            {job.deadline && <DeadlineBadge deadline={job.deadline} />}
-            {job.salary && <span className="font-mono">{job.salary}</span>}
-            <NewBadge postedAt={job.postedAt} />
-            <RedFlagBadge flags={job.evaluation.redFlags} />
-          </div>
-
-          {activeProfile && (
-            <p className="text-xs text-muted-foreground">
-              Fit shown for your profile ({profile.skills.length} skills).
-            </p>
-          )}
-
-          <div className="flex flex-wrap items-center gap-2">
-            <Button
-              onClick={() =>
-                window.open(job.applyUrl || job.sourceUrl, "_blank", "noopener")
-              }
-            >
-              <ExternalLink />
-              Open posting
-            </Button>
-            <Button
-              variant={saved ? "secondary" : "outline"}
-              onClick={() => tracked.toggleSaved(job.id)}
-            >
-              <BookmarkIcon />
-              {saved ? "Saved" : "Save"}
-            </Button>
-            <Button
-              variant={applied ? "secondary" : "outline"}
-              disabled={applied}
-              onClick={() => tracked.markApplied(job)}
-            >
-              <CheckIcon />
-              {applied ? "Applied" : "Mark applied"}
-            </Button>
-            <Button
-              variant="ghost"
-              className="ml-auto text-muted-foreground"
-              onClick={() => {
-                tracked.dismiss(job.id);
-                router.push("/jobs");
-              }}
-            >
-              <Trash />
-              Dismiss
-            </Button>
-          </div>
-        </div>
-
-        {verdict ? (
-          <section
-            className={cn(
-              "flex flex-col gap-3 border-l-2 py-1 pl-4",
-              ENGINE_STYLE[verdict.status].rail
-            )}
+    <main className="flex min-h-dvh items-center justify-center bg-white px-4 py-6 sm:px-8">
+      <div className="flex h-auto max-h-none w-full max-w-[1060px] flex-col rounded-[28px] border border-[#ececf0] bg-white shadow-[0_24px_64px_-28px_rgba(15,15,30,0.25)] lg:h-[min(760px,calc(100dvh-3rem))]">
+        {/* Card top bar */}
+        <div className="flex shrink-0 items-center justify-between gap-4 px-6 pt-6 sm:px-10 sm:pt-8">
+          <Button
+            variant="outline"
+            size="sm"
+            render={<Link href="/jobs" />}
+            className="rounded-full bg-white text-[#5c5c64] shadow-none"
           >
-            <div className="flex items-center gap-2">
-              <span className={cn("text-sm font-medium", ENGINE_STYLE[verdict.status].text)}>
-                {ENGINE_STYLE[verdict.status].label}
-              </span>
-              <span
-                className="inline-flex items-center gap-0.5"
-                aria-label={`Confidence ${Math.round(verdict.confidence * 100)}%`}
-                title={`Confidence ${Math.round(verdict.confidence * 100)}%`}
-              >
-                {[0, 1, 2].map((i) => (
-                  <span
-                    key={i}
-                    className={cn(
-                      "size-1 rounded-full",
-                      i < Math.min(3, Math.max(1, Math.round(verdict.confidence * 3)))
-                        ? cn("bg-current", ENGINE_STYLE[verdict.status].text)
-                        : "bg-current opacity-25"
-                    )}
-                  />
-                ))}
-              </span>
-            </div>
-            {verdict.reasons.map((reason, i) => (
-              <div key={i} className="flex flex-col gap-1">
-                <p className="text-sm leading-relaxed text-muted-foreground">{reason.summary}</p>
-                {reason.quote && (
-                  <p className={cn("border-l-2 pl-3 font-mono text-xs leading-relaxed", ENGINE_STYLE[verdict.status].text)}>
-                    “{reason.quote}”
-                  </p>
-                )}
-                {reason.record && (
-                  <p className="text-xs text-muted-foreground">
-                    {reason.record.detail} — {reason.record.source}, {reason.record.dataYear}
-                  </p>
-                )}
-              </div>
-            ))}
-          </section>
-        ) : (
-          <EligibilityPanel eligibility={job.evaluation.eligibility} />
-        )}
-
-        {job.evaluation.deadlineEvidence && (
-          <div className="flex flex-col gap-1 border-t border-border pt-3">
-            <span className="text-xs font-medium text-muted-foreground">
-              Deadline read from the posting
-            </span>
-            <p className="text-xs">{job.evaluation.deadlineEvidence}</p>
-          </div>
-        )}
-
-        <section className="flex flex-col gap-3 border-t border-border pt-6">
-          <h2 className="font-heading text-xl font-semibold tracking-tight">
-            Match
-          </h2>
-          {fit && fit.score !== null ? (
-            <div className="flex flex-col gap-3">
-              <div className="flex items-end gap-3">
-                <span className="font-mono text-5xl leading-none font-semibold tracking-tight tabular-nums">
-                  {fit.priority}
-                </span>
-                <span className="pb-1 text-xs text-muted-foreground">
-                  priority · {fit.score} skill fit
-                </span>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                {fit.reasons.join(" · ")}
-              </p>
-            </div>
-          ) : (
-            <span className="text-sm text-muted-foreground">
-              Not enough skills detected
-            </span>
-          )}
-
-          {fit?.basis === "required" && (
-            <div className="flex flex-col gap-2 pt-2">
-              <span className="text-xs font-medium text-muted-foreground">
-                Required — you lack
-              </span>
-              <div className="flex flex-wrap gap-1">
-                {fit.requiredMissing.length === 0 ? (
-                  <span className="text-sm text-muted-foreground">
-                    Nothing — you meet every requirement.
-                  </span>
-                ) : (
-                  fit.requiredMissing.map((skill) => (
-                    <Badge key={skill} variant="outline" className="border-dashed">
-                      {skill}
-                    </Badge>
-                  ))
-                )}
-              </div>
-            </div>
-          )}
-
-          {fit && fit.niceMissing.length > 0 && (
-            <div className="flex flex-col gap-2 pt-2">
-              <span className="text-xs font-medium text-muted-foreground">
-                Nice to have — you lack
-              </span>
-              <div className="flex flex-wrap gap-1">
-                {fit.niceMissing.map((skill) => (
-                  <Badge key={skill} variant="secondary">
-                    {skill}
-                  </Badge>
-                ))}
-              </div>
-            </div>
-          )}
-
-          <div className="flex flex-col gap-2 pt-2">
-            <span className="text-xs font-medium text-muted-foreground">
-              You have
-            </span>
-            <div className="flex flex-wrap gap-1">
-              {jobForView.evaluation.matched.length === 0 ? (
-                <span className="text-sm text-muted-foreground">None</span>
-              ) : (
-                jobForView.evaluation.matched.map((skill) => (
-                  <Badge key={skill} variant="outline">
-                    {skill}
-                  </Badge>
-                ))
-              )}
-            </div>
-          </div>
-        </section>
-
-        <section className="flex flex-col gap-3 border-t border-border pt-6">
-          <h2 className="font-heading text-xl font-semibold tracking-tight">
-            Posting
-          </h2>
-          <ScrollArea className="h-[55vh] rounded-lg border border-border p-4">
-            {plainDescription ? (
-              <EvidenceMarkedText text={plainDescription} marks={marks} />
-            ) : (
-              <p className="text-sm leading-relaxed whitespace-pre-wrap">
-                No description in the snapshot.
-              </p>
-            )}
-          </ScrollArea>
-        </section>
-
-        <section className="flex flex-col gap-3 border-t border-border pt-6">
-          <h2 className="font-heading text-xl font-semibold tracking-tight">
-            Notes
-          </h2>
-          <Textarea
-            placeholder="Notes for this posting…"
-            value={notes}
-            onChange={(e) => tracked.setJobNotes(job.id, e.target.value)}
-            className="min-h-40"
-          />
-          <p className="text-xs text-muted-foreground">
-            Notes are saved in this browser and survive reloads.
-          </p>
-        </section>
-
-        <div className="flex flex-wrap items-center justify-between gap-2 border-t border-border pt-4">
+            <ArrowLeftIcon />
+            All internships
+          </Button>
           <a
             href={job.sourceUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs text-muted-foreground hover:underline focus-visible:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="text-[11px] text-[#8b8b93] hover:underline"
           >
             {job.attribution}
           </a>
-          {job.postedAt && (
-            <span className="font-mono text-xs tabular-nums text-muted-foreground">
-              posted {job.postedAt.slice(0, 10)}
-            </span>
-          )}
+        </div>
+
+        <div className="grid min-h-0 flex-1 gap-10 overflow-hidden px-6 pt-6 pb-8 sm:px-10 sm:pt-8 sm:pb-10 lg:grid-cols-[minmax(0,1fr)_320px]">
+          {/* Main column */}
+          <div className="order-2 flex min-h-0 min-w-0 flex-col lg:order-1 lg:overflow-hidden">
+            <div className="flex flex-col gap-6 pb-2">
+              <h1 className="text-[clamp(1.5rem,3vw,2rem)] font-medium leading-[1.15] tracking-[-0.02em] text-balance text-[#14141a]">
+                {job.title}
+              </h1>
+              <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px] text-[#8b8b93]">
+                <span>{opportunityLabel(job.evaluation.opportunity)}</span>
+                {workplaceLabel && <span>· {workplaceLabel}</span>}
+                {job.deadline && <DeadlineBadge deadline={job.deadline} />}
+                {job.salary && <span>{job.salary}</span>}
+                <NewBadge postedAt={job.postedAt} />
+                <RedFlagBadge flags={job.evaluation.redFlags} />
+              </div>
+            </div>
+
+            {/* Verdict */}
+            <section className="flex flex-col gap-2">
+              <SectionTitle>Will they take you?</SectionTitle>
+              {verdict ? (
+                <div className="flex flex-col gap-2">
+                  <span className="flex items-center gap-2 text-sm font-medium text-[#14141a]">
+                    <span className="size-1.5 rounded-full bg-[#14141a]" />
+                    {ENGINE_STYLE[verdict.status].label}
+                  </span>
+                  {verdict.reasons.slice(0, 3).map((reason, i) => (
+                    <p key={i} className="text-[13px] leading-relaxed text-[#5c5c64]">
+                      {reason.summary}
+                    </p>
+                  ))}
+                </div>
+              ) : (
+                <EligibilityPanel eligibility={job.evaluation.eligibility} />
+              )}
+              {job.evaluation.deadlineEvidence && (
+                <p className="text-[12px] text-[#8b8b93]">
+                  Deadline read from the posting: {job.evaluation.deadlineEvidence}
+                </p>
+              )}
+            </section>
+
+            {/* Match */}
+            <section className="flex flex-col gap-2 border-t border-[#e9e9ee] pt-5">
+              <SectionTitle>Match</SectionTitle>
+              {fit && fit.score !== null ? (
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-end gap-3">
+                    <span className="text-[40px] leading-none font-semibold tracking-tight text-[#14141a] tabular-nums">
+                      {fit.priority}
+                    </span>
+                    <span className="pb-1 text-[12px] text-[#8b8b93]">
+                      Priority — {fit.score} skill fit
+                    </span>
+                  </div>
+                  <p className="truncate text-[12px] text-[#8b8b93]">{fit.reasons.join(" · ")}</p>
+                  {fit.requiredMissing.length > 0 && (
+                    <div className="flex flex-wrap items-center gap-1">
+                      {fit.requiredMissing.slice(0, 4).map((skill) => (
+                        <Badge key={skill} variant="outline" className="border-dashed">
+                          {skill}
+                        </Badge>
+                      ))}
+                      {fit.requiredMissing.length > 4 && (
+                        <span className="text-[11px] text-[#8b8b93]">
+                          +{fit.requiredMissing.length - 4} more to learn
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <span className="text-[13px] text-[#8b8b93]">Not enough skills detected</span>
+              )}
+            </section>
+
+            {/* Posting */}
+            <section className="flex flex-col gap-2 border-t border-[#e9e9ee] pt-5">
+              <SectionTitle>The posting</SectionTitle>
+              {plainDescription ? (
+                <p className="line-clamp-6 text-[13px] leading-relaxed text-[#5c5c64] whitespace-pre-wrap">
+                  {plainDescription.slice(0, 900)}
+                </p>
+              ) : (
+                <p className="text-[13px] leading-relaxed text-[#8b8b93]">
+                  No description in the snapshot.
+                </p>
+              )}
+              <a
+                href={job.sourceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[12px] font-medium text-[#2b4bf2] hover:underline"
+              >
+                Read the full posting →
+              </a>
+            </section>
+
+          </div>
+
+          {/* Side column */}
+          <div className="order-1 flex flex-col gap-6 lg:order-2 lg:overflow-y-auto lg:pr-1">
+            <div className="flex items-center gap-3">
+              <CompanyAvatar job={job} className="size-11" />
+              <div className="min-w-0">
+                <p className="truncate text-[15px] font-semibold text-[#14141a]">
+                  {job.company || "Unknown company"}
+                </p>
+                <p className="truncate text-[12px] text-[#8b8b93]">
+                  {locationLabel || "Location not stated"}
+                </p>
+              </div>
+            </div>
+
+            <MetaRow label="Source">{cap(job.source)}</MetaRow>
+            {job.postedAt && <MetaRow label="Posted">{job.postedAt.slice(0, 10)}</MetaRow>}
+
+            <div className="flex flex-col gap-2">
+              <Button
+                onClick={() =>
+                  window.open(job.applyUrl || job.sourceUrl, "_blank", "noopener")
+                }
+                className="h-11 rounded-xl text-[14px]"
+              >
+                <ExternalLink />
+                Apply on the board
+              </Button>
+              <div className="grid grid-cols-2 gap-2">
+                <Button
+                  variant={saved ? "secondary" : "outline"}
+                  onClick={() => tracked.toggleSaved(job.id)}
+                  className="rounded-xl text-[13px]"
+                >
+                  <BookmarkIcon />
+                  {saved ? "Saved" : "Save"}
+                </Button>
+                <Button
+                  variant={applied ? "secondary" : "outline"}
+                  disabled={applied}
+                  onClick={() => tracked.markApplied(job)}
+                  className="rounded-xl text-[13px]"
+                >
+                  <CheckIcon />
+                  {applied ? "Applied" : "Applied?"}
+                </Button>
+              </div>
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  tracked.dismiss(job.id);
+                  router.push("/jobs");
+                }}
+                className="justify-start rounded-xl text-[13px] text-[#8b8b93] hover:text-[#14141a]"
+              >
+                <Trash />
+                Dismiss
+              </Button>
+            </div>
+
+            {activeProfile && (
+              <p className="text-[11px] text-[#8b8b93]">
+                Fit shown for your profile ({profile.skills.length} skills).
+              </p>
+            )}
+          </div>
         </div>
       </div>
-    </>
+    </main>
+  );
+}
+
+function SectionTitle({ children }: { children: React.ReactNode }) {
+  return (
+    <h2 className="text-[17px] font-semibold tracking-[-0.01em] text-[#14141a]">
+      {children}
+    </h2>
+  );
+}
+
+
+function MetaRow({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="flex items-center justify-between gap-3 border-b border-[#e9e9ee] pb-2 text-[13px]">
+      <span className="text-[#8b8b93]">{label}</span>
+      <span className="truncate text-right text-[#14141a]">{children}</span>
+    </div>
   );
 }

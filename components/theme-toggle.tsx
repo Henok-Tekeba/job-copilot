@@ -6,16 +6,16 @@ import { Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 /**
- * Dark is the design's ground; light is opt-in and remembered. The html
- * element ships with `dark`, and an inline script in the layout has already
- * removed it before paint if the stored choice is light — so this component
- * only mirrors the class that is actually there.
+ * Light is the brand's ground; dark is opt-in and remembered. The html element
+ * ships without `dark`, and an inline script in the layout has already added it
+ * before paint if the stored choice is dark — so this component only mirrors
+ * the class that is actually there.
  */
 export function ThemeToggle({ className }: { className?: string }) {
   const [dark, setDark] = React.useState(() =>
     typeof document !== "undefined"
       ? document.documentElement.classList.contains("dark")
-      : true
+      : false
   );
 
   const toggle = () => {
