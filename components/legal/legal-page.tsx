@@ -36,7 +36,7 @@ export function LegalPage({
       </div>
 
       <div className="mx-auto mt-4 w-full max-w-[820px] flex-1 rounded-[28px] border border-[#ececf0] bg-white px-6 py-8 shadow-[0_24px_64px_-28px_rgba(15,15,30,0.25)] sm:px-10 sm:py-10">
-        <h1 className="text-[clamp(1.5rem,3vw,2rem)] font-medium tracking-[-0.02em] text-[#14141a]">
+        <h1 className="text-[clamp(1.8rem,3.6vw,2.5rem)] font-medium tracking-[-0.03em] text-[#14141a]">
           {title}
         </h1>
         <p className="mt-2 text-[12px] text-[#6f6f78]">Last updated {updated}</p>

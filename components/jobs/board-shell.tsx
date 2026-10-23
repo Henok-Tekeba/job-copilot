@@ -70,7 +70,7 @@ export function BoardShell({
 }) {
   return (
     <div className="min-h-svh bg-white">
-      <div className="bg-[#f4f4f6] px-4 pt-2 pb-8 sm:px-8 sm:pb-10">
+      <div className="bg-[#f4f4f6] px-4 pt-4 pb-10 sm:px-8 sm:pb-12">
         <header className="mx-auto flex h-14 w-full max-w-[1400px] items-center justify-between">
           <div className="flex items-center gap-8">
             <Link href="/" className="flex items-center gap-2">
@@ -99,22 +99,22 @@ export function BoardShell({
         </header>
 
         <div className="mx-auto max-w-[1400px] pt-6">
-          <h1 className="flex flex-wrap items-center gap-3 text-[clamp(1.6rem,3vw,2.2rem)] font-semibold tracking-[-0.02em] text-[#14141a]">
-            Find Your Dream Internship Here
+          <h1 className="flex flex-wrap items-center gap-3 text-[clamp(1.9rem,3.6vw,2.7rem)] font-medium tracking-[-0.035em] text-[#14141a]">
+            Find your dream internship here
             <Asterisk aria-hidden="true" className="size-7 text-[#b9bec2]" />
           </h1>
 
           <form
             onSubmit={(e) => e.preventDefault()}
-            className="mt-6 flex h-14 items-center rounded-full bg-white pr-1.5 shadow-[0_14px_36px_-22px_rgba(15,15,30,0.35)]"
+            className="mt-7 flex h-16 items-center rounded-full border border-[#e9e9ee] bg-white p-2 shadow-[0_24px_60px_-30px_rgba(15,15,30,0.3)]"
           >
-            <Search className="ml-5 size-4 shrink-0 text-[#6f6f78]" />
+            <Search className="ml-4 hidden size-4 shrink-0 text-[#6f6f78] sm:block" />
             <input
               value={searchValue}
               onChange={(e) => onSearchChange(e.target.value)}
               placeholder="Internship or keyword"
               aria-label="Internship or keyword"
-              className="h-full min-w-0 flex-1 bg-transparent px-3 text-[14px] text-[#14141a] outline-none placeholder:text-[#9c9ca4]"
+              className="h-full min-w-0 flex-1 rounded-full bg-transparent px-4 text-[14.5px] text-[#14141a] outline-none placeholder:text-[#9c9ca4]"
             />
             <span aria-hidden="true" className="mx-1 h-8 w-px shrink-0 bg-[#e9e9ee]" />
             <MapPin className="ml-2 hidden size-4 shrink-0 text-[#6f6f78] sm:block" />
@@ -127,7 +127,7 @@ export function BoardShell({
             />
             <button
               type="submit"
-              className="ml-2 inline-flex h-11 shrink-0 items-center justify-center rounded-full bg-[#2b4bf2] px-7 text-[14px] font-medium text-white transition-colors hover:bg-[#2340e0]"
+              className="inline-flex h-12 shrink-0 items-center justify-center rounded-full bg-[#2b4bf2] px-6 text-[14px] font-medium text-white transition-colors hover:bg-[#2340e0]"
             >
               Search
             </button>

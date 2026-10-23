@@ -100,7 +100,7 @@ export function JobDetailPage({ job, verdict }: { job: Job; verdict?: EngineVerd
           {/* Main column */}
           <div className="order-2 flex min-h-0 min-w-0 flex-col lg:order-1 lg:overflow-hidden">
             <div className="flex flex-col gap-6 pb-2">
-              <h1 className="text-[clamp(1.5rem,3vw,2rem)] font-medium leading-[1.15] tracking-[-0.02em] text-balance text-[#14141a]">
+              <h1 className="text-[clamp(1.7rem,3.4vw,2.3rem)] font-medium leading-[1.12] tracking-[-0.03em] text-balance text-[#14141a]">
                 {job.title}
               </h1>
               <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px] text-[#6f6f78]">

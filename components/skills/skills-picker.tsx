@@ -153,14 +153,17 @@ export function SkillsPicker({
       </div>
 
       <div className="mx-auto mt-4 w-full max-w-[900px] rounded-[28px] border border-[#ececf0] bg-white px-6 py-8 shadow-[0_24px_64px_-28px_rgba(15,15,30,0.25)] sm:px-10 sm:py-10">
-        <h1 className="text-[clamp(1.5rem,3vw,2rem)] font-medium tracking-[-0.02em] text-[#14141a]">
-          Pick your skills
-        </h1>
-        <p className="mt-2 max-w-xl text-[13.5px] leading-relaxed text-[#6f6f78]">
-          Every internship on the board is re-graded against what you pick —
-          you will see a personal Match % on every row. Everything stays in this
-          browser.
-        </p>
+        <div className="text-center">
+          <h1 className="text-[clamp(2rem,4.2vw,3rem)] font-medium tracking-[-0.035em] text-[#14141a]">
+            Pick your{" "}
+            <mark className="hl hl-on px-1.5">skills</mark>
+          </h1>
+          <p className="mx-auto mt-3 max-w-xl text-[14px] leading-relaxed text-[#5c5c64]">
+            Every internship on the board is re-graded against what you pick —
+            you will see a personal Match % on every row. Everything stays in
+            this browser.
+          </p>
+        </div>
 
         {/* Tracks */}
         <div className="mt-8">
@@ -184,7 +187,7 @@ export function SkillsPicker({
                     })
                   }
                   className={cn(
-                    "inline-flex h-10 items-center rounded-full border px-5 text-[14px] font-medium transition-colors",
+                    "inline-flex h-11 items-center rounded-full border px-5 text-[14px] font-medium transition-colors",
                     active
                       ? "border-[#14141a] bg-[#14141a] text-white"
                       : "border-[#e9e9ee] bg-white text-[#5c5c64] hover:border-[#c9c9cf] hover:text-[#14141a]",
