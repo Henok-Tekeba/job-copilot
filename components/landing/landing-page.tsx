@@ -5,6 +5,7 @@ import { Check, X } from "lucide-react";
 import { LogoMark } from "@/components/logo-mark";
 import { CountUp, Reveal } from "@/components/reveal";
 import { WallDocument } from "@/components/landing/wall-document";
+import { TypedHeading } from "@/components/landing/typed-heading";
 import { CtaLink } from "@/components/landing/cta-link";
 import { RecentCarousel } from "@/components/landing/recent-carousel";
 import { LandingSearch } from "@/components/landing/landing-search";
@@ -209,10 +210,12 @@ export function LandingPage({
       <section className="border-t border-[#e9e9ee]">
         <div className="mx-auto w-full max-w-[1080px] px-4 py-16 sm:px-6 sm:py-24">
           <Reveal>
-            <h2 className="max-w-2xl text-[clamp(1.9rem,4.4vw,2.9rem)] leading-[1.06] font-medium tracking-[-0.02em] text-[#14141a]">
-              Thousands of tech internships open every month. Your region gets filtered out by{" "}
-              <span className="text-[#2b4bf2]">a line you never see.</span>
-            </h2>
+            <TypedHeading
+              ink="Thousands of tech internships open every month. Your region gets filtered out by "
+              accent="a line you never see."
+              speed={60}
+              className="max-w-2xl text-[clamp(1.9rem,4.4vw,2.9rem)] leading-[1.06] font-medium tracking-[-0.02em] text-[#14141a]"
+            />
           </Reveal>
 
           {wallSample && (
