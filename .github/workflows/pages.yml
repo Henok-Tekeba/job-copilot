@@ -44,11 +44,13 @@ jobs:
       - name: Verify job data
         run: npm run verify-data
 
+      # Served at the root via the custom domain (shortlist.enoch.et), so no
+      # basePath. The site URL feeds sitemap/robots/OpenGraph.
       - name: Build static site
         run: npm run build
         env:
           NEXT_PUBLIC_STATIC: "1"
-          NEXT_PUBLIC_BASE_PATH: /job-copilot
+          NEXT_PUBLIC_SITE_URL: https://shortlist.enoch.et
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
