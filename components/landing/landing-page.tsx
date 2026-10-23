@@ -1,12 +1,11 @@
 import Link from "next/link";
 import { format } from "date-fns";
-import { Check, X } from "lucide-react";
+import { ArrowRight, Check, X } from "lucide-react";
 
 import { LogoMark } from "@/components/logo-mark";
 import { CountUp, Reveal } from "@/components/reveal";
 import { WallDocument } from "@/components/landing/wall-document";
 import { CtaLink } from "@/components/landing/cta-link";
-import { RecentCarousel } from "@/components/landing/recent-carousel";
 import { LandingSearch } from "@/components/landing/landing-search";
 import { CompanyAvatar } from "@/components/company-avatar";
 import { opportunityLabel, workplaceLabel } from "@/lib/labels";
@@ -65,20 +64,32 @@ const COMPARE = [
   },
 ] as const;
 
-/** No motion on cards: stillness is the brand. Hover only ever changes text colour. */
-function RecentCard({ job, featured }: { job: Job; featured: boolean }) {
+/**
+ * A posting as a quiet file slip: company and date on the header rule,
+ * title, chips, then a ruled footer with the deadline and where it sits.
+ * No motion — stillness is the brand.
+ */
+function RecentCard({ job }: { job: Job }) {
   const posted = job.postedAt ? format(new Date(job.postedAt), "MMM d") : "recent";
 
   return (
     <Link
       href={`/jobs/${job.id}`}
-      className={
-        featured
-          ? "flex h-full min-h-[230px] flex-col rounded-2xl border border-[#2b4bf2]/45 bg-white p-5 shadow-[0_18px_40px_-26px_rgba(43,75,242,0.5)]"
-          : "flex h-full min-h-[230px] flex-col rounded-2xl border border-[#ececf0] bg-white p-5 shadow-[0_14px_36px_-26px_rgba(15,15,30,0.2)]"
-      }
+      className="flex h-full min-h-[210px] flex-col rounded-2xl border border-[#e9e9ee] bg-white p-5 transition-colors hover:border-[#cfcfd6]"
     >
-      <h3 className="line-clamp-2 text-[16px] leading-snug font-semibold tracking-[-0.01em] text-[#14141a]">
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex min-w-0 items-center gap-2.5">
+          <CompanyAvatar job={job} className="size-8" />
+          <span className="truncate text-[12.5px] font-medium text-[#14141a]">
+            {job.company || "Unknown company"}
+          </span>
+        </div>
+        <span className="shrink-0 text-[10.5px] text-[#6f6f78]">
+          Posted {posted}
+        </span>
+      </div>
+
+      <h3 className="mt-4 line-clamp-2 text-[16.5px] leading-snug font-semibold tracking-[-0.01em] text-[#14141a]">
         {job.title}
       </h3>
 
@@ -95,26 +106,14 @@ function RecentCard({ job, featured }: { job: Job; featured: boolean }) {
           ))}
       </div>
 
-      <p className="mt-4 font-mono text-[13px] font-medium text-[#14141a] tabular-nums">
-        {job.deadline
-          ? `Apply by ${format(new Date(job.deadline), "MMM d")}`
-          : "Rolling deadline"}
-      </p>
-
-      <div className="mt-auto flex items-center gap-2.5 pt-5">
-        <CompanyAvatar job={job} />
-        <span className="min-w-0 flex-1">
-          <span className="block truncate text-[13px] font-medium text-[#14141a]">
-            {job.company || "Unknown company"}
-          </span>
-          <span className="block font-mono text-[10.5px] tabular-nums text-[#6f6f78]">
-            {[
-              isUnstatedLocation(job.location) ? "" : job.location,
-              `Posted ${posted}`,
-            ]
-              .filter(Boolean)
-              .join(" · ")}
-          </span>
+      <div className="mt-auto flex items-end justify-between gap-3 border-t border-[#e9e9ee] pt-3">
+        <span className="text-[11.5px] font-medium text-[#5c5c64] tabular-nums">
+          {job.deadline
+            ? `Apply by ${format(new Date(job.deadline), "MMM d")}`
+            : "Rolling deadline"}
+        </span>
+        <span className="max-w-[55%] truncate text-[10.5px] text-[#6f6f78]">
+          {isUnstatedLocation(job.location) ? "" : job.location}
         </span>
       </div>
     </Link>
@@ -182,17 +181,29 @@ export function LandingPage({
         </p>
       </section>
 
-      <section className="mx-auto w-full max-w-[1080px] px-4 pt-10 pb-20 sm:px-6">
-        <h2 className="text-[clamp(1.8rem,3.6vw,2.5rem)] font-medium tracking-[-0.025em] text-[#14141a]">
-          Latest internships
-        </h2>
+      <section className="mx-auto w-full max-w-[1080px] px-4 pt-12 pb-16 sm:px-6 sm:pt-16">
+        <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
+          <div>
+            <h2 className="text-[clamp(1.8rem,3.6vw,2.5rem)] font-medium tracking-[-0.03em] text-[#14141a]">
+              Latest internships
+            </h2>
+            <p className="mt-2 text-[13px] text-[#5c5c64]">
+              Straight from the company boards we read.
+            </p>
+          </div>
+          <Link
+            href="/jobs"
+            className="inline-flex items-center gap-1.5 text-[13px] font-medium text-[#14141a] underline-offset-4 hover:underline"
+          >
+            Browse all {stats.total.toLocaleString("en-US")}
+            <ArrowRight className="size-3.5" />
+          </Link>
+        </div>
 
-        <div className="mt-6">
-          <RecentCarousel>
-            {recent.map((job, i) => (
-              <RecentCard key={job.id} job={job} featured={i === 0} />
-            ))}
-          </RecentCarousel>
+        <div className="mt-7 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          {recent.map((job) => (
+            <RecentCard key={job.id} job={job} />
+          ))}
         </div>
       </section>
 
