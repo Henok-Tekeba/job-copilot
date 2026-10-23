@@ -171,13 +171,13 @@ export function LandingPage({
           Opportunity
         </h2>
 
-        <div className="mt-8 grid gap-8 lg:grid-cols-[230px_1fr]">
-          <aside className="flex flex-col justify-center gap-1">
+        <div className="mt-8 grid gap-8 lg:grid-cols-[230px_minmax(0,1fr)]">
+          <aside className="no-scrollbar flex gap-2 overflow-x-auto pb-1 lg:flex-col lg:gap-1 lg:overflow-visible lg:pb-0">
             {CATEGORIES.map((cat, i) => (
               <Link
                 key={cat.label}
                 href="/jobs"
-                className="group flex items-center justify-between rounded-xl px-3 py-2.5 transition-colors hover:bg-[#f4f4f6]"
+                className="group flex shrink-0 items-center justify-between gap-3 rounded-xl bg-white px-3 py-2.5 ring-1 ring-[#e9e9ee] transition-colors hover:bg-[#f4f4f6] lg:bg-transparent lg:px-3 lg:ring-0"
               >
                 <span
                   className={
@@ -213,7 +213,7 @@ export function LandingPage({
             whether a visa will be granted. Treat every verdict as a signal, not
             a promise.
           </p>
-          <div className="mt-4 flex items-center gap-4">
+          <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
             <Link href="/privacy" className="text-[11px] text-[#5c5c64] transition-colors hover:text-[#14141a]">
               Privacy Policy
             </Link>

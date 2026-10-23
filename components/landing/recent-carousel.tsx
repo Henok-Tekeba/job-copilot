@@ -21,7 +21,7 @@ export function RecentCarousel({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <div className="relative">
+    <div className="relative w-full min-w-0">
       <div
         ref={ref}
         className="no-scrollbar -mx-1 flex snap-x snap-mandatory gap-4 overflow-x-auto px-1 pb-2"
