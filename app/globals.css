@@ -186,6 +186,29 @@
   z-index: 0;
   white-space: nowrap;
 }
+mark.hl {
+  background: transparent;
+  color: inherit;
+}
+.caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  margin-left: 2px;
+  vertical-align: -0.15em;
+  background: #2b4bf2;
+  animation: caret-blink 0.85s steps(2, start) infinite;
+}
+@keyframes caret-blink {
+  to {
+    visibility: hidden;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .caret {
+    display: none;
+  }
+}
 .hl::after {
   content: "";
   position: absolute;
@@ -197,7 +220,7 @@
   transform-origin: left;
   transition: transform 0.9s cubic-bezier(0.2, 0.6, 0.2, 1) 0.4s;
 }
-.reveal.in .hl::after {
+.hl-on::after {
   transform: scaleX(1);
 }
 @media (prefers-reduced-motion: reduce) {

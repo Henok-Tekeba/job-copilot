@@ -3,7 +3,8 @@ import { format } from "date-fns";
 import { Check, X } from "lucide-react";
 
 import { LogoMark } from "@/components/logo-mark";
-import { Reveal } from "@/components/reveal";
+import { CountUp, Reveal } from "@/components/reveal";
+import { WallDocument } from "@/components/landing/wall-document";
 import { CtaLink } from "@/components/landing/cta-link";
 import { RecentCarousel } from "@/components/landing/recent-carousel";
 import { LandingSearch } from "@/components/landing/landing-search";
@@ -223,7 +224,7 @@ export function LandingPage({
                   </span>
                   <span className="h-px flex-1 bg-[#e9e9ee]" />
                   <span className="rounded-lg bg-[#f4f4f6] px-3 py-1.5 text-[12px] font-medium text-[#5c5c64]">
-                    {stats.regionLocked.toLocaleString("en-US")} postings carry a
+                    <CountUp to={stats.regionLocked} /> postings carry a
                     line like this
                   </span>
                 </div>
@@ -231,22 +232,16 @@ export function LandingPage({
                   {wallSample.title}
                 </p>
                 <p className="text-[12px] text-[#8b8b93]">{wallSample.company}</p>
-                <p className="mt-4 text-[14.5px] leading-[1.9] text-[#5c5c64]">
-                  …{wallSample.before}
-                  <mark className="hl font-medium text-[#14141a]">
-                    {wallSample.phrase}
-                  </mark>
-                  {wallSample.after}…
-                </p>
+                <WallDocument sample={wallSample} />
               </div>
             </Reveal>
           )}
 
           <div className="mt-12">
-            {LEDGER.map((row) => (
+            {LEDGER.map((row, i) => (
+              <Reveal key={row.label} delay={i * 70} className="last:border-b">
               <div
-                key={row.label}
-                className="flex items-baseline justify-between gap-4 border-t border-[#e9e9ee] py-4 last:border-b"
+                className="flex items-baseline justify-between gap-4 border-t border-[#e9e9ee] py-4"
               >
                 <span
                   className={
@@ -264,12 +259,13 @@ export function LandingPage({
                       : "text-[20px] font-medium text-[#14141a] tabular-nums"
                   }
                 >
-                  {row.value.toLocaleString("en-US")}
+                  <CountUp to={row.value} />
                   <span className="ml-2 text-[12px] font-normal text-[#8b8b93]">
                     {Math.round((row.value / stats.total) * 100)}%
                   </span>
                 </span>
               </div>
+              </Reveal>
             ))}
           </div>
 
