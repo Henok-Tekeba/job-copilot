@@ -4,7 +4,6 @@ import { Check, X } from "lucide-react";
 
 import { LogoMark } from "@/components/logo-mark";
 import { CountUp, Reveal } from "@/components/reveal";
-import { HeroPosting } from "@/components/landing/hero-posting";
 import { WallDocument } from "@/components/landing/wall-document";
 import { CtaLink } from "@/components/landing/cta-link";
 import { RecentCarousel } from "@/components/landing/recent-carousel";
@@ -12,16 +11,8 @@ import { LandingSearch } from "@/components/landing/landing-search";
 import { CompanyAvatar } from "@/components/company-avatar";
 import { opportunityLabel, workplaceLabel } from "@/lib/labels";
 import { isUnstatedLocation } from "@/lib/regions";
-import { VERDICT_STYLE } from "@/lib/verdict-style";
 import type { Job } from "@/lib/types";
 import type { LandingStats, WallSample } from "@/app/page";
-
-const CATEGORIES = [
-  { label: "Open to you", tint: "bg-emerald-100 text-emerald-700" },
-  { label: "Needs relocation", tint: "bg-sky-100 text-sky-700" },
-  { label: "Region locked", tint: "bg-red-100 text-red-700" },
-  { label: "Reach unclear", tint: "bg-amber-100 text-amber-700" },
-] as const;
 
 const HOW = [
   {
@@ -74,16 +65,8 @@ const COMPARE = [
   },
 ] as const;
 
-type Counts = {
-  open: number;
-  relocation: number;
-  regionLocked: number;
-  unclear: number;
-};
-
 /** No motion on cards: stillness is the brand. Hover only ever changes text colour. */
 function RecentCard({ job, featured }: { job: Job; featured: boolean }) {
-  const verdict = job.evaluation.eligibility?.verdict ?? "unknown";
   const posted = job.postedAt ? format(new Date(job.postedAt), "MMM d") : "recent";
 
   return (
@@ -95,14 +78,7 @@ function RecentCard({ job, featured }: { job: Job; featured: boolean }) {
           : "flex h-full min-h-[230px] flex-col rounded-2xl border border-[#ececf0] bg-white p-5 shadow-[0_14px_36px_-26px_rgba(15,15,30,0.2)]"
       }
     >
-      <div className="flex items-center gap-2">
-        <span className={`size-2 shrink-0 rounded-full ${VERDICT_STYLE[verdict].dot}`} />
-        <span className={`text-[11px] font-medium ${VERDICT_STYLE[verdict].text}`}>
-          {VERDICT_STYLE[verdict].label}
-        </span>
-      </div>
-
-      <h3 className="mt-2 line-clamp-2 text-[16px] leading-snug font-semibold tracking-[-0.01em] text-[#14141a]">
+      <h3 className="line-clamp-2 text-[16px] leading-snug font-semibold tracking-[-0.01em] text-[#14141a]">
         {job.title}
       </h3>
 
@@ -153,12 +129,10 @@ function RecentCard({ job, featured }: { job: Job; featured: boolean }) {
  */
 export function LandingPage({
   recent,
-  counts,
   stats,
   wallSample,
 }: {
   recent: Job[];
-  counts: Counts;
   stats: LandingStats;
   wallSample: WallSample | null;
 }) {
@@ -168,15 +142,6 @@ export function LandingPage({
     { label: "Never say whether they take you", value: stats.unclear, accent: false },
     { label: "Open to you as-is", value: stats.open, accent: true },
   ] as const;
-
-  const countFor = (label: (typeof CATEGORIES)[number]["label"]) =>
-    label === "Open to you"
-      ? counts.open
-      : label === "Needs relocation"
-        ? counts.relocation
-        : label === "Region locked"
-          ? counts.regionLocked
-          : counts.unclear;
 
   return (
     <main className="flex min-h-dvh flex-col bg-white">
@@ -197,67 +162,33 @@ export function LandingPage({
         </Link>
       </header>
 
-      <section className="mx-auto w-full max-w-[1080px] px-4 pt-12 pb-10 sm:px-6 sm:pt-20 sm:pb-14">
-        <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_400px]">
-          <div>
-            <h1 className="max-w-2xl text-[clamp(2.5rem,5.4vw,3.9rem)] leading-[1.04] font-medium tracking-[-0.025em] text-[#14141a]">
-              Land the right internship.
-              <br />
-              Work <span className="text-[#2b4bf2]">without borders.</span>
-            </h1>
-            <p className="mt-5 max-w-md text-[15px] leading-relaxed text-[#5c5c64]">
-              Every posting on the board is read for the two things nobody tells
-              you: whether this employer would actually take you, and what you
-              still need before you apply.
-            </p>
+      <section className="mx-auto w-full max-w-[1080px] px-4 pt-14 pb-10 sm:px-6 sm:pt-24 sm:pb-12">
+        <h1 className="max-w-4xl text-[clamp(2.7rem,6vw,4.4rem)] leading-[1.03] font-medium tracking-[-0.03em] text-[#14141a]">
+          Land the right internship.
+          <br />
+          Work <span className="text-[#2b4bf2]">without borders.</span>
+        </h1>
+        <p className="mt-5 max-w-md text-[15px] leading-relaxed text-[#5c5c64]">
+          Every posting on the board is read for the two things nobody tells
+          you: whether this employer would actually take you, and what you
+          still need before you apply.
+        </p>
 
-            <LandingSearch />
+        <LandingSearch />
 
-            <p className="mt-6 text-[11.5px] text-[#6f6f78]">
-              {stats.total.toLocaleString("en-US")} internships and contracts
-              read · refreshed every 8 hours · international-first
-            </p>
-          </div>
-
-          {recent[0] ? <HeroPosting job={recent[0]} /> : null}
-        </div>
+        <p className="mt-6 text-[11.5px] text-[#6f6f78]">
+          {stats.total.toLocaleString("en-US")} internships and contracts read ·
+          refreshed every 8 hours · international-first
+        </p>
       </section>
 
       <section className="mx-auto w-full max-w-[1080px] px-4 pt-10 pb-20 sm:px-6">
-        <h2 className="text-[clamp(1.8rem,3.6vw,2.5rem)] font-semibold tracking-[-0.025em] text-[#14141a]">
+        <h2 className="text-[clamp(1.8rem,3.6vw,2.5rem)] font-medium tracking-[-0.025em] text-[#14141a]">
           Latest{" "}
-          <mark className="hl hl-on px-1 font-semibold">
-            Internships
-          </mark>{" "}
-          Opportunity
+          <mark className="hl hl-on px-1">internships</mark>
         </h2>
 
-        <div className="mt-8 grid gap-8 lg:grid-cols-[230px_minmax(0,1fr)]">
-          <aside className="no-scrollbar flex gap-2 overflow-x-auto pb-1 lg:flex-col lg:gap-1 lg:overflow-visible lg:pb-0">
-            {CATEGORIES.map((cat, i) => (
-              <Link
-                key={cat.label}
-                href="/jobs"
-                className="group flex shrink-0 items-center justify-between gap-3 rounded-xl bg-white px-3 py-2.5 ring-1 ring-[#e9e9ee] transition-colors hover:bg-[#f4f4f6] lg:bg-transparent lg:px-3 lg:ring-0"
-              >
-                <span
-                  className={
-                    i === 0
-                      ? "text-sm font-medium text-[#2b4bf2]"
-                      : "text-sm text-[#5c5c64] transition-colors group-hover:text-[#14141a]"
-                  }
-                >
-                  {cat.label}
-                </span>
-                <span
-                  className={`rounded-md px-2 py-0.5 font-mono text-[11px] tabular-nums ${cat.tint}`}
-                >
-                  {countFor(cat.label)}
-                </span>
-              </Link>
-            ))}
-          </aside>
-
+        <div className="mt-6">
           <RecentCarousel>
             {recent.map((job, i) => (
               <RecentCard key={job.id} job={job} featured={i === 0} />

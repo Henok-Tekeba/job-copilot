@@ -108,6 +108,6 @@ export default function Home() {
     )
     .slice(0, 4);
 
-  return <LandingPage recent={recent} counts={counts} stats={stats} wallSample={wallSample} />;
+  return <LandingPage recent={recent} stats={stats} wallSample={wallSample} />;
 }
 

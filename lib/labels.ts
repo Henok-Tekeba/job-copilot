@@ -26,5 +26,7 @@ export const cap = (value: string) =>
 export const opportunityLabel = (value?: string | null) =>
   value ? (OPPORTUNITY_LABELS[value] ?? cap(value)) : "";
 
-export const workplaceLabel = (value?: string | null) =>
-  value ? (WORKPLACE_LABELS[value] ?? cap(value)) : "";
+export const workplaceLabel = (value?: string | null) => {
+  if (!value || value === "unknown") return "";
+  return WORKPLACE_LABELS[value] ?? cap(value);
+};
