@@ -4,7 +4,7 @@ import { Check, X } from "lucide-react";
 
 import { LogoMark } from "@/components/logo-mark";
 import { AsciiMap } from "@/components/ascii-map";
-import { CountUp, Reveal } from "@/components/reveal";
+import { Reveal } from "@/components/reveal";
 import { CtaLink } from "@/components/landing/cta-link";
 import { RecentCarousel } from "@/components/landing/recent-carousel";
 import { LandingSearch } from "@/components/landing/landing-search";
@@ -13,7 +13,7 @@ import { opportunityLabel, workplaceLabel } from "@/lib/labels";
 import { isUnstatedLocation } from "@/lib/regions";
 import { VERDICT_STYLE } from "@/lib/verdict-style";
 import type { Job } from "@/lib/types";
-import type { LandingStats } from "@/app/page";
+import type { LandingStats, WallSample } from "@/app/page";
 
 const CATEGORIES = [
   { label: "Open to you", tint: "bg-emerald-100 text-emerald-700" },
@@ -26,18 +26,22 @@ const HOW = [
   {
     title: "Can they take you?",
     body: "We read the location rules and visa notes in the posting and give a plain answer, with the exact words that caused it.",
+    output: "a verdict, quoted from the text",
   },
   {
     title: "Would you pass?",
     body: "Your skills are scored against what the posting asks for, so you know where you stand before applying.",
+    output: "a priority score out of 100",
   },
   {
     title: "What are you missing?",
     body: "The skills you do not have yet are named up front, so you know what to learn next.",
+    output: "the list of skills to learn",
   },
   {
     title: "By when?",
     body: "Deadlines are pulled from the posting text, so you never miss a cutoff.",
+    output: "a date, read from the text",
   },
 ] as const;
 
@@ -150,11 +154,20 @@ export function LandingPage({
   recent,
   counts,
   stats,
+  wallSample,
 }: {
   recent: Job[];
   counts: Counts;
   stats: LandingStats;
+  wallSample: WallSample | null;
 }) {
+  const LEDGER = [
+    { label: "Refuse your region outright", value: stats.regionLocked, accent: false },
+    { label: "Open, but only if you relocate", value: stats.relocation, accent: false },
+    { label: "Never say whether they take you", value: stats.unclear, accent: false },
+    { label: "Open to you as-is", value: stats.open, accent: true },
+  ] as const;
+
   const countFor = (label: (typeof CATEGORIES)[number]["label"]) =>
     label === "Open to you"
       ? counts.open
@@ -197,106 +210,86 @@ export function LandingPage({
         <LandingSearch />
       </section>
 
-      {/* The wall — the discrimination data, read from the live snapshot */}
-      <section className="relative mx-auto w-full max-w-[1080px] overflow-hidden px-4 py-16 sm:px-6 sm:py-24">
-        <AsciiMap
-          sweep={false}
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-1/4 h-80 text-[10px] [mask-image:linear-gradient(to_bottom,transparent,black_30%,black_70%,transparent)] sm:text-[12px]"
-        />
-        <div className="relative">
+      {/* The wall — a real posting, caught in the act, and the ledger */}
+      <section className="border-t border-[#e9e9ee]">
+        <div className="mx-auto w-full max-w-[1080px] px-4 py-16 sm:px-6 sm:py-24">
           <Reveal>
-            <p className="font-mono text-[12px] font-medium tracking-[0.2em] text-[#2b4bf2]">
-              THE PROBLEM
-            </p>
-          </Reveal>
-          <Reveal delay={80}>
-            <h2 className="mt-3 max-w-2xl text-[clamp(1.9rem,4.4vw,2.9rem)] leading-[1.06] font-medium tracking-[-0.02em] text-[#14141a]">
+            <h2 className="max-w-2xl text-[clamp(1.9rem,4.4vw,2.9rem)] leading-[1.06] font-medium tracking-[-0.02em] text-[#14141a]">
               The world hires online. Your region gets filtered out by{" "}
               <span className="text-[#2b4bf2]">a line you never see.</span>
             </h2>
           </Reveal>
 
-          <div className="mt-12 grid gap-8 sm:grid-cols-3">
+          {wallSample && (
             <Reveal>
-              <div className="flex flex-col gap-2 border-t-2 border-[#14141a] pt-5">
-                <CountUp
-                  to={stats.regionLocked}
-                  className="text-[clamp(2.4rem,5vw,3.4rem)] leading-none font-semibold tracking-tight text-[#14141a] tabular-nums"
-                />
-                <p className="max-w-[240px] text-[13px] leading-relaxed text-[#5c5c64]">
-                  postings, in their own words, refuse your region outright.
+              <div className="relative mt-12 rounded-[24px] border border-[#ececf0] bg-white p-6 shadow-[0_24px_64px_-32px_rgba(15,15,30,0.3)] sm:p-10">
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-[11px] text-[#8b8b93]">
+                    A posting, exactly as it reads
+                  </span>
+                  <span className="h-px flex-1 bg-[#e9e9ee]" />
+                  <span className="rounded-lg bg-[#f4f4f6] px-3 py-1.5 text-[12px] font-medium text-[#5c5c64]">
+                    {stats.regionLocked.toLocaleString("en-US")} postings carry a
+                    line like this
+                  </span>
+                </div>
+                <p className="mt-6 text-[13px] font-semibold text-[#14141a]">
+                  {wallSample.title}
+                </p>
+                <p className="text-[12px] text-[#8b8b93]">{wallSample.company}</p>
+                <p className="mt-4 text-[14.5px] leading-[1.9] text-[#5c5c64]">
+                  …{wallSample.before}
+                  <mark className="hl font-medium text-[#14141a]">
+                    {wallSample.phrase}
+                  </mark>
+                  {wallSample.after}…
                 </p>
               </div>
             </Reveal>
-            <Reveal delay={90}>
-              <div className="flex flex-col gap-2 border-t-2 border-[#14141a] pt-5">
-                <CountUp
-                  to={stats.sponsorshipSilent}
-                  className="text-[clamp(2.4rem,5vw,3.4rem)] leading-none font-semibold tracking-tight text-[#14141a] tabular-nums"
-                />
-                <p className="max-w-[240px] text-[13px] leading-relaxed text-[#5c5c64]">
-                  say nothing about visas at all. You find out in the rejection.
-                </p>
+          )}
+
+          <div className="mt-12">
+            {LEDGER.map((row) => (
+              <div
+                key={row.label}
+                className="flex items-baseline justify-between gap-4 border-t border-[#e9e9ee] py-4 last:border-b"
+              >
+                <span
+                  className={
+                    row.accent
+                      ? "text-[15px] font-semibold text-[#2b4bf2]"
+                      : "text-[15px] text-[#14141a]"
+                  }
+                >
+                  {row.label}
+                </span>
+                <span
+                  className={
+                    row.accent
+                      ? "text-[20px] font-semibold text-[#2b4bf2] tabular-nums"
+                      : "text-[20px] font-medium text-[#14141a] tabular-nums"
+                  }
+                >
+                  {row.value.toLocaleString("en-US")}
+                  <span className="ml-2 text-[12px] font-normal text-[#8b8b93]">
+                    {Math.round((row.value / stats.total) * 100)}%
+                  </span>
+                </span>
               </div>
-            </Reveal>
-            <Reveal delay={180}>
-              <div className="flex flex-col gap-2 border-t-2 border-[#2b4bf2] pt-5">
-                <CountUp
-                  to={stats.open}
-                  className="text-[clamp(2.4rem,5vw,3.4rem)] leading-none font-semibold tracking-tight text-[#2b4bf2] tabular-nums"
-                />
-                <p className="max-w-[240px] text-[13px] leading-relaxed text-[#5c5c64]">
-                  are actually open to you — and browsing will never surface
-                  them.
-                </p>
-              </div>
-            </Reveal>
+            ))}
           </div>
 
-          <Reveal delay={140}>
-            <div className="mt-12 max-w-2xl">
-              <div className="flex h-3 w-full overflow-hidden rounded-full bg-[#f4f4f6]">
-                <span
-                  className="h-full bg-[#2b4bf2]"
-                  style={{ width: `${((stats.open / stats.total) * 100).toFixed(1)}%` }}
-                />
-                <span
-                  className="h-full bg-[#c9c9cf]"
-                  style={{ width: `${(((stats.unclear + stats.relocation) / stats.total) * 100).toFixed(1)}%` }}
-                />
-                <span
-                  className="h-full bg-[#14141a]"
-                  style={{ width: `${((stats.regionLocked / stats.total) * 100).toFixed(1)}%` }}
-                />
-              </div>
-              <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1 font-mono text-[11px] text-[#8b8b93]">
-                <span>
-                  <b className="text-[#2b4bf2]">{stats.open.toLocaleString("en-US")}</b> open to
-                  you
-                </span>
-                <span>
-                  <b className="text-[#5c5c64]">{(stats.unclear + stats.relocation).toLocaleString("en-US")}</b>{" "}
-                  relocation or unclear
-                </span>
-                <span>
-                  <b className="text-[#14141a]">{stats.regionLocked.toLocaleString("en-US")}</b>{" "}
-                  region-locked
-                </span>
-              </div>
-              <p className="mt-2 text-[11px] text-[#8b8b93]">
-                Counted live from the {stats.total.toLocaleString("en-US")} internships and
-                contracts on the board right now. Sponsorship:{" "}
-                {stats.sponsorshipOffered.toLocaleString("en-US")} postings say it is offered,{" "}
-                {stats.sponsorshipDenied.toLocaleString("en-US")} say no,{" "}
-                {stats.sponsorshipSilent.toLocaleString("en-US")} never mention it.
-              </p>
-            </div>
-          </Reveal>
+          <p className="mt-4 text-[11px] text-[#8b8b93]">
+            Counted live from the {stats.total.toLocaleString("en-US")} internships
+            and contracts on the board right now. Sponsorship:{" "}
+            {stats.sponsorshipOffered.toLocaleString("en-US")} postings say it is
+            offered, {stats.sponsorshipDenied.toLocaleString("en-US")} say no,{" "}
+            {stats.sponsorshipSilent.toLocaleString("en-US")} never mention it.
+          </p>
         </div>
       </section>
 
-      {/* How it reads */}
+      {/* How it reads — four reads, one rule, their outputs */}
       <section className="border-t border-[#e9e9ee]">
         <div className="mx-auto w-full max-w-[1080px] px-4 py-16 sm:px-6 sm:py-24">
           <Reveal>
@@ -304,25 +297,32 @@ export function LandingPage({
               How a posting is read
             </h2>
           </Reveal>
-          <ol className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {HOW.map((step, i) => (
-              <li key={step.title}>
-                <Reveal delay={i * 90}>
-                  <div className="flex flex-col gap-2 border-t-2 border-[#14141a] pt-4">
-                    <span className="font-mono text-[12px] tabular-nums text-[#8b8b93]">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <span className="text-[15px] font-semibold text-[#14141a]">
-                      {step.title}
-                    </span>
-                    <span className="text-[12.5px] leading-relaxed text-[#8b8b93]">
-                      {step.body}
-                    </span>
-                  </div>
-                </Reveal>
-              </li>
-            ))}
-          </ol>
+          <Reveal delay={100}>
+            <div className="mt-12 grid gap-x-10 gap-y-12 border-t border-[#14141a] pt-0 sm:grid-cols-2 lg:grid-cols-4">
+              {HOW.map((step, i) => (
+                <div key={step.title} className="relative pt-8">
+                  <span
+                    aria-hidden="true"
+                    className="absolute top-[-3.5px] left-0 size-[7px] bg-[#2b4bf2]"
+                  />
+                  <span className="text-[40px] leading-none font-medium tracking-tight text-[#14141a]">
+                    {i + 1}
+                    <span className="text-[#2b4bf2]">.</span>
+                  </span>
+                  <h3 className="mt-3 text-[15px] font-semibold text-[#14141a]">
+                    {step.title}
+                  </h3>
+                  <p className="mt-1.5 text-[12.5px] leading-relaxed text-[#8b8b93]">
+                    {step.body}
+                  </p>
+                  <p className="mt-4 border-t border-[#e9e9ee] pt-2.5 text-[12px] text-[#8b8b93]">
+                    <span className="font-medium text-[#5c5c64]">You get: </span>
+                    {step.output}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
         </div>
       </section>
 

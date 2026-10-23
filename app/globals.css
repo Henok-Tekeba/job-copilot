@@ -179,6 +179,34 @@
   }
 }
 
+/* The highlighter catch on the wall's posting document: a swipe that grows
+ * left-to-right once the section reveals. */
+.hl {
+  position: relative;
+  z-index: 0;
+  white-space: nowrap;
+}
+.hl::after {
+  content: "";
+  position: absolute;
+  inset: -1px -4px;
+  border-radius: 4px;
+  background: rgb(43 75 242 / 0.16);
+  z-index: -1;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.9s cubic-bezier(0.2, 0.6, 0.2, 1) 0.4s;
+}
+.reveal.in .hl::after {
+  transform: scaleX(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .hl::after {
+    transition: none;
+    transform: none;
+  }
+}
+
 /*
  * The ASCII world map behind the hero. The "lit" disc is a mask whose center
  * follows the pointer (CSS vars written by AsciiBackdrop); the "sweep" is a
