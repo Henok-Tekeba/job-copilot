@@ -162,16 +162,16 @@ export function LandingPage({
         </Link>
       </header>
 
-      <section className="mx-auto w-full max-w-[1080px] px-4 pt-14 pb-10 sm:px-6 sm:pt-24 sm:pb-12">
-        <h1 className="max-w-4xl text-[clamp(2.7rem,6vw,4.4rem)] leading-[1.03] font-medium tracking-[-0.03em] text-[#14141a]">
+      <section className="mx-auto w-full max-w-[1000px] px-4 pt-16 pb-14 text-center sm:px-6 sm:pt-28 sm:pb-20">
+        <h1 className="mx-auto max-w-[880px] text-[clamp(2.9rem,7vw,5.4rem)] leading-[0.98] font-medium tracking-[-0.045em] text-[#14141a]">
           Land the right internship.
           <br />
-          Work <span className="text-[#2b4bf2]">without borders.</span>
+          Work{" "}
+          <mark className="hl hl-on px-2 pb-1 font-medium">without borders.</mark>
         </h1>
-        <p className="mt-5 max-w-md text-[15px] leading-relaxed text-[#5c5c64]">
-          Every posting on the board is read for the two things nobody tells
-          you: whether this employer would actually take you, and what you
-          still need before you apply.
+        <p className="mx-auto mt-7 max-w-[540px] text-[15.5px] leading-relaxed text-[#5c5c64]">
+          Every posting is read for whether this employer would actually take
+          you, and what you still need before you apply.
         </p>
 
         <LandingSearch />
@@ -184,8 +184,7 @@ export function LandingPage({
 
       <section className="mx-auto w-full max-w-[1080px] px-4 pt-10 pb-20 sm:px-6">
         <h2 className="text-[clamp(1.8rem,3.6vw,2.5rem)] font-medium tracking-[-0.025em] text-[#14141a]">
-          Latest{" "}
-          <mark className="hl hl-on px-1">internships</mark>
+          Latest internships
         </h2>
 
         <div className="mt-6">
