@@ -4,6 +4,7 @@ import { Check, X } from "lucide-react";
 
 import { LogoMark } from "@/components/logo-mark";
 import { CountUp, Reveal } from "@/components/reveal";
+import { HeroPosting } from "@/components/landing/hero-posting";
 import { WallDocument } from "@/components/landing/wall-document";
 import { CtaLink } from "@/components/landing/cta-link";
 import { RecentCarousel } from "@/components/landing/recent-carousel";
@@ -188,25 +189,42 @@ export function LandingPage({
             shortlist
           </span>
         </div>
+        <Link
+          href="/skills"
+          className="text-[13px] font-medium text-[#5c5c64] transition-colors hover:text-[#14141a]"
+        >
+          Your skills
+        </Link>
       </header>
 
-      <section className="mx-auto w-full max-w-[1080px] px-4 pt-14 pb-8 sm:px-6 sm:pt-24">
-        <h1 className="max-w-3xl text-[clamp(2.6rem,6vw,4.1rem)] leading-[1.05] font-medium tracking-[-0.02em] text-[#14141a]">
-          Land the right internship.
-          <br />
-          Work <span className="text-[#2b4bf2]">without borders.</span>
-        </h1>
-        <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-[#6f6f78]">
-          Every posting on the board is read for the two things nobody tells you:
-          whether this employer would actually take you, and what you still need
-          before you apply.
-        </p>
+      <section className="mx-auto w-full max-w-[1080px] px-4 pt-12 pb-10 sm:px-6 sm:pt-20 sm:pb-14">
+        <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_400px]">
+          <div>
+            <h1 className="max-w-2xl text-[clamp(2.5rem,5.4vw,3.9rem)] leading-[1.04] font-medium tracking-[-0.025em] text-[#14141a]">
+              Land the right internship.
+              <br />
+              Work <span className="text-[#2b4bf2]">without borders.</span>
+            </h1>
+            <p className="mt-5 max-w-md text-[15px] leading-relaxed text-[#5c5c64]">
+              Every posting on the board is read for the two things nobody tells
+              you: whether this employer would actually take you, and what you
+              still need before you apply.
+            </p>
 
-        <LandingSearch />
+            <LandingSearch />
+
+            <p className="mt-6 text-[11.5px] text-[#6f6f78]">
+              {stats.total.toLocaleString("en-US")} internships and contracts
+              read · refreshed every 8 hours · international-first
+            </p>
+          </div>
+
+          {recent[0] ? <HeroPosting job={recent[0]} /> : null}
+        </div>
       </section>
 
       <section className="mx-auto w-full max-w-[1080px] px-4 pt-10 pb-20 sm:px-6">
-        <h2 className="text-[clamp(1.9rem,4vw,2.7rem)] font-semibold tracking-[-0.025em] text-[#14141a]">
+        <h2 className="text-[clamp(1.8rem,3.6vw,2.5rem)] font-semibold tracking-[-0.025em] text-[#14141a]">
           Latest{" "}
           <mark className="hl hl-on px-1 font-semibold">
             Internships
@@ -250,10 +268,10 @@ export function LandingPage({
 
 
       {/* The wall — a real posting, caught in the act, and the ledger */}
-      <section className="border-t border-[#e9e9ee]">
+      <section className="border-y border-[#e9e9ee] bg-[#f4f4f6]">
         <div className="mx-auto w-full max-w-[1080px] px-4 py-16 sm:px-6 sm:py-24">
           <Reveal>
-            <h2 className="max-w-2xl text-[clamp(1.9rem,4.4vw,2.9rem)] leading-[1.06] font-medium tracking-[-0.02em] text-[#14141a]">
+            <h2 className="max-w-2xl text-[clamp(1.8rem,3.8vw,2.6rem)] leading-[1.06] font-medium tracking-[-0.02em] text-[#14141a]">
               <span className="mask-wipe">
                 Thousands of tech internships get posted every month. Your
                 region gets filtered out by{" "}
@@ -330,7 +348,7 @@ export function LandingPage({
       <section className="border-t border-[#e9e9ee]">
         <div className="mx-auto w-full max-w-[1080px] px-4 py-16 sm:px-6 sm:py-24">
           <Reveal>
-            <h2 className="text-[clamp(1.9rem,4vw,2.7rem)] font-medium tracking-[-0.02em] text-[#14141a]">
+            <h2 className="text-[clamp(1.8rem,3.6vw,2.5rem)] font-medium tracking-[-0.02em] text-[#14141a]">
               How a posting is read
             </h2>
           </Reveal>
@@ -367,7 +385,7 @@ export function LandingPage({
       <section className="border-t border-[#e9e9ee] bg-[#f4f4f6]">
         <div className="mx-auto w-full max-w-[1080px] px-4 py-16 sm:px-6 sm:py-24">
           <Reveal>
-            <h2 className="max-w-2xl text-[clamp(1.9rem,4vw,2.7rem)] leading-[1.08] font-medium tracking-[-0.02em] text-[#14141a]">
+            <h2 className="max-w-2xl text-[clamp(1.8rem,3.6vw,2.5rem)] leading-[1.08] font-medium tracking-[-0.02em] text-[#14141a]">
               The big boards sell listings.{" "}
               <span className="text-[#2b4bf2]">Shortlist sells the answer.</span>
             </h2>
@@ -404,7 +422,7 @@ export function LandingPage({
       <section className="border-t border-[#e9e9ee]">
         <div className="mx-auto w-full max-w-[1080px] px-4 py-16 text-center sm:px-6 sm:py-24">
           <Reveal>
-            <h2 className="mx-auto max-w-2xl text-[clamp(2rem,4.6vw,3rem)] font-medium tracking-[-0.02em] text-[#14141a]">
+            <h2 className="mx-auto max-w-2xl text-[clamp(1.9rem,4vw,2.7rem)] font-medium tracking-[-0.02em] text-[#14141a]">
               Stop applying{" "}
               <span className="text-[#2b4bf2]">blind.</span>
             </h2>
