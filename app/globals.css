@@ -158,6 +158,27 @@
   display: none;
 }
 
+/* Scroll-triggered reveals (components/reveal.tsx). Motion only on entry,
+ * never on hover; reduced-motion users get static content. */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.7s cubic-bezier(0.2, 0.6, 0.2, 1),
+    transform 0.7s cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+.reveal.in {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 /*
  * The ASCII world map behind the hero. The "lit" disc is a mask whose center
  * follows the pointer (CSS vars written by AsciiBackdrop); the "sweep" is a

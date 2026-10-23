@@ -1,7 +1,11 @@
 import Link from "next/link";
 import { format } from "date-fns";
+import { Check, X } from "lucide-react";
 
 import { LogoMark } from "@/components/logo-mark";
+import { AsciiMap } from "@/components/ascii-map";
+import { CountUp, Reveal } from "@/components/reveal";
+import { CtaLink } from "@/components/landing/cta-link";
 import { RecentCarousel } from "@/components/landing/recent-carousel";
 import { LandingSearch } from "@/components/landing/landing-search";
 import { CompanyAvatar } from "@/components/company-avatar";
@@ -9,12 +13,60 @@ import { opportunityLabel, workplaceLabel } from "@/lib/labels";
 import { isUnstatedLocation } from "@/lib/regions";
 import { VERDICT_STYLE } from "@/lib/verdict-style";
 import type { Job } from "@/lib/types";
+import type { LandingStats } from "@/app/page";
 
 const CATEGORIES = [
   { label: "Open to you", tint: "bg-emerald-100 text-emerald-700" },
   { label: "Needs relocation", tint: "bg-sky-100 text-sky-700" },
   { label: "Region locked", tint: "bg-red-100 text-red-700" },
   { label: "Reach unclear", tint: "bg-amber-100 text-amber-700" },
+] as const;
+
+const HOW = [
+  {
+    title: "Can they take you?",
+    body: "We read the location rules and visa notes in the posting and give a plain answer, with the exact words that caused it.",
+  },
+  {
+    title: "Would you pass?",
+    body: "Your skills are scored against what the posting asks for, so you know where you stand before applying.",
+  },
+  {
+    title: "What are you missing?",
+    body: "The skills you do not have yet are named up front, so you know what to learn next.",
+  },
+  {
+    title: "By when?",
+    body: "Deadlines are pulled from the posting text, so you never miss a cutoff.",
+  },
+] as const;
+
+const COMPARE = [
+  {
+    label: "Will they take you?",
+    them: "Buried in the text, if written at all",
+    us: "A verdict with the exact words that caused it",
+  },
+  {
+    label: "What you are missing",
+    them: "You find out in the rejection",
+    us: "Named before you apply",
+  },
+  {
+    label: "Personal match",
+    them: "One list for everyone",
+    us: "A % on every row, scored from your skills",
+  },
+  {
+    label: "Deadlines",
+    them: "Rarely surfaced",
+    us: "Read from the posting text",
+  },
+  {
+    label: "What gets listed",
+    them: "Senior and full-time filler",
+    us: "Internships and contracts only",
+  },
 ] as const;
 
 type Counts = {
@@ -97,9 +149,11 @@ function RecentCard({ job, featured }: { job: Job; featured: boolean }) {
 export function LandingPage({
   recent,
   counts,
+  stats,
 }: {
   recent: Job[];
   counts: Counts;
+  stats: LandingStats;
 }) {
   const countFor = (label: (typeof CATEGORIES)[number]["label"]) =>
     label === "Open to you"
@@ -123,8 +177,13 @@ export function LandingPage({
         </div>
       </header>
 
-      <section className="mx-auto w-full max-w-[1080px] px-4 pt-14 pb-8 sm:px-6 sm:pt-24">
-        <h1 className="max-w-3xl text-[clamp(2.6rem,6vw,4.1rem)] leading-[1.05] font-medium tracking-[-0.02em] text-[#14141a]">
+      <section className="relative mx-auto w-full max-w-[1080px] overflow-hidden px-4 pt-14 pb-8 sm:px-6 sm:pt-24">
+        <AsciiMap
+          sweep={false}
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 h-72 text-[10px] [mask-image:linear-gradient(to_bottom,black_35%,transparent_95%)] sm:h-[26rem] sm:text-[13px]"
+        />
+        <h1 className="relative max-w-3xl text-[clamp(2.6rem,6vw,4.1rem)] leading-[1.05] font-medium tracking-[-0.02em] text-[#14141a]">
           Land the right internship.
           <br />
           Work <span className="text-[#2b4bf2]">without borders.</span>
@@ -136,6 +195,172 @@ export function LandingPage({
         </p>
 
         <LandingSearch />
+      </section>
+
+      {/* The wall — the discrimination data, read from the live snapshot */}
+      <section className="relative mx-auto w-full max-w-[1080px] overflow-hidden px-4 py-16 sm:px-6 sm:py-24">
+        <AsciiMap
+          sweep={false}
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-1/4 h-80 text-[10px] [mask-image:linear-gradient(to_bottom,transparent,black_30%,black_70%,transparent)] sm:text-[12px]"
+        />
+        <div className="relative">
+          <Reveal>
+            <p className="font-mono text-[12px] font-medium tracking-[0.2em] text-[#2b4bf2]">
+              THE PROBLEM
+            </p>
+          </Reveal>
+          <Reveal delay={80}>
+            <h2 className="mt-3 max-w-2xl text-[clamp(1.9rem,4.4vw,2.9rem)] leading-[1.06] font-medium tracking-[-0.02em] text-[#14141a]">
+              The world hires online. Your region gets filtered out by{" "}
+              <span className="text-[#2b4bf2]">a line you never see.</span>
+            </h2>
+          </Reveal>
+
+          <div className="mt-12 grid gap-8 sm:grid-cols-3">
+            <Reveal>
+              <div className="flex flex-col gap-2 border-t-2 border-[#14141a] pt-5">
+                <CountUp
+                  to={stats.regionLocked}
+                  className="text-[clamp(2.4rem,5vw,3.4rem)] leading-none font-semibold tracking-tight text-[#14141a] tabular-nums"
+                />
+                <p className="max-w-[240px] text-[13px] leading-relaxed text-[#5c5c64]">
+                  postings, in their own words, refuse your region outright.
+                </p>
+              </div>
+            </Reveal>
+            <Reveal delay={90}>
+              <div className="flex flex-col gap-2 border-t-2 border-[#14141a] pt-5">
+                <CountUp
+                  to={stats.sponsorshipSilent}
+                  className="text-[clamp(2.4rem,5vw,3.4rem)] leading-none font-semibold tracking-tight text-[#14141a] tabular-nums"
+                />
+                <p className="max-w-[240px] text-[13px] leading-relaxed text-[#5c5c64]">
+                  say nothing about visas at all. You find out in the rejection.
+                </p>
+              </div>
+            </Reveal>
+            <Reveal delay={180}>
+              <div className="flex flex-col gap-2 border-t-2 border-[#2b4bf2] pt-5">
+                <CountUp
+                  to={stats.open}
+                  className="text-[clamp(2.4rem,5vw,3.4rem)] leading-none font-semibold tracking-tight text-[#2b4bf2] tabular-nums"
+                />
+                <p className="max-w-[240px] text-[13px] leading-relaxed text-[#5c5c64]">
+                  are actually open to you — and browsing will never surface
+                  them.
+                </p>
+              </div>
+            </Reveal>
+          </div>
+
+          <Reveal delay={140}>
+            <div className="mt-12 max-w-2xl">
+              <div className="flex h-3 w-full overflow-hidden rounded-full bg-[#f4f4f6]">
+                <span
+                  className="h-full bg-[#2b4bf2]"
+                  style={{ width: `${((stats.open / stats.total) * 100).toFixed(1)}%` }}
+                />
+                <span
+                  className="h-full bg-[#c9c9cf]"
+                  style={{ width: `${(((stats.unclear + stats.relocation) / stats.total) * 100).toFixed(1)}%` }}
+                />
+                <span
+                  className="h-full bg-[#14141a]"
+                  style={{ width: `${((stats.regionLocked / stats.total) * 100).toFixed(1)}%` }}
+                />
+              </div>
+              <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1 font-mono text-[11px] text-[#8b8b93]">
+                <span>
+                  <b className="text-[#2b4bf2]">{stats.open.toLocaleString("en-US")}</b> open to
+                  you
+                </span>
+                <span>
+                  <b className="text-[#5c5c64]">{(stats.unclear + stats.relocation).toLocaleString("en-US")}</b>{" "}
+                  relocation or unclear
+                </span>
+                <span>
+                  <b className="text-[#14141a]">{stats.regionLocked.toLocaleString("en-US")}</b>{" "}
+                  region-locked
+                </span>
+              </div>
+              <p className="mt-2 text-[11px] text-[#8b8b93]">
+                Counted live from the {stats.total.toLocaleString("en-US")} internships and
+                contracts on the board right now. Sponsorship:{" "}
+                {stats.sponsorshipOffered.toLocaleString("en-US")} postings say it is offered,{" "}
+                {stats.sponsorshipDenied.toLocaleString("en-US")} say no,{" "}
+                {stats.sponsorshipSilent.toLocaleString("en-US")} never mention it.
+              </p>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* How it reads */}
+      <section className="border-t border-[#e9e9ee]">
+        <div className="mx-auto w-full max-w-[1080px] px-4 py-16 sm:px-6 sm:py-24">
+          <Reveal>
+            <h2 className="text-[clamp(1.9rem,4vw,2.7rem)] font-medium tracking-[-0.02em] text-[#14141a]">
+              How a posting is read
+            </h2>
+          </Reveal>
+          <ol className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            {HOW.map((step, i) => (
+              <li key={step.title}>
+                <Reveal delay={i * 90}>
+                  <div className="flex flex-col gap-2 border-t-2 border-[#14141a] pt-4">
+                    <span className="font-mono text-[12px] tabular-nums text-[#8b8b93]">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="text-[15px] font-semibold text-[#14141a]">
+                      {step.title}
+                    </span>
+                    <span className="text-[12.5px] leading-relaxed text-[#8b8b93]">
+                      {step.body}
+                    </span>
+                  </div>
+                </Reveal>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* Comparison */}
+      <section className="border-t border-[#e9e9ee] bg-[#f4f4f6]">
+        <div className="mx-auto w-full max-w-[1080px] px-4 py-16 sm:px-6 sm:py-24">
+          <Reveal>
+            <h2 className="max-w-2xl text-[clamp(1.9rem,4vw,2.7rem)] leading-[1.08] font-medium tracking-[-0.02em] text-[#14141a]">
+              The big boards sell listings.{" "}
+              <span className="text-[#2b4bf2]">Shortlist sells the answer.</span>
+            </h2>
+          </Reveal>
+          <Reveal delay={100}>
+            <div className="mt-10 overflow-hidden rounded-[24px] border border-[#ececf0] bg-white shadow-[0_24px_64px_-32px_rgba(15,15,30,0.25)]">
+              <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)] gap-x-4 border-b border-[#e9e9ee] bg-[#f4f4f6] px-5 py-3 text-[12px] font-semibold text-[#5c5c64] sm:px-8">
+                <span>&nbsp;</span>
+                <span>The big boards</span>
+                <span className="text-[#2b4bf2]">Shortlist</span>
+              </div>
+              {COMPARE.map((row) => (
+                <div
+                  key={row.label}
+                  className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)] items-start gap-x-4 border-b border-[#e9e9ee] px-5 py-4 text-[13px] last:border-b-0 sm:px-8"
+                >
+                  <span className="font-semibold text-[#14141a]">{row.label}</span>
+                  <span className="flex items-start gap-2 text-[#8b8b93]">
+                    <X className="mt-0.5 size-3.5 shrink-0 text-[#c9c9cf]" />
+                    {row.them}
+                  </span>
+                  <span className="flex items-start gap-2 text-[#14141a]">
+                    <Check className="mt-0.5 size-3.5 shrink-0 text-[#2b4bf2]" strokeWidth={3} />
+                    {row.us}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </div>
       </section>
 
       <section className="mx-auto w-full max-w-[1080px] px-4 pt-10 pb-20 sm:px-6">
@@ -194,6 +419,29 @@ export function LandingPage({
               <RecentCard key={job.id} job={job} featured={i === 0} />
             ))}
           </RecentCarousel>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="border-t border-[#e9e9ee]">
+        <div className="mx-auto w-full max-w-[1080px] px-4 py-16 text-center sm:px-6 sm:py-24">
+          <Reveal>
+            <h2 className="mx-auto max-w-2xl text-[clamp(2rem,4.6vw,3rem)] font-medium tracking-[-0.02em] text-[#14141a]">
+              Stop applying{" "}
+              <span className="text-[#2b4bf2]">blind.</span>
+            </h2>
+          </Reveal>
+          <Reveal delay={90}>
+            <p className="mx-auto mt-3 max-w-md text-[13.5px] leading-relaxed text-[#8b8b93]">
+              Pick your skills once. See, on every posting, whether they would
+              take you — and what is missing before you apply.
+            </p>
+          </Reveal>
+          <Reveal delay={160}>
+            <div className="mt-8 flex justify-center">
+              <CtaLink />
+            </div>
+          </Reveal>
         </div>
       </section>
 
