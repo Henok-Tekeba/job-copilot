@@ -121,14 +121,6 @@ export function LandingPage({
             shortlist
           </span>
         </div>
-        <div className="flex items-center gap-4">
-          <Link
-            href="/jobs"
-            className="text-[13px] font-medium text-[#5c5c64] transition-colors hover:text-[#14141a]"
-          >
-            Board
-          </Link>
-        </div>
       </header>
 
       <section className="mx-auto w-full max-w-[1080px] px-4 pt-14 pb-8 sm:px-6 sm:pt-24">
