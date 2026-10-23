@@ -63,7 +63,9 @@ export function JobsPagination({
             <PaginationPrevious
               aria-disabled={pageIndex === 0}
               className={
-                pageIndex === 0 ? "pointer-events-none opacity-50" : undefined
+                pageIndex === 0
+                  ? "pointer-events-none opacity-50 [&>span]:hidden sm:[&>span]:inline-flex"
+                  : "[&>span]:hidden sm:[&>span]:inline-flex"
               }
               onClick={(event) => {
                 event.preventDefault();
@@ -98,8 +100,8 @@ export function JobsPagination({
               aria-disabled={pageIndex >= pageCount - 1}
               className={
                 pageIndex >= pageCount - 1
-                  ? "pointer-events-none opacity-50"
-                  : undefined
+                  ? "pointer-events-none opacity-50 [&>span]:hidden sm:[&>span]:inline-flex"
+                  : "[&>span]:hidden sm:[&>span]:inline-flex"
               }
               onClick={(event) => {
                 event.preventDefault();

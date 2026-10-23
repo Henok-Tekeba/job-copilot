@@ -154,7 +154,7 @@ export function SkillsPicker({
 
       <div className="mx-auto mt-4 w-full max-w-[900px] rounded-[28px] border border-[#ececf0] bg-white px-6 py-8 shadow-[0_24px_64px_-28px_rgba(15,15,30,0.25)] sm:px-10 sm:py-10">
         <div className="text-center">
-          <h1 className="text-[clamp(2rem,4.2vw,3rem)] font-medium tracking-[-0.035em] text-[#14141a]">
+          <h1 className="text-[clamp(1.7rem,4.2vw,3rem)] font-medium tracking-[-0.035em] text-[#14141a]">
             Pick your{" "}
             <mark className="hl hl-on px-1.5">skills</mark>
           </h1>

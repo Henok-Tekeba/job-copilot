@@ -90,7 +90,7 @@ export function JobDetailPage({ job, verdict }: { job: Job; verdict?: EngineVerd
             href={job.sourceUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[11px] text-[#6f6f78] hover:underline"
+            className="min-w-0 truncate text-[11px] text-[#6f6f78] hover:underline"
           >
             {job.attribution}
           </a>

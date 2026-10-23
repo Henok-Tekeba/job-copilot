@@ -101,7 +101,7 @@ export function BoardShell({
         <div className="mx-auto max-w-[1400px] pt-6">
           <h1 className="flex flex-wrap items-center gap-3 text-[clamp(1.9rem,3.6vw,2.7rem)] font-medium tracking-[-0.035em] text-[#14141a]">
             Find your dream internship here
-            <Asterisk aria-hidden="true" className="size-7 text-[#b9bec2]" />
+            <Asterisk aria-hidden="true" className="hidden size-7 text-[#b9bec2] sm:block" />
           </h1>
 
           <form

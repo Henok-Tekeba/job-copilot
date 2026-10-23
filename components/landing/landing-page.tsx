@@ -103,7 +103,7 @@ export function LandingPage({
       </header>
 
       <section className="mx-auto w-full max-w-[1000px] px-4 pt-16 pb-14 text-center sm:px-6 sm:pt-28 sm:pb-20">
-        <h1 className="mx-auto max-w-[880px] text-[clamp(2.9rem,7vw,5.4rem)] leading-[0.98] font-medium tracking-[-0.045em] text-[#14141a]">
+        <h1 className="mx-auto max-w-[880px] text-[clamp(2.35rem,7vw,5.4rem)] leading-[0.98] font-medium tracking-[-0.045em] text-[#14141a]">
           Land the right internship.
           <br />
           Work{" "}
@@ -140,11 +140,11 @@ export function LandingPage({
           {wallSample && (
             <Reveal>
               <div className="relative mt-12 rounded-[24px] border border-[#ececf0] bg-white p-6 shadow-[0_24px_64px_-32px_rgba(15,15,30,0.3)] sm:p-10">
-                <div className="flex items-center gap-3">
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
                   <span className="font-mono text-[11px] text-[#6f6f78]">
                     A posting, exactly as it reads
                   </span>
-                  <span className="h-px flex-1 bg-[#e9e9ee]" />
+                  <span className="hidden h-px flex-1 bg-[#e9e9ee] sm:block" />
                   <span className="rounded-lg bg-[#f4f4f6] px-3 py-1.5 text-[12px] font-medium text-[#5c5c64]">
                     {stats.regionLocked.toLocaleString("en-US")} postings carry a
                     line like this

@@ -205,54 +205,32 @@
   }
 }
 
-/* The highlighter catch on the wall's posting document: a swipe that grows
- * left-to-right once the section reveals. */
+/* The highlighter: a marker swipe behind the words. Drawn as a background
+ * layer rather than a pseudo-element so it wraps safely across lines (clone
+ * decoration per fragment) and can never force the page wider than a phone. */
 .hl {
-  position: relative;
-  z-index: 0;
-  white-space: nowrap;
+  background-image: linear-gradient(rgb(43 75 242 / 0.16), rgb(43 75 242 / 0.16));
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 0% 100%;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding: 0 2px;
+  margin: 0 -2px;
+  border-radius: 2px;
+  transition: background-size 0.9s cubic-bezier(0.2, 0.6, 0.2, 1) 0.4s;
+}
+.hl-on {
+  background-size: 100% 100%;
 }
 mark.hl {
-  background: transparent;
+  background-color: transparent;
   color: inherit;
 }
-.caret {
-  display: inline-block;
-  width: 2px;
-  height: 1.1em;
-  margin-left: 2px;
-  vertical-align: -0.15em;
-  background: #2b4bf2;
-  animation: caret-blink 0.85s steps(2, start) infinite;
-}
-@keyframes caret-blink {
-  to {
-    visibility: hidden;
-  }
-}
 @media (prefers-reduced-motion: reduce) {
-  .caret {
-    display: none;
-  }
-}
-.hl::after {
-  content: "";
-  position: absolute;
-  inset: -1px -4px;
-  border-radius: 4px;
-  background: rgb(43 75 242 / 0.16);
-  z-index: -1;
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.9s cubic-bezier(0.2, 0.6, 0.2, 1) 0.4s;
-}
-.hl-on::after {
-  transform: scaleX(1);
-}
-@media (prefers-reduced-motion: reduce) {
-  .hl::after {
+  .hl {
     transition: none;
-    transform: none;
+    background-size: 100% 100%;
   }
 }
 
