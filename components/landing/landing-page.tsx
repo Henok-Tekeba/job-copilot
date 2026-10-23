@@ -3,7 +3,6 @@ import { format } from "date-fns";
 import { Check, X } from "lucide-react";
 
 import { LogoMark } from "@/components/logo-mark";
-import { AsciiMap } from "@/components/ascii-map";
 import { Reveal } from "@/components/reveal";
 import { CtaLink } from "@/components/landing/cta-link";
 import { RecentCarousel } from "@/components/landing/recent-carousel";
@@ -190,13 +189,8 @@ export function LandingPage({
         </div>
       </header>
 
-      <section className="relative mx-auto w-full max-w-[1080px] overflow-hidden px-4 pt-14 pb-8 sm:px-6 sm:pt-24">
-        <AsciiMap
-          sweep={false}
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 h-72 text-[10px] [mask-image:linear-gradient(to_bottom,black_35%,transparent_95%)] sm:h-[26rem] sm:text-[13px]"
-        />
-        <h1 className="relative max-w-3xl text-[clamp(2.6rem,6vw,4.1rem)] leading-[1.05] font-medium tracking-[-0.02em] text-[#14141a]">
+      <section className="mx-auto w-full max-w-[1080px] px-4 pt-14 pb-8 sm:px-6 sm:pt-24">
+        <h1 className="max-w-3xl text-[clamp(2.6rem,6vw,4.1rem)] leading-[1.05] font-medium tracking-[-0.02em] text-[#14141a]">
           Land the right internship.
           <br />
           Work <span className="text-[#2b4bf2]">without borders.</span>
@@ -215,7 +209,7 @@ export function LandingPage({
         <div className="mx-auto w-full max-w-[1080px] px-4 py-16 sm:px-6 sm:py-24">
           <Reveal>
             <h2 className="max-w-2xl text-[clamp(1.9rem,4.4vw,2.9rem)] leading-[1.06] font-medium tracking-[-0.02em] text-[#14141a]">
-              The world hires online. Your region gets filtered out by{" "}
+              Thousands of tech internships open every month. Your region gets filtered out by{" "}
               <span className="text-[#2b4bf2]">a line you never see.</span>
             </h2>
           </Reveal>
@@ -337,9 +331,9 @@ export function LandingPage({
           </Reveal>
           <Reveal delay={100}>
             <div className="mt-10 overflow-hidden rounded-[24px] border border-[#ececf0] bg-white shadow-[0_24px_64px_-32px_rgba(15,15,30,0.25)]">
-              <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)] gap-x-4 border-b border-[#e9e9ee] bg-[#f4f4f6] px-5 py-3 text-[12px] font-semibold text-[#5c5c64] sm:px-8">
+              <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] gap-x-4 border-b border-[#e9e9ee] bg-[#f4f4f6] px-5 py-3 text-[12px] font-semibold text-[#5c5c64] sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)] sm:px-8">
                 <span>&nbsp;</span>
-                <span>The big boards</span>
+                <span className="hidden sm:block">The big boards</span>
                 <span className="text-[#2b4bf2]">Shortlist</span>
               </div>
               {COMPARE.map((row) => (
@@ -348,7 +342,7 @@ export function LandingPage({
                   className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)] items-start gap-x-4 border-b border-[#e9e9ee] px-5 py-4 text-[13px] last:border-b-0 sm:px-8"
                 >
                   <span className="font-semibold text-[#14141a]">{row.label}</span>
-                  <span className="flex items-start gap-2 text-[#8b8b93]">
+                  <span className="hidden items-start gap-2 text-[#8b8b93] sm:flex">
                     <X className="mt-0.5 size-3.5 shrink-0 text-[#c9c9cf]" />
                     {row.them}
                   </span>

@@ -31,7 +31,7 @@ export async function generateMetadata({
   const job = loadJobsCached().find(
     (c) => c.id === id || c.id === decoded
   );
-  if (!job) return { title: "Job not found" };
+  if (!job) return { title: "Internship not found" };
   const verdict = job.evaluation.eligibility?.verdict;
   const verdictLabel = verdict ? VERDICT_STYLE[verdict].label : null;
   const desc = `${verdictLabel ? verdictLabel + ". " : ""}${job.evaluation.remoteReason}`.slice(
