@@ -4,7 +4,42 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@font-face {
+  font-family: "Satoshi";
+  src: url("/fonts/Satoshi-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/Inter-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "DM Mono";
+  src: url("/fonts/DMMono-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "DM Mono";
+  src: url("/fonts/DMMono-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme inline {
+  --font-satoshi: "Satoshi", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-inter: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-dm-mono: "DM Mono", ui-monospace, SFMono-Regular, monospace;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
@@ -329,6 +364,353 @@ mark.hl {
   }
 
   [data-slot="input-group-control"] {
+    min-height: 44px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+ * The landing sheet. A hairline frame sits inside a diagonally hatched margin;
+ * everything above the fold is type and one dot-matrix range.
+ * -------------------------------------------------------------------------- */
+
+.sl-landing {
+  --sl-ink: #0b0b0d;
+  --sl-muted: #9a9a9a;
+  --sl-line: #ececec;
+  --sl-blue: #548bff;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "DM Mono", ui-monospace, SFMono-Regular, monospace;
+  font-family: var(--font-inter);
+  color: var(--sl-ink);
+  color-scheme: light;
+}
+
+.sl-landing ::selection {
+  background: rgb(84 139 255 / 0.18);
+}
+
+.sl-header {
+  height: clamp(64px, 6.4vw, 92px);
+  padding-inline: calc(clamp(10px, 2.7vw, 40px) + 8px);
+  font-size: clamp(12px, 1.03vw, 15px);
+}
+
+.sl-gutters {
+  padding-inline: clamp(10px, 2.7vw, 40px);
+  background-color: #fff;
+  background-image: repeating-linear-gradient(
+    135deg,
+    #ededed 0,
+    #ededed 1px,
+    transparent 1px,
+    transparent 9px
+  );
+}
+
+.sl-frame {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1540px;
+  margin-inline: auto;
+  border-inline: 1px solid var(--sl-line);
+  background: #fff;
+}
+
+.sl-hero {
+  min-height: clamp(360px, 49.5vw, 760px);
+  border-top: 1px solid var(--sl-line);
+}
+
+@media (max-width: 639.98px) {
+  .sl-hero {
+    min-height: 560px;
+  }
+}
+
+.sl-display {
+  font-family: var(--font-satoshi);
+  font-size: clamp(2.8rem, 8.5vw, 8rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: #050506;
+}
+
+.sl-primary-btn {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55em;
+  height: clamp(34px, 3.35vw, 48px);
+  padding-inline: clamp(16px, 2.15vw, 31px);
+  border: 1px solid transparent;
+  background-image: linear-gradient(90deg, #2b55c9 0%, #4f86ff 100%);
+  color: #fff;
+  font-family: var(--font-dm-mono);
+  font-size: clamp(9px, 0.8vw, 11.5px);
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: filter 150ms ease;
+}
+
+.sl-primary-btn:hover {
+  filter: brightness(1.08) saturate(1.05);
+}
+
+.sl-primary-btn:active {
+  filter: brightness(0.96);
+}
+
+.sl-secondary-btn {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7em;
+  padding-inline: clamp(14px, 1.8vw, 26px);
+  border: 1px solid #d9d9d9;
+  background: #fff;
+  color: var(--sl-ink);
+  font-family: var(--font-dm-mono);
+  font-size: clamp(9px, 0.8vw, 11.5px);
+  font-weight: 400;
+  letter-spacing: 0.09em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease;
+}
+
+.sl-secondary-btn:hover {
+  border-color: #a7a7a7;
+  background: #fbfbfb;
+}
+
+.sl-nav-link {
+  color: #3a3a3a;
+  font-family: var(--font-inter);
+  font-size: clamp(12px, 1.15vw, 16.5px);
+  font-weight: 400;
+  line-height: 1;
+  white-space: nowrap;
+  transition: color 150ms ease;
+}
+
+.sl-nav-link:hover {
+  color: #050506;
+}
+
+.sl-menu > summary::-webkit-details-marker {
+  display: none;
+}
+
+.sl-menu > summary::marker {
+  content: "";
+}
+
+.sl-menu-item {
+  display: block;
+  padding: 9px 10px;
+  color: #3a3a3a;
+  font-family: var(--font-inter);
+  font-size: 13px;
+  line-height: 1.2;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
+}
+
+.sl-menu-item:hover {
+  background: #f5f5f5;
+  color: #050506;
+}
+
+.sl-label {
+  color: #4a4a4a;
+  font-family: var(--font-dm-mono);
+  font-size: clamp(9px, 0.8vw, 11.5px);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.sl-label-dot {
+  width: 7px;
+  height: 7px;
+  flex: none;
+  background: var(--sl-blue);
+}
+
+.sl-trusted {
+  padding-top: clamp(20px, 2.55vw, 37px);
+  padding-bottom: clamp(12px, 1.55vw, 23px);
+  border-top: 1px solid var(--sl-line);
+  font-size: clamp(17px, 1.95vw, 28px);
+}
+
+.sl-trusted::before,
+.sl-trusted::after,
+.sl-problem::before,
+.sl-problem::after {
+  content: "+";
+  position: absolute;
+  top: -7px;
+  z-index: 20;
+  color: #38383c;
+  font-family: var(--font-dm-mono);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1;
+  background: #fff;
+}
+
+.sl-trusted::before,
+.sl-problem::before {
+  left: -6px;
+}
+
+.sl-trusted::after,
+.sl-problem::after {
+  right: -6px;
+}
+
+.sl-problem {
+  padding-top: clamp(28px, 4.65vw, 67px);
+  padding-bottom: clamp(42px, 5.5vw, 80px);
+}
+
+.sl-problem-heading {
+  font-family: var(--font-satoshi);
+  font-size: clamp(1.55rem, 2.35vw, 2.15rem);
+  font-weight: 500;
+  line-height: 1.14;
+  letter-spacing: -0.025em;
+  color: #050506;
+}
+
+.sl-heading {
+  font-family: var(--font-satoshi);
+  font-size: clamp(1.9rem, 3.45vw, 3.1rem);
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+  color: #050506;
+}
+
+.sl-display-sm {
+  font-family: var(--font-satoshi);
+  font-size: clamp(2.4rem, 5.1vw, 4.7rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: #050506;
+}
+
+.sl-text-link {
+  color: #3a3a3a;
+  font-family: var(--font-inter);
+  font-size: clamp(12px, 1.02vw, 14.5px);
+  line-height: 1.2;
+  text-decoration: underline;
+  text-decoration-color: #d5d5d5;
+  text-underline-offset: 4px;
+  transition:
+    color 150ms ease,
+    text-decoration-color 150ms ease;
+}
+
+.sl-text-link:hover {
+  color: #050506;
+  text-decoration-color: #548bff;
+}
+
+.sl-legal-body {
+  counter-reset: legal;
+  max-width: 44rem;
+}
+
+.sl-legal-section {
+  counter-increment: legal;
+  border-top: 1px dashed #e2e2e2;
+  padding-block: clamp(22px, 2.6vw, 36px);
+}
+
+.sl-legal-section:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.sl-legal-section h2::before {
+  content: counter(legal, decimal-leading-zero);
+  display: inline-block;
+  width: 2.4rem;
+  margin-right: 0.55rem;
+  color: var(--sl-blue);
+  font-family: var(--font-dm-mono);
+  font-size: 0.62em;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  vertical-align: 0.18em;
+}
+
+.sl-faq > summary::-webkit-details-marker {
+  display: none;
+}
+
+.sl-faq > summary::marker {
+  content: "";
+}
+
+.sl-faq-toggle {
+  transition:
+    transform 200ms ease,
+    border-color 200ms ease,
+    background-color 200ms ease;
+}
+
+.sl-faq[open] .sl-faq-toggle {
+  transform: rotate(45deg);
+  border-color: #548bff;
+  background: #fff;
+}
+
+.sl-marquee {
+  animation: sl-marquee 46s linear infinite;
+  will-change: transform;
+}
+
+.sl-marquee:hover {
+  animation-play-state: paused;
+}
+
+@keyframes sl-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sl-marquee {
+    animation: none;
+  }
+}
+
+@media (max-width: 767.98px) {
+  /* The sheet's small controls are easier to hit at 44px than at their
+     desktop 36px. Widths are left alone so filter chips stay compact. */
+  .sl-landing button:not([data-slot="checkbox"]):not([data-slot="switch"]),
+  .sl-landing summary {
     min-height: 44px;
   }
 }

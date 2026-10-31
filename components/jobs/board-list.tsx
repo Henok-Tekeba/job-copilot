@@ -17,6 +17,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useIsMounted } from "@/hooks/use-mounted";
 import { cn } from "cn";
 import { opportunityLabel, workplaceLabel } from "@/lib/labels";
+import { VERDICT_STYLE } from "@/lib/verdict-style";
 import type { Job } from "@/lib/types";
 
 type BoardListProps = {
@@ -66,6 +67,12 @@ function BoardRow({
   onOpen: (job: Job) => void;
 }) {
   const mounted = useIsMounted();
+  const verdict = job.evaluation.eligibility?.verdict;
+  const verdictLabel = verdict ? VERDICT_STYLE[verdict].label : "Reach unclear";
+  const verdictTone =
+    verdict === "open" || verdict === "relocation"
+      ? "text-[#548bff]"
+      : "text-[#8f8f94]";
 
   return (
     <div
@@ -79,50 +86,81 @@ function BoardRow({
         }
       }}
       className={cn(
-        "grid cursor-pointer grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-4 gap-y-2 rounded-2xl px-4 py-3 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#2b4bf2]/35 sm:grid-cols-[auto_minmax(0,240px)_1fr_160px_110px_auto] sm:py-3.5",
+        "group grid cursor-pointer grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-[clamp(12px,1.4vw,20px)] gap-y-2 border-b border-[#ececec] py-[clamp(14px,1.5vw,20px)] transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#548bff]/35 sm:grid-cols-[auto_minmax(0,1fr)_minmax(0,0.8fr)_64px_auto] md:grid-cols-[auto_minmax(0,1.35fr)_minmax(0,0.8fr)_minmax(0,0.9fr)_64px_auto]",
         selected
-          ? "bg-[#f4f4f6] shadow-[inset_2px_0_0_#2b4bf2]"
-          : "hover:bg-[#f4f4f6]/70",
+          ? "bg-[#f8fbff] shadow-[inset_2px_0_0_#548bff]"
+          : "hover:bg-[#fbfbfb]",
       )}
     >
-      <CompanyAvatar job={job} />
+      <CompanyAvatar
+        job={job}
+        className="size-[clamp(36px,3.1vw,42px)] rounded-none border border-[#ececec] bg-[#fbfbfb]"
+      />
 
       <div className="min-w-0">
-        <p className="truncate text-[15px] font-medium leading-snug text-[#14141a]">
+        <p className="truncate font-satoshi text-[clamp(14px,1.18vw,17px)] leading-[1.25] font-medium tracking-[-0.02em] text-[#0b0b0d]">
           {job.title}
         </p>
-        <p className="truncate text-[12px] text-[#6f6f78]">
+        <p className="mt-1 truncate text-[11.5px] text-[#8f8f94]">
           {job.company || "Unknown company"}
-          {applied ? " · Applied ✓" : ""}
+          {applied ? (
+            <span className="ml-2 font-mono text-[9px] tracking-[0.04em] text-[#548bff] uppercase">
+              Applied
+            </span>
+          ) : null}
+        </p>
+        <p className="mt-1 flex items-center gap-2 text-[10px] text-[#9a9a9a] md:hidden">
+          <span className={`shrink-0 ${verdictTone}`}>{verdictLabel}</span>
+          <span className="text-[#d0d0d0]">·</span>
+          <span className="truncate">{job.location}</span>
         </p>
       </div>
 
-      <div className="hidden min-w-0 flex-wrap items-center gap-1.5 sm:flex">
-        {[opportunityLabel(job.evaluation.opportunity), workplaceLabel(job.evaluation.eligibility?.workplace)]
-          .filter(Boolean)
-          .map((chip) => (
-            <span
-              key={chip}
-              className="inline-flex h-8 items-center rounded-lg bg-[#f4f4f6] px-3 text-[12.5px] font-medium text-[#5c5c64]"
-            >
-              {chip}
-            </span>
-          ))}
+      <div className="hidden min-w-0 items-center gap-2 md:flex">
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center gap-2">
+            {[opportunityLabel(job.evaluation.opportunity), workplaceLabel(job.evaluation.eligibility?.workplace)]
+              .filter(Boolean)
+              .map((chip, index, all) => (
+                <span
+                  key={chip}
+                  className="font-mono text-[9.5px] tracking-[0.04em] text-[#5f5f65] uppercase"
+                >
+                  {chip}
+                  {index < all.length - 1 ? (
+                    <span className="mx-2 text-[#cfcfcf]">·</span>
+                  ) : null}
+                </span>
+              ))}
+          </div>
+          <span className={`font-mono text-[9px] tracking-[0.04em] uppercase ${verdictTone}`}>
+            {verdictLabel}
+          </span>
+        </div>
       </div>
 
-      <p className="hidden truncate text-[13px] text-[#14141a] sm:block">
-        {job.location}
-      </p>
+      <div className="hidden min-w-0 sm:block">
+        <p className="truncate text-[12px] text-[#3a3a3a]">{job.location}</p>
+        <p className="mt-1 font-mono text-[9.5px] text-[#9a9a9a]">
+          {mounted
+            ? timeAgo(job.postedAt)
+            : job.postedAt
+              ? format(new Date(job.postedAt), "MMM d")
+              : "—"}
+        </p>
+      </div>
 
-      <p className="hidden font-mono text-[12px] text-[#6f6f78] lg:block">
-        {mounted ? timeAgo(job.postedAt) : job.postedAt ? format(new Date(job.postedAt), "MMM d") : "—"}
-      </p>
-
-      {matchPct !== null ? (
-        <span className="hidden h-8 items-center rounded-lg bg-[#f4f4f6] px-2.5 text-[12.5px] font-semibold text-[#2b4bf2] tabular-nums sm:inline-flex">
-          {matchPct}%
-        </span>
-      ) : null}
+      <span
+        className={cn(
+          "hidden size-9 place-items-center border font-mono text-[10.5px] tabular-nums sm:grid",
+          matchPct !== null
+            ? "border-[#dce8fb] bg-[#f8fbff] text-[#548bff]"
+            : "border-[#ececec] bg-white text-[#b0b0b5]",
+        )}
+        title={matchPct !== null ? `${matchPct}% skill match` : "No profile match"}
+      >
+        {matchPct !== null ? `${matchPct}%` : "—"}
+      </span>
 
       <button
         type="button"
@@ -132,9 +170,9 @@ function BoardRow({
           e.stopPropagation();
           onToggleSaved(job.id);
         }}
-        className="grid size-9 place-items-center rounded-full text-[#14141a] transition-colors hover:bg-white focus-visible:outline-none"
+        className="grid size-11 place-items-center border border-[#e2e2e2] bg-white text-[#3a3a3a] transition-colors hover:border-[#548bff] hover:text-[#548bff] focus-visible:outline-none sm:size-9"
       >
-        <Bookmark className={cn("size-[18px]", saved && "fill-[#2b4bf2] text-[#2b4bf2]")} />
+        <Bookmark className={cn("size-[15px]", saved && "fill-[#548bff] text-[#548bff]")} />
       </button>
     </div>
   );
@@ -155,9 +193,9 @@ export function BoardList({
 }: BoardListProps) {
   if (loading) {
     return (
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col">
         {Array.from({ length: 8 }, (_, i) => (
-          <Skeleton key={i} className="h-16 rounded-2xl" />
+          <Skeleton key={i} className="h-20 rounded-none border-b border-[#ececec]" />
         ))}
       </div>
     );
@@ -180,7 +218,15 @@ export function BoardList({
   }
 
   return (
-    <div className="flex flex-col gap-1">
+    <div>
+      <div className="hidden items-center gap-x-[clamp(12px,1.4vw,20px)] border-b border-[#14141a] pb-2 font-mono text-[9px] tracking-[0.08em] text-[#77777d] uppercase md:grid md:grid-cols-[auto_minmax(0,1.35fr)_minmax(0,0.8fr)_minmax(0,0.9fr)_64px_auto]">
+        <span className="size-[clamp(36px,3.1vw,42px)]" aria-hidden="true" />
+        <span>Role</span>
+        <span>Type / Access</span>
+        <span>Location</span>
+        <span>Match</span>
+        <span className="size-9" aria-hidden="true" />
+      </div>
       {jobs.map((job) => (
         <BoardRow
           key={job.id}

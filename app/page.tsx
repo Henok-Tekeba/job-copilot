@@ -1,8 +1,6 @@
 import { LandingPage } from "@/components/landing/landing-page";
 import { loadJobs } from "@/lib/data";
-import { stripHtml } from "@/lib/jobs";
-import { isUnstatedLocation } from "@/lib/regions";
-import type { Job } from "@/lib/types";
+import { byPriority, isReachable } from "@/lib/summary";
 
 export type WallSample = {
   company: string;
@@ -21,6 +19,16 @@ export type LandingStats = {
   sponsorshipOffered: number;
   sponsorshipDenied: number;
   sponsorshipSilent: number;
+};
+
+/** A posting lean enough to render on the landing without shipping a body. */
+export type LandingRole = {
+  id: string;
+  title: string;
+  company: string;
+  location: string;
+  verdict: string;
+  priority: number | null;
 };
 
 /**
@@ -50,42 +58,6 @@ export default function Home() {
     else sponsorshipSilent++;
   }
 
-  // The wall shows one real posting, caught in the act: a region-locked
-  // internship whose own text contains the restriction. The excerpt window
-  // is cut so the evidence phrase is inside the visible text.
-  let wallSample: WallSample | null = null;
-  for (const job of jobs) {
-    const eligibility = job.evaluation.eligibility;
-    if (
-      eligibility?.verdict !== "region-locked" ||
-      eligibility.evidence.length === 0
-    ) {
-      continue;
-    }
-    const evidence = eligibility.evidence.find(
-      (item) => item.value && !isUnstatedLocation(item.value),
-    );
-    const description = stripHtml(job.description || "");
-    if (!evidence || description.length < 160) continue;
-
-    const phrase = evidence.value;
-    const at = description.toLowerCase().indexOf(phrase.toLowerCase());
-    if (at < 0) continue;
-
-    const from = Math.max(0, at - 90);
-    const until = Math.min(description.length, at + phrase.length + 110);
-    const window = description.slice(from, until);
-    const hit = window.toLowerCase().indexOf(phrase.toLowerCase());
-    wallSample = {
-      company: job.company,
-      title: job.title,
-      before: window.slice(0, hit).replace(/^\S+\s/, ""),
-      phrase: window.slice(hit, hit + phrase.length),
-      after: window.slice(hit + phrase.length),
-    };
-    break;
-  }
-
   const stats: LandingStats = {
     total: jobs.length,
     ...counts,
@@ -94,20 +66,53 @@ export default function Home() {
     sponsorshipSilent,
   };
 
-  const recent = jobs
-    .filter(
-      (job: Job) =>
+  // A small, diverse preview: one openly reachable role, then the best
+  // relocation roles, one per company. Bodies stay on the board.
+  const pool = jobs
+    .filter((job) => {
+      const verdict = job.evaluation.eligibility?.verdict;
+      return (
         (job.evaluation.opportunity === "internship" ||
           job.evaluation.opportunity === "contract") &&
-        job.evaluation.eligibility &&
-        job.postedAt,
-    )
-    .sort(
-      (a, b) =>
-        Date.parse(b.postedAt ?? "0") - Date.parse(a.postedAt ?? "0"),
-    )
-    .slice(0, 4);
+        job.relevance === "software" &&
+        (verdict === "open" || verdict === "relocation") &&
+        isReachable(job)
+      );
+    })
+    .sort(byPriority);
 
-  return <LandingPage recent={recent} stats={stats} wallSample={wallSample} />;
+  const seenCompanies = new Set<string>();
+  const featured: LandingRole[] = [];
+
+  const addRole = (job: (typeof pool)[number]) => {
+    const company = job.company.trim();
+    if (!company || seenCompanies.has(company.toLowerCase())) return;
+    seenCompanies.add(company.toLowerCase());
+    featured.push({
+      id: job.id,
+      title: job.title,
+      company,
+      location: job.location || "Location not stated",
+      verdict: job.evaluation.eligibility?.verdict ?? "unknown",
+      priority:
+        job.evaluation.fit?.priority ??
+        (job.evaluation.fitScore !== null
+          ? Math.round(job.evaluation.fitScore)
+          : null),
+    });
+  };
+
+  // One "open to you" role keeps the preview from reading as all relocation.
+  const openRole = pool.find(
+    (job) => job.evaluation.eligibility?.verdict === "open",
+  );
+  if (openRole) addRole(openRole);
+
+  for (const job of pool) {
+    if (featured.length === 4) break;
+    addRole(job);
+  }
+
+  return <LandingPage stats={stats} featured={featured} />;
 }
 

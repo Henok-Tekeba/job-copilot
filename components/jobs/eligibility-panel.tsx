@@ -31,32 +31,32 @@ export function EligibilityPanel({ eligibility }: { eligibility?: Eligibility })
         : null;
 
   return (
-    <section className="flex flex-col gap-3 border-l-2 border-[#14141a] py-1 pl-4">
+    <section className="flex max-w-[42rem] flex-col gap-3 border-l border-[#548bff] pl-4">
       <div className="flex flex-col gap-1.5">
-        <span className="text-sm font-medium text-[#14141a]">
+        <span className="font-mono text-[10px] tracking-[0.05em] uppercase text-[#548bff]">
           {VERDICT_STYLE[verdict].label}
         </span>
-        <p className="text-sm leading-relaxed text-muted-foreground">{summary}</p>
+        <p className="text-[13.5px] leading-[1.7] text-[#5f5f65]">{summary}</p>
       </div>
 
       <div className="flex flex-wrap items-center gap-1.5">
         {workplace && workplace !== "unknown" && (
-          <Badge variant="outline">{workplaceLabel(workplace)}</Badge>
+          <Badge variant="outline" className="rounded-none border-[#e2e2e2] font-mono text-[9.5px] uppercase">{workplaceLabel(workplace)}</Badge>
         )}
         {sponsorshipLabel && (
-          <Badge variant="outline">{sponsorshipLabel}</Badge>
+          <Badge variant="outline" className="rounded-none border-[#e2e2e2] font-mono text-[9.5px] uppercase">{sponsorshipLabel}</Badge>
         )}
         {regionLabels.length > 0 && (
-          <span className="text-xs text-muted-foreground">
+          <span className="font-mono text-[10px] text-[#8f8f94]">
             {regionLabels.join(" · ")}
           </span>
         )}
       </div>
 
-      {blockedBy && <p className="text-xs text-[#5c5c64]">{blockedBy}</p>}
+      {blockedBy && <p className="text-[12px] text-[#5f5f65]">{blockedBy}</p>}
 
       {timezone.required && (
-        <p className="text-xs text-muted-foreground">
+        <p className="font-mono text-[10px] text-[#8f8f94]">
           Timezone: {timezone.required}
           {timezone.overlapsAfrica === false && " — poor overlap with East Africa"}
           {timezone.overlapsAfrica === true && " — good overlap with East Africa"}
@@ -67,18 +67,18 @@ export function EligibilityPanel({ eligibility }: { eligibility?: Eligibility })
         <>
           <Separator />
           <div className="flex flex-col gap-1">
-            <span className="text-xs font-medium text-muted-foreground">
+            <span className="font-mono text-[9.5px] tracking-[0.04em] text-[#8f8f94] uppercase">
               Read from the posting
             </span>
             {evidence.map((item, i) => (
-              <span key={i} className="text-xs">
-                <span className="text-muted-foreground">
+              <span key={i} className="text-[11.5px] leading-[1.6]">
+                <span className="text-[#8f8f94]">
                   {EVIDENCE_FIELD_LABELS[item.field] ?? item.field}:{" "}
                 </span>
                 {isUnstatedLocation(item.value) ? (
                   <span className="italic text-muted-foreground">not stated</span>
                 ) : (
-                  <span className="text-[#14141a]">{item.value}</span>
+                  <span className="text-[#3a3a3a]">{item.value}</span>
                 )}
               </span>
             ))}

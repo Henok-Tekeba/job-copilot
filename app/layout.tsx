@@ -40,14 +40,16 @@ const themeScript = `try{if(localStorage.getItem("jc-theme")==="dark")document.d
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className="h-full antialiased">
-      <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-      {process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN && (
-        <script
-          defer
-          data-domain={process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN}
-          src="https://plausible.io/js/script.js"
-        />
-      )}
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        {process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN && (
+          <script
+            defer
+            data-domain={process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN}
+            src="https://plausible.io/js/script.js"
+          />
+        )}
+      </head>
       <body
         className={`${geistSans.variable} min-h-full bg-background font-sans text-foreground`}
       >

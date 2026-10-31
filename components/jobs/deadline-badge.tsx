@@ -28,7 +28,7 @@ export function DeadlineBadge({ deadline }: { deadline: string | null | undefine
   return (
     <Badge
       variant={urgent ? "destructive" : "outline"}
-      className="gap-1 font-mono text-xs tabular-nums"
+      className="gap-1 rounded-none border-[#e2e2e2] font-mono text-[9.5px] uppercase tabular-nums"
     >
       <CalendarClockIcon className="size-3" />
       {deadlineLabel(deadline, today)}
@@ -40,7 +40,7 @@ export function DeadlineBadge({ deadline }: { deadline: string | null | undefine
 export function RedFlagBadge({ flags }: { flags: string[] | undefined }) {
   if (!flags || flags.length === 0) return null;
   return (
-    <Badge variant="destructive" className="text-xs">
+    <Badge variant="destructive" className="rounded-none font-mono text-[9.5px] uppercase">
       {flags[0]}
     </Badge>
   );
@@ -57,7 +57,7 @@ export function NewBadge({ postedAt }: { postedAt: string | null | undefined }) 
   if (today.getTime() - posted > 48 * 3_600_000) return null;
 
   return (
-    <Badge variant="secondary" className="text-xs">
+    <Badge variant="secondary" className="rounded-none border-[#dce8fb] bg-[#f8fbff] font-mono text-[9.5px] uppercase text-[#548bff]">
       New
     </Badge>
   );

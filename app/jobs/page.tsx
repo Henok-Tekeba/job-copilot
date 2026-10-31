@@ -1,4 +1,6 @@
 import { Suspense } from "react";
+import type { Metadata } from "next";
+
 import JobsPage from "@/components/jobs/jobs-page";
 import { loadJobs } from "@/lib/data";
 import { byPriority, isReachable } from "@/lib/summary";
@@ -15,6 +17,12 @@ import { byPriority, isReachable } from "@/lib/summary";
  * and let the fetch replace them a moment later.
  */
 const PRERENDER_COUNT = 24;
+
+export const metadata: Metadata = {
+  title: "Internships — Shortlist",
+  description:
+    "Tech internships and contracts, read for eligibility, fit, and deadlines.",
+};
 
 export default function Jobs() {
   const jobs = loadJobs();

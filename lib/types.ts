@@ -94,6 +94,13 @@ export const evaluationSchema = z.object({
   deadlineEvidence: z.string().nullable().optional(),
   /** Unpaid / commission-only / fee-requesting signals worth warning about. */
   redFlags: z.array(z.string()).optional(),
+  /**
+   * Skill lists produced by the extractor. They ride along on the snapshot and
+   * feed the demand counts; optional so older snapshots still validate.
+   */
+  requiredSkills: z.array(z.string()).optional(),
+  niceToHaveSkills: z.array(z.string()).optional(),
+  detectedSkills: z.array(z.string()).optional(),
 });
 
 export const programSchema = z.object({

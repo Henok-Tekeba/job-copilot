@@ -63,17 +63,10 @@ export function buildDemand(jobs: Job[]): Array<[string, number]> {
   for (const job of jobs) {
     const opportunity = job.evaluation.opportunity;
     if (opportunity !== "internship" && opportunity !== "contract") continue;
-    // The skill lists ride along on the snapshot but are not part of the
-    // declared evaluation type; read them the same way lib/profile.ts does.
-    const skills = job.evaluation as unknown as {
-      requiredSkills?: string[];
-      niceToHaveSkills?: string[];
-      detectedSkills?: string[];
-    };
     const touched = new Set<string>();
-    for (const s of skills.requiredSkills ?? []) touched.add(s);
-    for (const s of skills.niceToHaveSkills ?? []) touched.add(s);
-    for (const s of skills.detectedSkills ?? []) touched.add(s);
+    for (const s of job.evaluation.requiredSkills ?? []) touched.add(s);
+    for (const s of job.evaluation.niceToHaveSkills ?? []) touched.add(s);
+    for (const s of job.evaluation.detectedSkills ?? []) touched.add(s);
     for (const s of touched) counts.set(s, (counts.get(s) ?? 0) + 1);
   }
   return [...counts.entries()].sort((a, b) => b[1] - a[1]);

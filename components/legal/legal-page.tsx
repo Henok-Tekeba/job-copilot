@@ -1,11 +1,22 @@
+import * as React from "react";
 import Link from "next/link";
-import type { ReactNode } from "react";
+import { ArrowUpRight } from "lucide-react";
 
-import { LogoMark } from "@/components/logo-mark";
+import { SiteFooter } from "@/components/site/site-footer";
+import { SiteHeader } from "@/components/site/site-header";
+import { SiteLabel } from "@/components/site/site-label";
+import { SiteShell } from "@/components/site/site-shell";
+
+function slugify(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
 
 /**
- * The legal-page frame: the raised card on a white stage — same geometry as
- * the internship detail card — with the site chrome on top.
+ * The legal sheet: the same ruled frame as the board, with numbered sections
+ * so a long policy can be scanned without turning into a wall of text.
  */
 export function LegalPage({
   title,
@@ -14,42 +25,88 @@ export function LegalPage({
 }: {
   title: string;
   updated?: string;
-  children: ReactNode;
+  children: React.ReactNode;
 }) {
-  return (
-    <main className="flex min-h-dvh flex-col bg-white px-4 py-6 sm:px-8 sm:py-10">
-      <div className="mx-auto flex h-10 w-full max-w-[820px] items-center justify-between">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="flex size-8 items-center justify-center rounded-lg bg-[#2b4bf2] text-white">
-            <LogoMark className="size-4.5" />
-          </span>
-          <span className="text-[15px] font-semibold tracking-tight text-[#14141a]">
-            shortlist
-          </span>
-        </Link>
-        <Link
-          href="/jobs"
-          className="text-[13px] font-medium text-[#5c5c64] transition-colors hover:text-[#14141a]"
-        >
-          Board
-        </Link>
-      </div>
+  const contents = React.Children.toArray(children).flatMap((child) => {
+    if (!React.isValidElement<{ heading?: string }>(child)) return [];
+    const heading = child.props.heading;
+    return heading ? [{ heading, id: slugify(heading) }] : [];
+  });
 
-      <div className="mx-auto mt-4 w-full max-w-[820px] flex-1 rounded-[28px] border border-[#ececf0] bg-white px-6 py-8 shadow-[0_24px_64px_-28px_rgba(15,15,30,0.25)] sm:px-10 sm:py-10">
-        <h1 className="text-[clamp(1.8rem,3.6vw,2.5rem)] font-medium tracking-[-0.03em] text-[#14141a]">
-          {title}
-        </h1>
-        <p className="mt-2 text-[12px] text-[#6f6f78]">Last updated {updated}</p>
-        <div className="mt-8 flex flex-col gap-6">{children}</div>
-      </div>
+  return (
+    <main className="sl-landing min-h-dvh bg-white text-[#0b0b0d]">
+      <SiteHeader />
+
+      <SiteShell>
+        <section className="border-t border-[#ececec] px-[clamp(18px,2.75vw,40px)] pt-[clamp(28px,3.6vw,52px)] pb-[clamp(26px,3.4vw,48px)]">
+          <SiteLabel>Legal</SiteLabel>
+          <div className="mt-[clamp(18px,2.4vw,34px)] flex flex-wrap items-end justify-between gap-6">
+            <h1 className="sl-display-sm max-w-[18ch]">
+              {title}
+              <span className="text-[#548bff]">.</span>
+            </h1>
+            <p className="font-mono text-[10px] tracking-[0.05em] text-[#8f8f94] uppercase">
+              Last updated {updated}
+            </p>
+          </div>
+          <p className="mt-[clamp(14px,1.8vw,24px)] max-w-[38rem] text-[clamp(12px,1.03vw,15px)] leading-[1.65] text-[#9a9a9a]">
+            The short version is always the first section. Everything below it
+            is the long version, written to be read.
+          </p>
+        </section>
+
+        <section className="border-t border-[#ececec] px-[clamp(18px,2.75vw,40px)] py-[clamp(30px,4vw,58px)]">
+          <div className="grid gap-[clamp(28px,5vw,80px)] md:grid-cols-[190px_minmax(0,1fr)]">
+            <aside className="hidden md:block">
+              <div className="sticky top-6">
+                <SiteLabel>On this page</SiteLabel>
+                <nav aria-label="On this page" className="mt-4 flex flex-col">
+                  {contents.map((item, index) => (
+                    <a
+                      key={item.id}
+                      href={`#${item.id}`}
+                      className="group flex items-baseline gap-3 border-t border-[#ececec] py-2.5 text-[12px] leading-[1.35] text-[#77777d] transition-colors hover:text-[#0b0b0d]"
+                    >
+                      <span className="font-mono text-[9px] text-[#548bff]">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      {item.heading}
+                    </a>
+                  ))}
+                </nav>
+                <Link
+                  href="/jobs"
+                  className="sl-text-link mt-6 inline-flex items-center gap-1.5"
+                >
+                  Back to the board
+                  <ArrowUpRight className="size-3.5" strokeWidth={1.5} />
+                </Link>
+              </div>
+            </aside>
+
+            <div className="sl-legal-body min-w-0">{children}</div>
+          </div>
+        </section>
+
+        <SiteFooter />
+      </SiteShell>
     </main>
   );
 }
 
-export function Section({ heading, children }: { heading: string; children: ReactNode }) {
+export function Section({
+  heading,
+  children,
+}: {
+  heading: string;
+  children: React.ReactNode;
+}) {
   return (
-    <section className="flex flex-col gap-2">
-      <h2 className="text-[17px] font-semibold tracking-[-0.01em] text-[#14141a]">
+    <section
+      id={slugify(heading)}
+      className="sl-legal-section flex scroll-mt-6 flex-col gap-3"
+    >
+      <h2 className="font-satoshi text-[clamp(1.15rem,1.5vw,1.55rem)] leading-[1.2] font-medium tracking-[-0.025em] text-[#050506]">
         {heading}
       </h2>
       {children}
@@ -57,6 +114,10 @@ export function Section({ heading, children }: { heading: string; children: Reac
   );
 }
 
-export function P({ children }: { children: ReactNode }) {
-  return <p className="text-[13.5px] leading-relaxed text-[#5c5c64]">{children}</p>;
+export function P({ children }: { children: React.ReactNode }) {
+  return (
+    <p className="text-[clamp(13px,1.03vw,15px)] leading-[1.85] text-[#5f5f65]">
+      {children}
+    </p>
+  );
 }

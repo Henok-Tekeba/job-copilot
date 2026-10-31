@@ -1,44 +1,50 @@
 import Link from "next/link";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 
-import { LogoMark } from "@/components/logo-mark";
+import { SiteFooter } from "@/components/site/site-footer";
+import { SiteHeader } from "@/components/site/site-header";
+import { SiteLabel } from "@/components/site/site-label";
+import { SiteShell } from "@/components/site/site-shell";
 
-/** The 404 in the design system: the raised card on the white stage. */
+/** The 404 in the site's ruled-sheet language. */
 export default function NotFound() {
   return (
-    <main className="flex min-h-dvh flex-col bg-white px-4 py-6 sm:px-8 sm:py-10">
-      <div className="mx-auto flex h-10 w-full max-w-[820px] items-center justify-between">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="flex size-8 items-center justify-center rounded-lg bg-[#2b4bf2] text-white">
-            <LogoMark className="size-4.5" />
-          </span>
-          <span className="text-[15px] font-semibold tracking-tight text-[#14141a]">
-            shortlist
-          </span>
-        </Link>
-        <Link
-          href="/jobs"
-          className="text-[13px] font-medium text-[#5c5c64] transition-colors hover:text-[#14141a]"
-        >
-          Board
-        </Link>
-      </div>
+    <main className="sl-landing min-h-dvh bg-white text-[#0b0b0d]">
+      <SiteHeader />
 
-      <div className="mx-auto mt-4 flex w-full max-w-[820px] flex-1 flex-col items-start justify-center rounded-[28px] border border-[#ececf0] bg-white px-6 py-8 shadow-[0_24px_64px_-28px_rgba(15,15,30,0.25)] sm:px-10 sm:py-10">
-        <p className="font-semibold tracking-[-0.02em] text-[#2b4bf2]">404</p>
-        <h1 className="mt-2 text-[clamp(1.5rem,3vw,2rem)] font-medium tracking-[-0.02em] text-[#14141a]">
-          This page is not on the board
-        </h1>
-        <p className="mt-2 max-w-md text-[13.5px] leading-relaxed text-[#6f6f78]">
-          The link is old or the page moved. The internship board is where
-          everything lives.
-        </p>
-        <Link
-          href="/jobs"
-          className="mt-6 inline-flex h-11 items-center rounded-xl bg-[#2b4bf2] px-6 text-[14px] font-medium text-white transition-colors hover:bg-[#2340e0]"
-        >
-          Go to the board
-        </Link>
-      </div>
+      <SiteShell>
+        <section className="flex min-h-[calc(100dvh-9rem)] items-center border-t border-[#ececec] px-[clamp(18px,2.75vw,40px)] py-[clamp(48px,8vw,120px)]">
+          <div className="max-w-[44rem]">
+            <SiteLabel>404</SiteLabel>
+            <h1 className="sl-display-sm mt-[clamp(18px,2.4vw,34px)] max-w-[16ch]">
+              This page is not on the board
+              <span className="text-[#548bff]">.</span>
+            </h1>
+            <p className="mt-[clamp(16px,1.8vw,26px)] max-w-[30rem] text-[clamp(12px,1.03vw,15px)] leading-[1.65] text-[#9a9a9a]">
+              The link is old or the page moved. The board is where the
+              internships and contracts live.
+            </p>
+            <div className="mt-[clamp(20px,2.4vw,34px)] flex flex-wrap gap-[clamp(8px,0.75vw,12px)]">
+              <Link
+                href="/jobs"
+                className="sl-primary-btn h-[clamp(38px,3.2vw,46px)] min-h-11"
+              >
+                Go to the board
+                <ArrowRight className="size-[1.1em]" strokeWidth={1.6} />
+              </Link>
+              <Link
+                href="/"
+                className="sl-secondary-btn h-[clamp(38px,3.2vw,46px)] min-h-11"
+              >
+                Back home
+                <ArrowUpRight className="size-[0.9em]" strokeWidth={1.6} />
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        <SiteFooter />
+      </SiteShell>
     </main>
   );
 }

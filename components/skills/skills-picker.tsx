@@ -3,9 +3,12 @@
 import * as React from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { CheckIcon, SearchIcon } from "lucide-react";
+import { ArrowRight, CheckIcon, SearchIcon } from "lucide-react";
 
-import { LogoMark } from "@/components/logo-mark";
+import { SiteFooter } from "@/components/site/site-footer";
+import { SiteHeader } from "@/components/site/site-header";
+import { SiteLabel } from "@/components/site/site-label";
+import { SiteShell } from "@/components/site/site-shell";
 import { useProfile } from "@/hooks/use-profile";
 import { canonicalizeSkill, type Track } from "@/lib/skill-catalog";
 import { cn } from "cn";
@@ -112,10 +115,10 @@ export function SkillsPicker({
         onClick={() => toggle(skill)}
         aria-pressed={active}
         className={cn(
-          "inline-flex h-9 items-center gap-1.5 rounded-lg border px-3.5 text-[13px] font-medium transition-colors",
+          "inline-flex h-9 items-center gap-1.5 border px-3 text-[12.5px] font-medium transition-colors",
           active
-            ? "border-[#2b4bf2] bg-[#2b4bf2] text-white"
-            : "border-[#e9e9ee] bg-white text-[#5c5c64] hover:border-[#c9c9cf] hover:text-[#14141a]",
+            ? "border-[#548bff] bg-[#548bff] text-white"
+            : "border-[#e2e2e2] bg-white text-[#3a3a3a] hover:border-[#bdbdbd] hover:text-[#0b0b0d]",
         )}
       >
         {skill}
@@ -134,171 +137,212 @@ export function SkillsPicker({
   };
 
   return (
-    <main className="flex min-h-dvh flex-col bg-white px-4 py-6 sm:px-8 sm:py-10">
-      <div className="mx-auto flex h-10 w-full max-w-[900px] items-center justify-between">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="flex size-8 items-center justify-center rounded-lg bg-[#2b4bf2] text-white">
-            <LogoMark className="size-4.5" />
-          </span>
-          <span className="text-[15px] font-semibold tracking-tight text-[#14141a]">
-            shortlist
-          </span>
-        </Link>
-        <Link
-          href="/jobs"
-          className="text-[13px] font-medium text-[#5c5c64] transition-colors hover:text-[#14141a]"
-        >
-          Board
-        </Link>
-      </div>
+    <main className="sl-landing min-h-dvh bg-white text-[#0b0b0d]">
+      <SiteHeader cta={{ href: "/jobs", label: "Browse jobs" }} />
 
-      <div className="mx-auto mt-4 w-full max-w-[900px] rounded-[28px] border border-[#ececf0] bg-white px-6 py-8 shadow-[0_24px_64px_-28px_rgba(15,15,30,0.25)] sm:px-10 sm:py-10">
-        <div className="text-center">
-          <h1 className="text-[clamp(1.7rem,4.2vw,3rem)] font-medium tracking-[-0.035em] text-[#14141a]">
-            Pick your{" "}
-            <mark className="hl hl-on px-1.5">skills</mark>
-          </h1>
-          <p className="mx-auto mt-3 max-w-xl text-[14px] leading-relaxed text-[#5c5c64]">
-            Every internship on the board is re-graded against what you pick —
-            you will see a personal Match % on every row. Everything stays in
-            this browser.
-          </p>
-        </div>
-
-        {/* Tracks */}
-        <div className="mt-8">
-          <p className="text-[13px] font-semibold text-[#14141a]">
-            Start with a track
-          </p>
-          <div className="mt-3 flex flex-wrap gap-2">
-            {tracks.map((track) => {
-              const active = activeTracks.has(track.id);
-              return (
-                <button
-                  key={track.id}
-                  type="button"
-                  aria-pressed={active}
-                  onClick={() =>
-                    setActiveTracks((prev) => {
-                      const next = new Set(prev);
-                      if (next.has(track.id)) next.delete(track.id);
-                      else next.add(track.id);
-                      return next;
-                    })
-                  }
-                  className={cn(
-                    "inline-flex h-11 items-center rounded-full border px-5 text-[14px] font-medium transition-colors",
-                    active
-                      ? "border-[#14141a] bg-[#14141a] text-white"
-                      : "border-[#e9e9ee] bg-white text-[#5c5c64] hover:border-[#c9c9cf] hover:text-[#14141a]",
-                  )}
-                >
-                  {track.label}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Most in demand */}
-        <div className="mt-8">
-          <p className="text-[13px] font-semibold text-[#14141a]">
-            {demandLabel}
-          </p>
-          <div className="mt-3 flex flex-wrap gap-2">{demanded.map((s) => chip(s))}</div>
-        </div>
-
-        {/* Track skills */}
-        {trackSkills.length > 0 && (
-          <div className="mt-8">
-            <p className="text-[13px] font-semibold text-[#14141a]">
-              Your tracks
+      <SiteShell>
+        <section className="border-t border-[#ececec] px-[clamp(18px,2.75vw,40px)] pt-[clamp(28px,3.6vw,52px)] pb-[clamp(26px,3.4vw,48px)]">
+          <SiteLabel>Your skills</SiteLabel>
+          <div className="mt-[clamp(18px,2.4vw,34px)] grid items-end gap-6 md:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
+            <h1 className="sl-display-sm max-w-[18ch]">
+              Pick what you know.{" "}
+              <span className="text-[#548bff]">See what fits.</span>
+            </h1>
+            <p className="max-w-[25rem] text-[clamp(12px,1.03vw,15px)] leading-[1.65] text-[#9a9a9a] md:justify-self-end">
+              Every internship on the board is re-graded against what you pick,
+              so each row carries a personal Match %. Everything stays in this
+              browser.
             </p>
-            <div className="mt-3 flex flex-wrap gap-2">{trackSkills.map((s) => chip(s))}</div>
           </div>
-        )}
+        </section>
 
-        {/* Free text */}
-        <div className="mt-8">
-          <p className="text-[13px] font-semibold text-[#14141a]">
-            Add anything else
-          </p>
-          <div className="mt-3 flex gap-2">
-            <div className="flex h-10 min-w-0 flex-1 items-center rounded-lg border border-[#e9e9ee] bg-white px-3">
-              <SearchIcon className="size-3.5 shrink-0 text-[#6f6f78]" />
-              <input
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    addFreeText();
-                  }
-                }}
-                placeholder="e.g. GraphQL, Kubernetes, Figma…"
-                aria-label="Add a skill"
-                className="h-full min-w-0 flex-1 bg-transparent px-2 text-[13.5px] text-[#14141a] outline-none placeholder:text-[#9c9ca4]"
-              />
+        <section className="border-t border-[#ececec] px-[clamp(18px,2.75vw,40px)] py-[clamp(28px,4vw,58px)]">
+          <div className="grid gap-[clamp(24px,4vw,56px)] lg:grid-cols-[190px_minmax(0,1fr)]">
+            <aside className="hidden lg:block">
+              <div className="sticky top-6">
+                <SiteLabel>Profile</SiteLabel>
+                <p className="mt-5 font-satoshi text-[clamp(2.6rem,3.6vw,3.6rem)] leading-none font-medium tracking-[-0.05em] tabular-nums">
+                  {selected.size}
+                </p>
+                <p className="sl-label mt-3">skills selected</p>
+                <p className="mt-4 text-[12px] leading-[1.6] text-[#9a9a9a]">
+                  Stored on this device only. No account, no sign-up.
+                </p>
+                {selected.size > 0 ? (
+                  <button
+                    type="button"
+                    onClick={() => setSelected(new Set())}
+                    className="sl-text-link mt-5"
+                  >
+                    Clear all
+                  </button>
+                ) : null}
+                <p className="mt-8 border-t border-[#ececec] pt-4 text-[11px] leading-[1.6] text-[#9a9a9a]">
+                  You can change this any time from the board&apos;s “Your
+                  skills” link.
+                </p>
+              </div>
+            </aside>
+
+            <div className="min-w-0">
+              <div className="border-t border-[#14141a]">
+                <div className="border-b border-[#ececec] py-[clamp(22px,2.6vw,34px)]">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex items-baseline gap-3">
+                      <span className="font-mono text-[10px] text-[#548bff]">
+                        01
+                      </span>
+                      <h2 className="font-satoshi text-[clamp(16px,1.4vw,19px)] leading-[1.2] font-medium tracking-[-0.02em]">
+                        Start with a track
+                      </h2>
+                    </div>
+                    <p className="hidden max-w-[18rem] text-[12px] leading-[1.55] text-[#9a9a9a] md:block">
+                      Pick one or more. The board has roles across all of them.
+                    </p>
+                  </div>
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {tracks.map((track) => {
+                      const active = activeTracks.has(track.id);
+                      return (
+                        <button
+                          key={track.id}
+                          type="button"
+                          aria-pressed={active}
+                          onClick={() =>
+                            setActiveTracks((prev) => {
+                              const next = new Set(prev);
+                              if (next.has(track.id)) next.delete(track.id);
+                              else next.add(track.id);
+                              return next;
+                            })
+                          }
+                          className={cn(
+                            "inline-flex h-10 items-center border px-4 text-[12.5px] font-medium transition-colors",
+                            active
+                              ? "border-[#548bff] bg-[#548bff] text-white"
+                              : "border-[#e2e2e2] bg-white text-[#3a3a3a] hover:border-[#bdbdbd] hover:text-[#0b0b0d]",
+                          )}
+                        >
+                          {track.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="border-b border-[#ececec] py-[clamp(22px,2.6vw,34px)]">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex items-baseline gap-3">
+                      <span className="font-mono text-[10px] text-[#548bff]">
+                        02
+                      </span>
+                      <h2 className="font-satoshi text-[clamp(16px,1.4vw,19px)] leading-[1.2] font-medium tracking-[-0.02em]">
+                        {demandLabel}
+                      </h2>
+                    </div>
+                    <p className="hidden max-w-[18rem] text-[12px] leading-[1.55] text-[#9a9a9a] md:block">
+                      Ranked by how often the board asks for each skill.
+                    </p>
+                  </div>
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {demanded.map((skill) => chip(skill))}
+                  </div>
+
+                  {trackSkills.length > 0 ? (
+                    <div className="mt-7 border-t border-dashed border-[#e2e2e2] pt-5">
+                      <p className="sl-label mb-3">From your tracks</p>
+                      <div className="flex flex-wrap gap-2">
+                        {trackSkills.map((skill) => chip(skill))}
+                      </div>
+                    </div>
+                  ) : null}
+                </div>
+
+                <div className="border-b border-[#ececec] py-[clamp(22px,2.6vw,34px)]">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex items-baseline gap-3">
+                      <span className="font-mono text-[10px] text-[#548bff]">
+                        03
+                      </span>
+                      <h2 className="font-satoshi text-[clamp(16px,1.4vw,19px)] leading-[1.2] font-medium tracking-[-0.02em]">
+                        Add anything else
+                      </h2>
+                    </div>
+                    <p className="hidden max-w-[18rem] text-[12px] leading-[1.55] text-[#9a9a9a] md:block">
+                      A tool, a language, or something the dictionary missed.
+                    </p>
+                  </div>
+                  <div className="mt-5 flex gap-2">
+                    <div className="flex h-11 min-w-0 flex-1 items-center border border-[#e2e2e2] bg-white px-3">
+                      <SearchIcon className="size-3.5 shrink-0 text-[#77777d]" />
+                      <input
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                            addFreeText();
+                          }
+                        }}
+                        placeholder="e.g. GraphQL, Kubernetes, Figma…"
+                        aria-label="Add a skill"
+                        className="h-full min-w-0 flex-1 bg-transparent px-2 text-[13px] text-[#0b0b0d] outline-none placeholder:text-[#9a9a9a]"
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={addFreeText}
+                      disabled={!query.trim()}
+                      className="inline-flex h-11 shrink-0 items-center border border-[#e2e2e2] bg-white px-4 font-mono text-[10px] tracking-[0.06em] uppercase transition-colors hover:border-[#bdbdbd] disabled:opacity-40"
+                    >
+                      Add
+                    </button>
+                  </div>
+                  {searchResults.length > 0 ? (
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {searchResults.map((skill) => chip(skill))}
+                    </div>
+                  ) : null}
+                </div>
+              </div>
+
+              <div className="mt-8 flex flex-wrap items-end justify-between gap-4 border-t border-[#14141a] pt-6">
+                <div>
+                  <p className="sl-label">Selected</p>
+                  <p className="mt-2 font-satoshi text-[clamp(1.5rem,2.2vw,2rem)] leading-none font-medium tracking-[-0.04em] tabular-nums">
+                    {selected.size} skills
+                  </p>
+                  {selected.size > 0 ? (
+                    <button
+                      type="button"
+                      onClick={() => setSelected(new Set())}
+                      className="sl-text-link mt-3 inline-block lg:hidden"
+                    >
+                      Clear all
+                    </button>
+                  ) : null}
+                </div>
+                <div className="flex flex-wrap items-center gap-4">
+                  <Link href="/jobs" className="sl-text-link">
+                    Skip for now
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={save}
+                    className="sl-primary-btn h-[clamp(38px,3.2vw,46px)] min-h-11"
+                  >
+                    <CheckIcon className="size-[1.05em]" />
+                    Save & see matches
+                    <ArrowRight className="size-[1.05em]" strokeWidth={1.6} />
+                  </button>
+                </div>
+              </div>
             </div>
-            <button
-              type="button"
-              onClick={addFreeText}
-              disabled={!query.trim()}
-              className="inline-flex h-10 shrink-0 items-center rounded-lg bg-[#f4f4f6] px-4 text-[13px] font-medium text-[#14141a] transition-colors hover:bg-[#ececee] disabled:opacity-50"
-            >
-              Add
-            </button>
           </div>
-          {searchResults.length > 0 && (
-            <div className="mt-3 flex flex-wrap gap-2">{searchResults.map((s) => chip(s))}</div>
-          )}
-        </div>
+        </section>
 
-        {/* Save bar */}
-        <div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-[#e9e9ee] pt-6">
-          <p className="text-[13px] text-[#5c5c64]">
-            <span className="font-semibold text-[#14141a]">
-              {selected.size} selected
-            </span>
-            {selected.size > 0 && (
-              <button
-                type="button"
-                onClick={() => setSelected(new Set())}
-                className="ml-3 text-[#6f6f78] hover:underline"
-              >
-                Clear all
-              </button>
-            )}
-          </p>
-          <div className="flex items-center gap-3">
-            <Link
-              href="/jobs"
-              className="text-[13px] font-medium text-[#6f6f78] transition-colors hover:text-[#14141a]"
-            >
-              Skip
-            </Link>
-            <button
-              type="button"
-              onClick={save}
-              className="inline-flex h-11 items-center gap-2 rounded-xl bg-[#2b4bf2] px-6 text-[14px] font-medium text-white transition-colors hover:bg-[#2340e0]"
-            >
-              <CheckIcon className="size-4" />
-              Save & see matches
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div className="mx-auto mt-4 flex w-full max-w-[900px] flex-wrap items-center gap-x-4 gap-y-1 px-1">
-        <p className="text-[11px] text-[#6f6f78]">
-          You can change this any time from the board&apos;s “Your skills” link.
-        </p>
-        <div className="ml-auto flex items-center gap-4">
-          <Link href="/privacy" className="text-[11px] text-[#5c5c64] hover:text-[#14141a]">Privacy</Link>
-          <Link href="/terms" className="text-[11px] text-[#5c5c64] hover:text-[#14141a]">Terms</Link>
-          <Link href="/cookies" className="text-[11px] text-[#5c5c64] hover:text-[#14141a]">Cookies</Link>
-        </div>
-      </div>
+        <SiteFooter />
+      </SiteShell>
     </main>
   );
 }

@@ -393,6 +393,7 @@ export default function JobsPage({ initialJobs }: { initialJobs: Job[] }) {  // 
         saved: tracked.saved.size,
         applied: tracked.applied.size + appliedIds.size,
       }}
+      resultCount={filteredJobs.length}
       opportunityFilter={opportunityFilter}
       onOpportunityFilterChange={setOpportunityFilter}
       searchValue={search}

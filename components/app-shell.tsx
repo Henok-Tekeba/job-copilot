@@ -38,14 +38,10 @@ const visibleNavItems =
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
-  // The landing page is the front door; the dashboard chrome starts at the
-  // routes behind it. Every route below runs its own TopNav chrome.
-  if (
-    pathname === "/" ||
-    ["/jobs", "/skills", "/privacy", "/terms", "/cookies"].some(
-      (p) => pathname === p || pathname.startsWith(`${p}/`),
-    )
-  ) {
+  // The public site runs its own header and ruled sheet. Only the local-only
+  // facts workbench still needs the dashboard frame; every other route —
+  // including the 404 — must not inherit the sidebar.
+  if (!pathname.startsWith("/facts")) {
     return <>{children}</>;
   }
   const groups = Array.from(new Set(visibleNavItems.map((i) => i.group)));

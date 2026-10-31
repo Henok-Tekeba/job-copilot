@@ -65,7 +65,10 @@ export function BoardFilters({
 
   return (
     <aside className="flex flex-col gap-6">
-      <p className="text-[15px] font-semibold text-[#14141a]">Filter</p>
+      <div className="sl-label flex items-center gap-2">
+        <span className="sl-label-dot" aria-hidden="true" />
+        Filter
+      </div>
 
       <Input
         value={search}
@@ -73,7 +76,7 @@ export function BoardFilters({
         data-search-input
         placeholder="Company, skill, tag…"
         aria-label="Filter internships"
-        className="h-10 rounded-lg border-[#e9e9ee] bg-white text-[13px] text-[#14141a] shadow-none dark:border-[#e9e9ee] dark:bg-white"
+        className="h-10 rounded-none border-[#e2e2e2] bg-white text-[12.5px] text-[#0b0b0d] shadow-none placeholder:text-[#9a9a9a] dark:border-[#e2e2e2] dark:bg-white"
       />
 
       <Group
@@ -150,21 +153,23 @@ function Group({
   children: React.ReactNode;
 }) {
   return (
-    <div>
+    <div className="border-t border-[#ececec] pt-4">
       <button
         type="button"
         onClick={onToggle}
         aria-expanded={open}
-        className="flex w-full items-center justify-between py-1.5 text-left"
+        className="flex w-full items-center justify-between py-0.5 text-left"
       >
-        <span className="text-[14px] font-semibold text-[#14141a]">{label}</span>
+        <span className="font-mono text-[9.5px] tracking-[0.07em] text-[#5f5f65] uppercase">
+          {label}
+        </span>
         {open ? (
-          <ChevronUp className="size-4 text-[#5c5c64]" />
+          <ChevronUp className="size-3.5 text-[#77777d]" />
         ) : (
-          <ChevronDown className="size-4 text-[#5c5c64]" />
+          <ChevronDown className="size-3.5 text-[#77777d]" />
         )}
       </button>
-      {open ? <div className="mt-2 flex flex-col gap-2.5">{children}</div> : null}
+      {open ? <div className="mt-3 flex flex-col gap-2.5">{children}</div> : null}
     </div>
   );
 }
@@ -179,13 +184,13 @@ function CheckRow({
   label: string;
 }) {
   return (
-    <label className="flex cursor-pointer items-center gap-2.5 text-[13px] text-[#14141a]">
+    <label className="flex cursor-pointer items-center gap-2.5 text-[12.5px] text-[#3a3a3a]">
       <Checkbox
         checked={checked}
         onCheckedChange={(v) => onCheckedChange(Boolean(v))}
-        className="size-[18px] rounded-md data-checked:border-[#2b4bf2] data-checked:bg-[#2b4bf2]"
+        className="size-[17px] rounded-none border-[#cfcfcf] data-checked:border-[#548bff] data-checked:bg-[#548bff]"
       />
-      <span className="font-medium">{label}</span>
+      <span>{label}</span>
     </label>
   );
 }

@@ -56,16 +56,16 @@ export function JobsPagination({
   const last = Math.min(total, (pageIndex + 1) * pageSize);
 
   return (
-    <div className="flex flex-col items-center gap-2 pt-2">
+    <div className="mt-8 flex flex-col items-center gap-3 border-t border-[#ececec] pt-6">
       <Pagination>
-        <PaginationContent>
+        <PaginationContent className="gap-1">
           <PaginationItem>
             <PaginationPrevious
               aria-disabled={pageIndex === 0}
               className={
                 pageIndex === 0
-                  ? "pointer-events-none opacity-50 [&>span]:hidden sm:[&>span]:inline-flex"
-                  : "[&>span]:hidden sm:[&>span]:inline-flex"
+                  ? "pointer-events-none rounded-none border-[#ececec] font-mono text-[10px] uppercase opacity-40 [&>span]:hidden sm:[&>span]:inline-flex"
+                  : "rounded-none border-[#e2e2e2] font-mono text-[10px] uppercase [&>span]:hidden sm:[&>span]:inline-flex"
               }
               onClick={(event) => {
                 event.preventDefault();
@@ -77,13 +77,17 @@ export function JobsPagination({
           {pageWindow(pageIndex, pageCount).map((entry, i) =>
             entry === "gap" ? (
               <PaginationItem key={`gap-${i}`}>
-                <PaginationEllipsis />
+                <PaginationEllipsis className="size-8" />
               </PaginationItem>
             ) : (
               <PaginationItem key={entry}>
                 <PaginationLink
                   isActive={entry === pageIndex}
-                  className="font-mono text-xs tabular-nums"
+                  className={
+                    entry === pageIndex
+                      ? "rounded-none border-[#548bff] bg-[#f8fbff] font-mono text-[11px] text-[#548bff] tabular-nums"
+                      : "rounded-none border border-[#e2e2e2] bg-white font-mono text-[11px] tabular-nums"
+                  }
                   onClick={(event) => {
                     event.preventDefault();
                     onPageChange(entry);
@@ -100,8 +104,8 @@ export function JobsPagination({
               aria-disabled={pageIndex >= pageCount - 1}
               className={
                 pageIndex >= pageCount - 1
-                  ? "pointer-events-none opacity-50 [&>span]:hidden sm:[&>span]:inline-flex"
-                  : "[&>span]:hidden sm:[&>span]:inline-flex"
+                  ? "pointer-events-none rounded-none border-[#ececec] font-mono text-[10px] uppercase opacity-40 [&>span]:hidden sm:[&>span]:inline-flex"
+                  : "rounded-none border-[#e2e2e2] font-mono text-[10px] uppercase [&>span]:hidden sm:[&>span]:inline-flex"
               }
               onClick={(event) => {
                 event.preventDefault();
@@ -112,7 +116,7 @@ export function JobsPagination({
         </PaginationContent>
       </Pagination>
 
-      <p className="font-mono text-xs tabular-nums text-muted-foreground">
+      <p className="font-mono text-[10px] tracking-[0.04em] text-[#9a9a9a] tabular-nums">
         {first}–{last} of {total}
       </p>
     </div>
