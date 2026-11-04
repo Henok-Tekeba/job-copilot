@@ -423,15 +423,17 @@ mark.hl {
 }
 
 .sl-hero-globe {
-  mask-image: linear-gradient(to right, transparent 32%, #000 82%);
-  -webkit-mask-image: linear-gradient(to right, transparent 32%, #000 82%);
+  mask-image: radial-gradient(ellipse at center, #000 0%, #000 58%, transparent 82%);
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 0%, #000 58%, transparent 82%);
 }
 
-@media (max-width: 767.98px) {
-  .sl-hero-globe {
-    mask-image: linear-gradient(to bottom, transparent 2%, #000 42%);
-    -webkit-mask-image: linear-gradient(to bottom, transparent 2%, #000 42%);
-  }
+.sl-hero-veil {
+  background: radial-gradient(
+    ellipse 76% 64% at 50% 52%,
+    rgb(255 255 255 / 0.84) 0%,
+    rgb(255 255 255 / 0.42) 56%,
+    transparent 82%
+  );
 }
 
 @media (max-width: 639.98px) {
@@ -442,7 +444,7 @@ mark.hl {
 
 .sl-display {
   font-family: var(--font-satoshi);
-  font-size: clamp(2.8rem, 8.5vw, 8rem);
+  font-size: clamp(2.5rem, 7.4vw, 7rem);
   font-weight: 500;
   line-height: 1;
   letter-spacing: -0.04em;

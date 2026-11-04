@@ -79,7 +79,7 @@ export function AsciiGlobe({ className = "" }: { className?: string }) {
     <div
       ref={ref}
       aria-hidden="true"
-      className={`pointer-events-none flex select-none items-center justify-end overflow-hidden ${className}`}
+      className={`pointer-events-none flex select-none items-center justify-center overflow-hidden ${className}`}
     >
       {React.createElement("ascii-art", {
         piece: "wireframe-globe",

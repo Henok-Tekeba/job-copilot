@@ -203,24 +203,28 @@ export function LandingPage({
 
       <SiteShell>
           <section className="sl-hero relative overflow-hidden">
-            <AsciiGlobe className="sl-hero-globe absolute right-[-4%] bottom-0 h-[46%] w-[108%] opacity-45 lg:inset-y-0 lg:top-0 lg:bottom-0 lg:h-auto lg:opacity-[0.42]" />
+            <AsciiGlobe className="sl-hero-globe absolute inset-0 h-full w-full opacity-[0.32] lg:opacity-[0.38]" />
+            <div
+              aria-hidden="true"
+              className="sl-hero-veil pointer-events-none absolute inset-0"
+            />
 
-            <div className="relative z-10 flex min-h-[inherit] flex-col px-[clamp(18px,2.75vw,40px)] pt-[clamp(8px,0.9vw,13px)] pb-[clamp(18px,3vw,48px)]">
-              <h1 className="sl-display max-w-[96%]">
+            <div className="relative z-10 flex min-h-[inherit] flex-col items-center justify-center px-[clamp(18px,2.75vw,40px)] py-[clamp(24px,4vw,56px)] text-center">
+              <h1 className="sl-display mx-auto max-w-[94%] text-center">
                 Your next role{" "}
                 <span className="text-[#548bff]">deserves</span>
                 <br className="hidden sm:block" /> a fair shot{" "}
                 <span className="text-[#548bff]">anywhere.</span>
               </h1>
 
-              <div className="mt-[clamp(20px,3.45vw,50px)] md:mt-auto">
-                <p className="max-w-[22rem] text-[clamp(12px,1.03vw,15px)] leading-[1.55] text-[#3d3d3d]">
+              <div className="mt-[clamp(20px,2.4vw,34px)]">
+                <p className="mx-auto max-w-[32rem] text-[clamp(12px,1.03vw,15px)] leading-[1.55] text-[#3d3d3d]">
                   {stats.total.toLocaleString("en-US")} postings read for whether
                   they would hire you, what you&rsquo;re missing, and when to
                   apply.
                 </p>
 
-                <div className="mt-[clamp(12px,1.15vw,18px)] flex flex-wrap items-center gap-[clamp(8px,0.75vw,12px)]">
+                <div className="mt-[clamp(14px,1.3vw,22px)] flex flex-wrap items-center justify-center gap-[clamp(8px,0.75vw,12px)]">
                 <Link
                   href="/jobs"
                   className="sl-primary-btn h-[clamp(34px,3.2vw,46px)] min-h-11"
