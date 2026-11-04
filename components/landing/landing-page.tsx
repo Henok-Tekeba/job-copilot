@@ -12,7 +12,7 @@ import {
   TriangleAlert,
 } from "lucide-react";
 
-import { AsciiPeaks } from "@/components/landing/ascii-peaks";
+import { AsciiGlobe } from "@/components/site/ascii-globe";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteHeader } from "@/components/site/site-header";
 import { SiteLabel } from "@/components/site/site-label";
@@ -203,9 +203,9 @@ export function LandingPage({
 
       <SiteShell>
           <section className="sl-hero relative overflow-hidden">
-            <AsciiPeaks className="absolute right-0 bottom-0 h-[64%] w-[65%]" />
+            <AsciiGlobe className="sl-hero-globe absolute right-[-4%] bottom-0 h-[46%] w-[108%] opacity-45 lg:inset-y-0 lg:top-0 lg:bottom-0 lg:h-auto lg:opacity-[0.42]" />
 
-            <div className="relative z-10 flex min-h-[inherit] flex-col px-[clamp(18px,2.75vw,40px)] pt-[clamp(8px,0.9vw,13px)]">
+            <div className="relative z-10 flex min-h-[inherit] flex-col px-[clamp(18px,2.75vw,40px)] pt-[clamp(8px,0.9vw,13px)] pb-[clamp(18px,3vw,48px)]">
               <h1 className="sl-display max-w-[96%]">
                 Your next role{" "}
                 <span className="text-[#548bff]">deserves</span>
@@ -213,13 +213,14 @@ export function LandingPage({
                 <span className="text-[#548bff]">anywhere.</span>
               </h1>
 
-              <p className="mt-[clamp(24px,3.45vw,50px)] max-w-[22rem] text-[clamp(12px,1.03vw,15px)] leading-[1.55] text-[#3d3d3d]">
-                {stats.total.toLocaleString("en-US")} postings read for whether
-                they would hire you, what you&rsquo;re missing, and when to
-                apply.
-              </p>
+              <div className="mt-[clamp(20px,3.45vw,50px)] md:mt-auto">
+                <p className="max-w-[22rem] text-[clamp(12px,1.03vw,15px)] leading-[1.55] text-[#3d3d3d]">
+                  {stats.total.toLocaleString("en-US")} postings read for whether
+                  they would hire you, what you&rsquo;re missing, and when to
+                  apply.
+                </p>
 
-              <div className="mt-[clamp(12px,1.15vw,18px)] flex flex-wrap items-center gap-[clamp(8px,0.75vw,12px)]">
+                <div className="mt-[clamp(12px,1.15vw,18px)] flex flex-wrap items-center gap-[clamp(8px,0.75vw,12px)]">
                 <Link
                   href="/jobs"
                   className="sl-primary-btn h-[clamp(34px,3.2vw,46px)] min-h-11"
@@ -235,7 +236,8 @@ export function LandingPage({
                   <span className="grid size-[1.3em] place-items-center border border-current/35">
                     <ArrowUpRight className="size-[0.85em]" strokeWidth={1.5} />
                   </span>
-                </Link>
+                  </Link>
+                </div>
               </div>
             </div>
           </section>
