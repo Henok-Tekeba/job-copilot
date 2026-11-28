@@ -1,0 +1,166 @@
+{
+  "date": "2026-10-23",
+  "totals": {
+    "jobs": 4000,
+    "software": 3362
+  },
+  "byOpportunity": {
+    "internship": {
+      "total": 2444,
+      "open": 2362
+    },
+    "contract": {
+      "total": 82,
+      "open": 57
+    },
+    "junior": {
+      "total": 42,
+      "open": 28
+    },
+    "program": {
+      "total": 0,
+      "open": 0
+    },
+    "fulltime": {
+      "total": 1432,
+      "open": 846
+    }
+  },
+  "bySource": {
+    "ashby": {
+      "total": 553,
+      "open": 354
+    },
+    "greenhouse": {
+      "total": 605,
+      "open": 268
+    },
+    "hackernews": {
+      "total": 248,
+      "open": 162
+    },
+    "jobicy": {
+      "total": 54,
+      "open": 54
+    },
+    "lever": {
+      "total": 20,
+      "open": 17
+    },
+    "remoteok": {
+      "total": 118,
+      "open": 96
+    },
+    "remotive": {
+      "total": 17,
+      "open": 8
+    },
+    "simplify": {
+      "total": 2385,
+      "open": 2334
+    }
+  },
+  "topMissingSkills": [
+    {
+      "skill": "Spring Boot",
+      "count": 217
+    },
+    {
+      "skill": "Java",
+      "count": 14
+    },
+    {
+      "skill": "C++",
+      "count": 12
+    },
+    {
+      "skill": "REST API",
+      "count": 9
+    },
+    {
+      "skill": "AWS",
+      "count": 9
+    },
+    {
+      "skill": "Rust",
+      "count": 8
+    },
+    {
+      "skill": "Kotlin",
+      "count": 8
+    },
+    {
+      "skill": "Linux",
+      "count": 7
+    },
+    {
+      "skill": "Swift",
+      "count": 7
+    },
+    {
+      "skill": "Git",
+      "count": 6
+    },
+    {
+      "skill": "Ruby on Rails",
+      "count": 6
+    },
+    {
+      "skill": "Golang",
+      "count": 5
+    },
+    {
+      "skill": "Azure",
+      "count": 4
+    },
+    {
+      "skill": "GCP",
+      "count": 4
+    },
+    {
+      "skill": "C#",
+      "count": 4
+    },
+    {
+      "skill": "HTML",
+      "count": 3
+    },
+    {
+      "skill": "Ruby",
+      "count": 3
+    },
+    {
+      "skill": "Slack",
+      "count": 3
+    },
+    {
+      "skill": "CI/CD",
+      "count": 3
+    },
+    {
+      "skill": "Kubernetes",
+      "count": 3
+    },
+    {
+      "skill": "Terraform",
+      "count": 3
+    },
+    {
+      "skill": "CSS",
+      "count": 2
+    },
+    {
+      "skill": "PHP",
+      "count": 2
+    },
+    {
+      "skill": "PostgreSQL",
+      "count": 2
+    },
+    {
+      "skill": "Microservices",
+      "count": 2
+    }
+  ],
+  "newJobsToday": 2665
+}

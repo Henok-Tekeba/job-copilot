@@ -1,0 +1,166 @@
+{
+  "date": "2026-10-18",
+  "totals": {
+    "jobs": 4000,
+    "software": 3385
+  },
+  "byOpportunity": {
+    "internship": {
+      "total": 2496,
+      "open": 2430
+    },
+    "contract": {
+      "total": 85,
+      "open": 54
+    },
+    "junior": {
+      "total": 35,
+      "open": 23
+    },
+    "program": {
+      "total": 0,
+      "open": 0
+    },
+    "fulltime": {
+      "total": 1384,
+      "open": 839
+    }
+  },
+  "bySource": {
+    "ashby": {
+      "total": 531,
+      "open": 327
+    },
+    "greenhouse": {
+      "total": 588,
+      "open": 306
+    },
+    "hackernews": {
+      "total": 248,
+      "open": 162
+    },
+    "jobicy": {
+      "total": 28,
+      "open": 28
+    },
+    "lever": {
+      "total": 19,
+      "open": 16
+    },
+    "remoteok": {
+      "total": 128,
+      "open": 94
+    },
+    "remotive": {
+      "total": 16,
+      "open": 7
+    },
+    "simplify": {
+      "total": 2442,
+      "open": 2406
+    }
+  },
+  "topMissingSkills": [
+    {
+      "skill": "Spring Boot",
+      "count": 242
+    },
+    {
+      "skill": "C++",
+      "count": 14
+    },
+    {
+      "skill": "Java",
+      "count": 13
+    },
+    {
+      "skill": "Rust",
+      "count": 9
+    },
+    {
+      "skill": "AWS",
+      "count": 8
+    },
+    {
+      "skill": "Kotlin",
+      "count": 8
+    },
+    {
+      "skill": "Swift",
+      "count": 7
+    },
+    {
+      "skill": "REST API",
+      "count": 6
+    },
+    {
+      "skill": "Ruby on Rails",
+      "count": 6
+    },
+    {
+      "skill": "Golang",
+      "count": 5
+    },
+    {
+      "skill": "Microservices",
+      "count": 4
+    },
+    {
+      "skill": "Azure",
+      "count": 4
+    },
+    {
+      "skill": "GCP",
+      "count": 4
+    },
+    {
+      "skill": "Git",
+      "count": 4
+    },
+    {
+      "skill": "C#",
+      "count": 4
+    },
+    {
+      "skill": "Linux",
+      "count": 3
+    },
+    {
+      "skill": "Agile",
+      "count": 3
+    },
+    {
+      "skill": "CI/CD",
+      "count": 3
+    },
+    {
+      "skill": "Kubernetes",
+      "count": 3
+    },
+    {
+      "skill": "Ruby",
+      "count": 2
+    },
+    {
+      "skill": "PHP",
+      "count": 2
+    },
+    {
+      "skill": "PostgreSQL",
+      "count": 2
+    },
+    {
+      "skill": "Slack",
+      "count": 2
+    },
+    {
+      "skill": "Terraform",
+      "count": 2
+    },
+    {
+      "skill": "Vercel",
+      "count": 2
+    }
+  ],
+  "newJobsToday": 2706
+}

@@ -1,0 +1,166 @@
+{
+  "date": "2026-11-18",
+  "totals": {
+    "jobs": 4000,
+    "software": 3305
+  },
+  "byOpportunity": {
+    "internship": {
+      "total": 2164,
+      "open": 2103
+    },
+    "contract": {
+      "total": 121,
+      "open": 88
+    },
+    "junior": {
+      "total": 48,
+      "open": 36
+    },
+    "program": {
+      "total": 0,
+      "open": 0
+    },
+    "fulltime": {
+      "total": 1667,
+      "open": 1053
+    }
+  },
+  "bySource": {
+    "ashby": {
+      "total": 560,
+      "open": 382
+    },
+    "greenhouse": {
+      "total": 721,
+      "open": 330
+    },
+    "hackernews": {
+      "total": 221,
+      "open": 146
+    },
+    "jobicy": {
+      "total": 191,
+      "open": 191
+    },
+    "lever": {
+      "total": 27,
+      "open": 24
+    },
+    "remoteok": {
+      "total": 157,
+      "open": 130
+    },
+    "remotive": {
+      "total": 25,
+      "open": 14
+    },
+    "simplify": {
+      "total": 2098,
+      "open": 2063
+    }
+  },
+  "topMissingSkills": [
+    {
+      "skill": "Spring Boot",
+      "count": 161
+    },
+    {
+      "skill": "Java",
+      "count": 21
+    },
+    {
+      "skill": "AWS",
+      "count": 15
+    },
+    {
+      "skill": "C++",
+      "count": 14
+    },
+    {
+      "skill": "Git",
+      "count": 13
+    },
+    {
+      "skill": "REST API",
+      "count": 12
+    },
+    {
+      "skill": "GCP",
+      "count": 11
+    },
+    {
+      "skill": "Linux",
+      "count": 11
+    },
+    {
+      "skill": "Azure",
+      "count": 10
+    },
+    {
+      "skill": "Swift",
+      "count": 9
+    },
+    {
+      "skill": "Kotlin",
+      "count": 9
+    },
+    {
+      "skill": "Kubernetes",
+      "count": 8
+    },
+    {
+      "skill": "C#",
+      "count": 8
+    },
+    {
+      "skill": "Rust",
+      "count": 7
+    },
+    {
+      "skill": "Golang",
+      "count": 6
+    },
+    {
+      "skill": "Docker",
+      "count": 6
+    },
+    {
+      "skill": "CI/CD",
+      "count": 6
+    },
+    {
+      "skill": "Ruby on Rails",
+      "count": 6
+    },
+    {
+      "skill": "Terraform",
+      "count": 6
+    },
+    {
+      "skill": "Agile",
+      "count": 5
+    },
+    {
+      "skill": "Slack",
+      "count": 4
+    },
+    {
+      "skill": "PyTorch",
+      "count": 4
+    },
+    {
+      "skill": "Kafka",
+      "count": 3
+    },
+    {
+      "skill": "HTML",
+      "count": 3
+    },
+    {
+      "skill": "Ruby",
+      "count": 3
+    }
+  ],
+  "newJobsToday": 2353
+}
